@@ -37,9 +37,10 @@ const Sekes = () => {
         const res = await axios.post('http://192.168.2.65:5000/readMeeting', { //창훈이형 그룹 내 회의 목록
           roomNum: room
         });
-        console.log(res.data);
+        // console.log(res.data);
         setData(res.data);
-        setRoomName(res.data.roomName);
+        // console.log(res.data[0].roomName);
+        setRoomName(res.data[0].roomName);
 
       } catch (error) {
         console.log(error)
@@ -53,19 +54,12 @@ const Sekes = () => {
     <Box width="100%" display="flex" flexDirection="column" m="20px">
       <CreateMeetModal show={starthome} onHide={() => setModal(false)} />
       <Box display="flex" flexDirection="column" m="20px" >
-        {/* <div>
-          <tr>
-            <td>{roomName}</td> {/* 그룹 이름 
-            <td><button onClick={goClient}>1번방 입장하기</button></td>
-            <Button variant="outline-secondary" size="lg" onClick={() => setModal(true)}>회의 생성하기</Button>
-          </tr>
-
-        </div> */}
+       
         <Table striped>
           <thead>
             <tr flexDirection="column">
               <td>
-                <h2>N번방</h2>
+                <h2>{roomName}</h2>
               </td>
               <td bg="right">
               </td>
