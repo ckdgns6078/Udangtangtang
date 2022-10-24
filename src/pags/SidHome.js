@@ -1,7 +1,6 @@
 
 import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -24,37 +23,31 @@ const SidHome = () => {
 
   }, [])
 
-
+  const testonclick = () => {
+    data && data.map((e, idx) =>
+      window.location.href = `/Sekes/${e.roomNum}/`
+    )
+  }
 
   return (
     <Table responsive >
 
       <thead >
-
         <tr>
-
           <th>Home</th>
-
         </tr>
-
-
       </thead>
       
-    
-       
- 
 
       <tbody>
         {
           data && data.map((e, idx) =>
 
             <tr>
-              <th>
-              <Link key={idx} to={`/${e.roomNum}`}> {e.roomName}</Link>
+              <th  onClick={testonclick}>
+              {e.roomName}
               </th>
-
             </tr>
-
           )
         }
 

@@ -1,6 +1,5 @@
 
-import { Container } from 'react-bootstrap'
-
+import { Container, Navbar } from 'react-bootstrap'
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
@@ -15,10 +14,13 @@ import Table from 'react-bootstrap/Table';
 import React, { useEffect, useState } from 'react'
 import { useParams } from "react-router-dom";
 import axios from 'axios';
-
-
+import MicIcon from '@mui/icons-material/Mic';
+import MicOffIcon from '@mui/icons-material/MicOff';
 import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
 import { Link } from '@mui/material';
+import { Button } from 'bootstrap';
+
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -109,31 +111,32 @@ const Client = () => {
 
      
         <Container maxWidth="sm" >
-      <div>
-      {
-           
-              <div >
-                 <div > </div>
-               
-
-              </div>
-
-      }
-      </div>
-     
-
-
    
           <Grid container>
 
-          <Box sx={{ flexGrow: 1 , 
-                    }}>
+          <Box width="100%" display="flex" flexDirection="column" m="20px" sx={{ flexGrow: 1 , }}>
+
+                     
+                      <Navbar expand="lg" variant="light" bg="light">
+                        <Container>
+                          <Navbar.Brand href="#">회의방</Navbar.Brand>
+                        </Container>
+                       
+                  <Fab size="small" color="inherit" aria-label="add">
+                  <MicIcon />
+                  </Fab>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <Fab size="small" color="inherit" aria-label="add">
+                  <MicOffIcon />
+                  </Fab>
+                      </Navbar>
+             
             <Grid container spacing={2} columns={16}>
 
               {/* 오른쪽 페이지 */}
               <Grid item xs={10} >
                 <Item>
-                    
+   
 
                 </Item>
               </Grid>

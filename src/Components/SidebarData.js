@@ -1,10 +1,4 @@
-
-
-
-
 import { Link } from 'react-router-dom';
-
-
 import react, { useEffect, useState } from 'react';
 import SignUpModal from '../Login/SignUpModal';
 import LogOutModal from '../Login/LogOutModal'

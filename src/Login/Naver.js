@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react'
-
 import Naverimg from '../img/NaverButton.png';
 import { useLocation } from 'react-router-dom';
 import axios from "axios";
@@ -7,13 +6,13 @@ import axios from "axios";
 
 function Naver() {
     const naverRef = useRef();
-   const { naver } = window
+	const { naver } = window
     const NAVER_CLIENT_ID = "OcAsBqkibE994tAMco3N";
     const NAVER_CALLBACK_URL = "http://localhost:3000";
 
 
     useEffect(() => {
-      const naverLogin = new naver.LoginWithNaverId({
+		const naverLogin = new naver.LoginWithNaverId({
             clientId: NAVER_CLIENT_ID,
             callbackUrl: NAVER_CALLBACK_URL,
             // 팝업창으로 로그인을 진행할 것인지?           
