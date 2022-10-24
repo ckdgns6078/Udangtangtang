@@ -1,56 +1,35 @@
-import {React, useState}  from "react";
-import  HomeLest from '../Components/HomeLest'
+import { React, useState } from "react";
+import HomeLest from '../Components/HomeLest'
 import Button from 'react-bootstrap/Button';
 import Modal from "../Components/Modal";
-import Sekes from "../pags/Sekes";
-import { Link } from "react-router-dom";
-import Client from "../pags/Client"
-
-// import Meeting from '../Components/Meeting';
-
 import SidHome from "../pags/SidHome";
-
+import { Box } from "@mui/material";
 // eslint-disable-line no-unused-vars
 const Sidebar = () => {
 
-    const [gohome, setHomeLest] =useState(false);
+    const [gohome, setHomeLest] = useState(false);
     const [starthome, setModal] = useState(false);
-    const [gomeeting, setMeeting] = useState(false);
-  
-
-    return(
-        
-        <div className='Sidebar'>
-            <HomeLest show = {gohome} onHide = {()=> setHomeLest(false)}/>
-            <Modal  show = {starthome} onHide= {() => setModal(false) }/>
-            {/* <Meeting  show = {gomeeting} onHide= {() => setMeeting(false) }/>    */}
-
-            <ul >
-                <li>
-                <Button variant="outline-secondary" size="lg" onClick={() => setHomeLest(true)}>+ 방 만들기</Button> 
-                </li>
-
-                <li>
-                <Button variant="outline-secondary" size="lg" onClick={() => setModal(true)}>+ 방 입장하기</Button> 
-                </li>
 
 
-                {/* <li>
-                <Button variant="outline-secondary" size="lg" onClick={() => setMeeting(true)}>+ 방 입장하기</Button> 
-                </li> */}
+    return (
 
+        <Box display="flex" flexDirection="column" m="20px" className='Sidebar'>
+            <HomeLest show={gohome} onHide={() => setHomeLest(false)} />
+            <Modal show={starthome} onHide={() => setModal(false)} />
 
-                
+            <ul>
+                <div className="d-grid gap-2">
+                    <Button variant="outline-secondary" size="lg" onClick={() => setHomeLest(true)}>+ 방 만들기</Button>
+                    <Button variant="outline-secondary" size="lg" onClick={() => setModal(true)}>+ 방 입장하기</Button>
+                </div>
                 <li>
                     <SidHome></SidHome>
-                 
                 </li>
-                
-            </ul>   
+            </ul>
+        </Box>
 
-        </div>
     )
 }
 
-export default  Sidebar;
+export default Sidebar;
 

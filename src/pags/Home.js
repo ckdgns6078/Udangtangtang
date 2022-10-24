@@ -2,16 +2,12 @@
 import Button from 'react-bootstrap/Button';
 import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table';
-
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from "@mui/material/styles";
-
 import { Box } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
-import Sekes from './Sekes';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
-
+import noData from '../img/NoData.png';
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -55,36 +51,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 
-
-
-// const Sekesgo = () => {
-//   // window.location.href = 'http://localhost:3000/Sekes'
-  
-//   {
-//     data && data.map((e, idx) =>
-
-      
-//           <Link key={idx} to={`/Sekes/${e.roomNum}/`}> {e.roomName}</Link>
-       
-
-//     )
-//   }
-// }
-
-
-
 const Home = () => {
   const [data, setData] = useState();
 
-
   useEffect(() => {
+
     (async () => {
       try {
         const res = await axios.post("http://192.168.2.65:5000/readRoom",
           {
             id: sessionStorage.getItem("id")
           });
-          
+
         console.log(res.data)
         setData(res.data);
       } catch (error) {
@@ -96,20 +74,12 @@ const Home = () => {
 
 
 
+  const testonclick = idx => {
+    console.log(idx);
+    window.location.href = '/Sekes/' + idx;
 
-  const Sekesgo = () => {
-    // window.location.href = 'http://localhost:3000/Sekes'
-    
-    {
-      data && data.map((e, idx) =>
-  
-        
-            <Link key={idx} to={`/Sekes/${e.roomNum}/`}> {e.roomName}</Link>
-         
-  
-      )
-    }
   }
+
 
   return (
     //responsive 테이블은 반응 형으로 만들어 줌
@@ -146,27 +116,34 @@ const Home = () => {
         <tbody>
           {
             data && data.map((e, idx) =>
-
-              <tr onClick={Sekesgo()}>
-                <th></th>
-                <th>
-                  {e.roomName}
-                </th>
+              <tr onClick={() => testonclick(e.roomNum)}>
+                <th>{idx + 1}</th>
+                <th> {e.roomName}</th>
                 <th>{e.roomHost}</th>
-                <th>
-                  {e.roomMember}
-                </th>
+                <th>{e.roomMember}</th>
               </tr>
-
             )
           }
 
-
-
-          
-
         </tbody>
-      </Table></Box>
+      </Table>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh',
+      }} >
+        {
+          sessionStorage.getItem("id") === null ?
+            <div>
+              <img src={noData} />
+            </div>
+            :
+            <div>asd</div>
+        }
+      </div>
+
+    </Box>
 
 
   )
