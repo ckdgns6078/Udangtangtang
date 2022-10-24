@@ -1,71 +1,57 @@
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 
 const SidHome = () => {
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await axios.post("http://192.168.2.65:5000/readRoom",
+          {
+            id: sessionStorage.getItem("id")
+          });
+        console.log(res.data)
+        setData(res.data);
+      } catch (error) {
+        console.log(error)
+      }
+    })();
+
+  }, [])
+
+  const testonclick = idx => {
+    console.log(idx);
+    window.location.href = '/Sekes/' + idx;
+
+  }
+
   return (
     <Table responsive >
 
-    <thead >
-   
-      <tr> 
-        
-        <th>Home</th>
-    
-      </tr>
-    
+      <thead >
+        <tr>
+          <th>Home</th>
+        </tr>
+      </thead>
+      
 
-    </thead>
+      <tbody>
+          {
+            data && data.map((e, idx) =>
+              <tr onClick={() => testonclick(e.roomNum)}>
+                <th> {e.roomName}</th>
+              </tr>
+            )
+          }
 
-    <tbody>
-       
-      <tr>
-        
-        <td><Link to="/Sekes">1번방</Link></td>
-      
-      </tr>
-      
-      <tr>
-      
-        <td><Link   eventKey="Sekes">2번방</Link></td>
-        
-      </tr>
-      <tr>
-    
-        <td>집 왜감?</td>
-        
-      </tr>
-      <tr>
-      
-        <td>집 왜감?</td>
-        
-      </tr>
-      <tr>
-      
-        <td>집 왜감?</td>
-   
-      </tr>
-      <tr>
-      
-        <td>집 왜감?</td>
-        
-      </tr>
-      <tr>
-      
-        <td>집 왜감?</td>
-      
-      </tr>
-      <tr>
-      
-        <td>집 왜감?</td>
-     
-      </tr>
-    </tbody>
-  </Table>
+        </tbody>
+    </Table>
 
-  
+
 
   )
 }
