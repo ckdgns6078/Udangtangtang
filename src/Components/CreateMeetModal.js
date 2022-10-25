@@ -22,6 +22,7 @@ const CreateMeetModal = ({ show, onHide }) => {
         meetingRoomHost: sessionStorage.getItem("id")
       })
       console.log(res.data.meetingRoomNum);
+      window.location.href="http://localhost:3000/Client/"+room+"/"+res.data[0].meetingRoomNum;
     }
     catch (e) {
       console.error(e);
