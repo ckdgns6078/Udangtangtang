@@ -23,7 +23,7 @@ const Sekes = () => {
   const [starthome, setModal] = useState(false);
   const [roomName, setRoomName] = useState();
 
-  
+  const [ishave, setIsHave] = useState(true);
   const ingmeetclick = idx => {
     console.log(idx);
     const location = window.location.href;
@@ -128,11 +128,11 @@ const Sekes = () => {
           </tbody>
         </Table>
         <div id="noData"> 
-            {
+            {/* {
               ishave ? <div></div> : <div><img src={noData}/></div>
 
             }
-          
+           */}
         </div>
       </Box>
     </Box>
