@@ -32,213 +32,187 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 
-  
+
 const Client = () => {
+  const [condata, setConData] = useState();
+  const [redata, setReData] = useState();
 
-    const param = useParams()
-    
-    const  params  = useParams()
-    // const id = sessionStorage.getItem("id");
-    
-    const [data, setData] = useState();
 
-    const [stream, setStream] = useState();
-    const [media, setMedia] = useState();
-    const [onRec, setOnRec] = useState(true);
-    const [source, setSource] = useState();
-    const [analyser, setAnalyser] = useState();
-    const [audioUrl, setAudioUrl] = useState();
-    const [bloburl, setbloburl] = useState();
-    const [file, setFile] = useState();
-  
-    
-    const[state, setState] = useState(false);
+  const [stream, setStream] = useState();
+  const [media, setMedia] = useState();
+  const [onRec, setOnRec] = useState(true);
+  const [source, setSource] = useState();
+  const [analyser, setAnalyser] = useState();
+  const [audioUrl, setAudioUrl] = useState();
+  const [bloburl, setbloburl] = useState();
+  const [file, setFile] = useState();
 
-    const toggle =() => {
-      setState(!state);
+  const [state, setState] = useState(false);
+
+  const toggle = () => {
+    setState(!state);
+  }
+
+
+  useEffect(() => {
+    const location = window.location.href;
+    var room = parseInt(location.split("/")[4]); //roomnum
+    console.log(room);
+    var meet = parseInt(location.split("/")[5]); //meetnum
+    console.log(meet);
+
+    (async () => {
+      try {
+        const res = await axios.post("http://192.168.2.65:5000/readContents", {
+          roomNum: room,
+          meetNum: meet
+        });
+        const res2 = await axios.post("http://192.168.2.65:5000/readReply", {
+          roomNum: room,
+          meetNum: meet
+        });
+        //readContents
+        console.log(res.data);
+        console.log(res.data);
+        setConData(res.data);
+        //readReply
+        console.log(res2.data);
+        setReData(res2.data);
+        console.log(res2.data);
+      } catch (error) {
+        console.log(error)
+      }
+    })();
+  }, [])
+
+
+
+  const onRecAudio = () => {
+    console.log("녹음 시작")
+    // 음원정보를 담은 노드를 생성하거나 음원을 실행또는 디코딩 시키는 일을 한다
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // 자바스크립트를 통해 음원의 진행상태에 직접접근에 사용된다.
+    const analyser = audioCtx.createScriptProcessor(0, 1, 1);
+    //const analyser = audioCtx.AudioWorkletNode(0, 1, 1);
+    setAnalyser(analyser);
+
+    function makeSound(stream) {
+      // 내 컴퓨터의 마이크나 다른 소스를 통해 발생한 오디오 스트림의 정보를 보여준다.
+      const source = audioCtx.createMediaStreamSource(stream);
+      setSource(source);
+      source.connect(analyser);
+      analyser.connect(audioCtx.destination);
+    }
+    // 마이크 사용 권한 획득
+    navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+      console.log("마이크 사용 가능");
+      const options = {
+        audioBitsPerSecond: 128000,
+        mimeType: 'audio/webm;codecs=opus'
+      };
+      const mediaRecorder = new MediaRecorder(stream, options);
+      mediaRecorder.start();
+      setStream(stream);
+      setMedia(mediaRecorder);
+      makeSound(stream);
+
+      analyser.onaudioprocess = function (e) {
+        // 1분(60초) 지나면 자동으로 음성 저장 및 녹음 중지
+        if (e.playbackTime > 59) {
+          stream.getAudioTracks().forEach(function (track) {
+            track.stop();
+          });
+          mediaRecorder.stop();
+          // 메서드가 호출 된 노드 연결 해제
+          analyser.disconnect();
+          audioCtx.createMediaStreamSource(stream).disconnect();
+
+          mediaRecorder.ondataavailable = function (e) {
+
+            setAudioUrl(e.data);
+            setOnRec(true);
+          };
+          console.log("dddddd");
+        } else {
+          setOnRec(false);
+        }
+      };
+    });
+  };
+
+  // 사용자가 음성 녹음을 중지했을 때
+  const offRecAudio = () => {
+    console.log("녹음 중지")
+    // dataavailable 이벤트로 Blob 데이터에 대한 응답을 받을 수 있음
+    media.ondataavailable = function (e) {
+      console.log(e);
+      setAudioUrl(e.data);
+      setOnRec(true);
+    };
+
+    // 모든 트랙에서 stop()을 호출해 오디오 스트림을 정지
+    stream.getAudioTracks().forEach(function (track) {
+      track.stop();
+    });
+
+
+    // 미디어 캡처 중지
+    media.stop();
+    // 메서드가 호출 된 노드 연결 해제
+    analyser.disconnect();
+    source.disconnect();
+
+
+
+  };
+
+  const onSubmitAudioFile = useCallback(() => {
+    console.log(audioUrl);
+    if (audioUrl) {
+      const url = URL.createObjectURL(audioUrl);
+      setbloburl(url);
+      console.log(url); // 출력된 링크에서 녹음된 오디오 확인 가능 (blob:https://~~)
+
+
+      let formdata = new FormData();
+      formdata.append("fname", "audio.wav");
+      formdata.append("data", URL.createObjectURL(audioUrl));
+
+
     }
 
-
-      useEffect( () =>{
-    
-     (async ()=>{
-      try {
-        console.log(window.location.href);
-        console.log(params);
-           const res = await axios.post("http://192.168.2.65:5000/readContents",{
-            roomNum : params.id,
-            
-            // meetNum : "ASd" 
-           });const res2 = await axios.post("http://192.168.2.65:5000/readReply",{
-            roomNum : params.id,
-            // meetNum : "ASd" 
-            
-          
-           });
+    const sound = new File([audioUrl], "recorder", { lastModified: new Date().getTime(), type: "audio/wav" });
+    console.log("파일정보", sound);
+    setFile(sound);
 
 
-        
-           console.log(res.data);
-           setData(res.data);
-           console.log(res2.data);
-           setData(res2.data);
-        } catch (error) {
-            console.log(error)
-        }
-      })();
-        
-    },[])
-    useEffect( () =>{
 
-      (async ()=>{
-       try {
-         console.log(window.location.href);
-         console.log(params);
-            const res = await axios.post("http://192.168.2.65:5000/readMeeting",{
-             roomNum : params.id
-            });
-            console.log(res.data);
-            setData(res.data);
-         } catch (error) {
-             console.log(error)
-         }
-       })();
-         
-     },[])
-     
+    let formData = new FormData();
+    formData.append("file", sound);
 
-     const onRecAudio = () => {
-      console.log("녹음 시작")
-      // 음원정보를 담은 노드를 생성하거나 음원을 실행또는 디코딩 시키는 일을 한다
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      // 자바스크립트를 통해 음원의 진행상태에 직접접근에 사용된다.
-      const analyser = audioCtx.createScriptProcessor(0, 1, 1);
-      //const analyser = audioCtx.AudioWorkletNode(0, 1, 1);
-      setAnalyser(analyser);
-  
-      function makeSound(stream) {
-        // 내 컴퓨터의 마이크나 다른 소스를 통해 발생한 오디오 스트림의 정보를 보여준다.
-        const source = audioCtx.createMediaStreamSource(stream);
-        setSource(source);
-        source.connect(analyser);
-        analyser.connect(audioCtx.destination);
+    axios.post('http://192.168.2.82:5000/yTest', formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
       }
-      // 마이크 사용 권한 획득
-      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-        console.log("마이크 사용 가능");
-        const options = {
-          audioBitsPerSecond: 128000,
-          mimeType: 'audio/webm;codecs=opus'
-        };
-        const mediaRecorder = new MediaRecorder(stream, options);
-        mediaRecorder.start();
-        setStream(stream);
-        setMedia(mediaRecorder);
-        makeSound(stream);
-  
-        analyser.onaudioprocess = function (e) {
-          // 1분(60초) 지나면 자동으로 음성 저장 및 녹음 중지
-          if (e.playbackTime > 59) {
-            stream.getAudioTracks().forEach(function (track) {
-              track.stop();
-            });
-            mediaRecorder.stop();
-            // 메서드가 호출 된 노드 연결 해제
-            analyser.disconnect();
-            audioCtx.createMediaStreamSource(stream).disconnect();
-  
-            mediaRecorder.ondataavailable = function (e) {
-  
-              setAudioUrl(e.data);
-              setOnRec(true);
-            };
-            console.log("dddddd");
-          } else {
-            setOnRec(false);
-          }
-        };
-      });
-    };
-  
-    // 사용자가 음성 녹음을 중지했을 때
-    const offRecAudio = () => {
-      console.log("녹음 중지")
-      // dataavailable 이벤트로 Blob 데이터에 대한 응답을 받을 수 있음
-      media.ondataavailable = function (e) {
-        console.log(e);
-        setAudioUrl(e.data);
-        setOnRec(true);
-      };
-  
-      // 모든 트랙에서 stop()을 호출해 오디오 스트림을 정지
-      stream.getAudioTracks().forEach(function (track) {
-        track.stop();
-      });
-  
-  
-      // 미디어 캡처 중지
-      media.stop();
-      // 메서드가 호출 된 노드 연결 해제
-      analyser.disconnect();
-      source.disconnect();
-  
-  
-  
-    };
-  
-    const onSubmitAudioFile = useCallback(() => {
-      console.log(audioUrl);
-      if (audioUrl) {
-        const url = URL.createObjectURL(audioUrl);
-        setbloburl(url);
-        console.log(url); // 출력된 링크에서 녹음된 오디오 확인 가능 (blob:https://~~)
-  
-
-        let formdata = new FormData();
-        formdata.append("fname", "audio.wav");
-        formdata.append("data", URL.createObjectURL(audioUrl));
-  
-
-      }
-   
-      const sound = new File([audioUrl], "recorder", { lastModified: new Date().getTime(), type: "audio/wav" });
-      console.log("파일정보", sound);
-      setFile(sound);
-  
-  
-  
-      let formData = new FormData();
-      formData.append("file", sound);
-  
-      axios.post('http://192.168.2.82:5000/yTest', formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        }
+    })
+      .then(function (check) { //서버에서 주는 리턴값???
+        console.log(check); //data: '나 값이 들어온 것 같음', status: 200, statusText: '', headers: AxiosHeaders, config: {…}, …}
       })
-        .then(function (check) { //서버에서 주는 리턴값???
-          console.log(check); //data: '나 값이 들어온 것 같음', status: 200, statusText: '', headers: AxiosHeaders, config: {…}, …}
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-  
-  
-  
-    }, [audioUrl]);
-    
+      .catch(function (error) {
+        console.log(error);
+      });
 
 
-    
+
+  }, [audioUrl]);
+
+
+
+
   return (
-
-     
-        <Container maxWidth="sm" >
-
+    <Container maxWidth="sm" >
       <Grid container>
-
         <Box width="100%" display="flex" flexDirection="column" m="20px" sx={{ flexGrow: 1, }}>
-
-
           <Navbar expand="lg" variant="light" bg="light">
             <Container>
               <Navbar.Brand href="#">회의방</Navbar.Brand>
@@ -246,23 +220,23 @@ const Client = () => {
 
 
             <div onClick={toggle} variant="light">
-                  {
-                    state ?  
-                    <Fab size="small" color="inherit" aria-label="add">
-                      <VideocamIcon />
-                    </Fab>:   
-                    <Fab size="small" color="inherit" aria-label="add">
-                      <VideocamOffIcon />
-                    </Fab>
-                  } 
-                </div>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <div onClick={toggle} variant="light">
-                  {
-                    state ?  
-                    <Fab size="small" color="inherit" aria-label="add">
-                      <MicIcon />
-                    </Fab>:   
+              {
+                state ?
+                  <Fab size="small" color="inherit" aria-label="add">
+                    <VideocamIcon />
+                  </Fab> :
+                  <Fab size="small" color="inherit" aria-label="add">
+                    <VideocamOffIcon />
+                  </Fab>
+              }
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div onClick={toggle} variant="light">
+              {
+                state ?
+                  <Fab size="small" color="inherit" aria-label="add">
+                    <MicIcon />
+                  </Fab> :
                   <Fab size="small" color="inherit" aria-label="add">
                     <MicOffIcon />
                   </Fab>
@@ -292,20 +266,21 @@ const Client = () => {
 
                 <div>회의 </div>
                 <Grid item xs={16} >
-
-                  <Item>
-
-
-
-
-
-                  </Item>
+                  {
+                    condata && condata.map((e, idx) =>
+                      <div>
+                        <Item>
+                          <h6>{e.contentsTime}</h6>
+                          <Stack direction="row" spacing={1}>
+                            <Chip label={e.contentsWriter} color="primary" />
+                          </Stack>
+                          <h6>{e.contentsText}</h6>
+                        </Item>
+                        <br></br>
+                      </div>
+                    )
+                  }
                 </Grid>
-
-
-
-
-
               </Item>
             </Grid>
 
@@ -331,108 +306,33 @@ const Client = () => {
                   <hr></hr>
                   <h4>메모</h4>
                   <hr></hr>
-                  <Table responsive="xl">
-                    <tr>
-                      <th>닉네임</th>
-                      <th>날짜</th>
-                    </tr>
-                    <tbody>
-                      <tr>
-                        <td>
-
-                          조창훈
-                          <br></br>
-                          <br></br>
-                          <br></br>
-
-                          <div>
-                            메모 내용
 
 
-                          </div>
-                          ㅁㄴㅇㅁㄴ
-
-
-                        </td>
-
-                        <td>2020/10-19 - 19:00
-                        </td>
-
-
-
-                      </tr>
-
-                      <tr>
-                        <td>
-
-                          조창훈
-                          <br></br>
-                          <br></br>
-                          <br></br>
-
-                          <div>
-                            메모 내용
-
-
-                          </div>
-                          ㅁㄴㅇㅁㄴ
-
-
-                        </td>
-
-                        <td>2020/10-19 - 19:00
-                        </td>
-
-
-
-                      </tr>
-                      <tr>
-                        <td>
-
-                          조창훈
-                          <br></br>
-                          <br></br>
-                          <br></br>
-
-                          <div>
-                            메모 내용
-
-
-                          </div>
-                          ㅁㄴㅇㅁㄴ
-
-
-                        </td>
-
-                        <td>2020/10-19 - 19:00
-                        </td>
-
-                      </tr>
-
-                    </tbody>
-
-                  </Table>
+                  <div>
+                  {
+                    redata && redata.map((e, idx) =>
+                      <div>
+                        <Item>
+                          <h6>{e.replyDate}</h6>
+                          <Stack direction="row" spacing={1}>
+                            <Chip label={e.replyWriter} color="primary" />
+                          </Stack>
+                          <h6>{e.replyText}</h6>
+                        </Item>
+                        <br></br>
+                      </div>
+                    )
+                  }
+                  </div>
+                  
                 </Box>
-
               </Item>
             </Grid>
           </Grid>
         </Box>
-
-
-
-
-
       </Grid>
-     
-
     </Container>
-
-
-          
-
-     
   )
 }
 
-export default Client
+export default Client;

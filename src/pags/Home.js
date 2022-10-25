@@ -53,7 +53,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const Home = () => {
   const [data, setData] = useState();
+  const [isHave, setIsHave] = useState(true);
 
+  
   useEffect(() => {
 
     (async () => {
@@ -145,14 +147,15 @@ const Home = () => {
         justifyContent: 'center',
         height: '100vh',
       }} >
-        {
-          sessionStorage.getItem("id") === null ?
-            <div>
-              <img src={NoData} />
-            </div>
-            :
-            <div> </div>
-        }
+         <div id="ishave">
+          {
+            sessionStorage.getItem("id") === null ? <div><img src={noData} /></div> : <div></div>
+          }
+          {
+            isHave === true? <div></div> : <div><img src={noData} /></div>
+          }
+
+        </div>
       </div>
       </Box>
     </Box>
