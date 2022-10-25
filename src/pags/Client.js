@@ -52,12 +52,14 @@ const Client = () => {
   const [bloburl, setbloburl] = useState();
   const [file, setFile] = useState();
 
-  const [state, setState] = useState(false);
-
-  const toggle = () => {
-    setState(!state);
+  const [camState, setCamState] = useState(false);
+  const [voiceState, setVoiceState] = useState(false);
+  const camtoggle = () => {
+    setCamState(!camState);
   }
-
+  const voicetoggle = () =>{
+    setVoiceState(!voiceState);
+  }
 
   useEffect(() => {
     const location = window.location.href;
@@ -215,11 +217,9 @@ const Client = () => {
             <Container>
               <Navbar.Brand ><h2>{meetName}</h2><h6>{host}</h6></Navbar.Brand>
             </Container>
-
-
-            <div onClick={toggle} variant="light">
+            <div onClick={camtoggle} variant="light">
               {
-                state ?
+                camState ?
                   <Fab size="small" color="inherit" aria-label="add">
                     <VideocamIcon />
                   </Fab> :
@@ -229,9 +229,9 @@ const Client = () => {
               }
             </div>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <div onClick={toggle} variant="light">
+            <div onClick={voicetoggle} variant="light">
               {
-                state ?
+                voiceState ?
                   <Fab size="small" color="inherit" aria-label="add">
                     <MicIcon />
                   </Fab> :
@@ -240,7 +240,6 @@ const Client = () => {
                   </Fab>
               }
             </div>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
           </Navbar>
