@@ -7,7 +7,7 @@ import { styled, alpha } from "@mui/material/styles";
 import { Box } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import axios from 'axios';
-import NoData from '../img/NoData.png';
+import noData from '../img/NoData.png';
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",

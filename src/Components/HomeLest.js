@@ -14,6 +14,20 @@ const HomeLest = ({show , onHide}) => {
 
 
 
+  const onroomName = (event) => {
+    setRoomName(event.currentTarget.value)
+  }
+
+  const onroomPw = (event) => {
+    setRoomPw(event.currentTarget.value)
+  }
+
+  const onroomKey = (event) => {
+    setRoomKey(event.currentTarget.value)
+  }
+
+
+
 // //오류 메시지 상태 저장
 // const [roomPwMsg, setRoomPwMsg] = useState('')
 // const [roomNameMsg, setRoomNameMsg] = useState('')
