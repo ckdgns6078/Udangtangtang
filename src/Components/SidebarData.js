@@ -70,8 +70,14 @@ export const SidebarData = () => {
       
       if (id != null) {
           
-          src.innerHTML = "<div>" + "<Nav.Link>" + sessionStorage.getItem("frontid") + "</Nav.Link>" + "<button class='profilebutton'> <div class='box'><img class='profile' src='" + sessionStorage.getItem("profile")
-              + "'/></div></Button>" + "</div>";
+          src.innerHTML = 
+          "<div>" + 
+            "<Nav.Link>"
+               + sessionStorage.getItem("frontid") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+ 
+            "</Nav.Link>" + 
+            
+            "<button class='profilebutton'> <div class='box'> <img class='profile' src='" 
+              + sessionStorage.getItem("profile")+ "'/></div></Button>" +  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>";
          
           
       }
@@ -102,6 +108,7 @@ export const SidebarData = () => {
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 
+
           <Link to="/">
             <img src={udttang} className ='log'/>
           </Link>
@@ -110,16 +117,7 @@ export const SidebarData = () => {
           </Typography>
 
           <Typography>
-          {/* <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search> */}
-
+    
           </Typography>
          
           <div id="box"></div>

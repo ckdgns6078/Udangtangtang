@@ -11,7 +11,42 @@ const HomeLest = ({show , onHide}) => {
   const [roomName,setRoomName] = useState("");
   const [roomKey,setRoomKey] = useState("");
   const id = sessionStorage.getItem("id");
+
+
+
+// //오류 메시지 상태 저장
+// const [roomPwMsg, setRoomPwMsg] = useState('')
+// const [roomNameMsg, setRoomNameMsg] = useState('')
+// const [roomKeyMsg, setRoomKeyMsg] = useState('')
+
+
+// // 유효성 검사
+// const [isroomPwMsg, setIsRoomPw] = useState<boolean>(false)
+// const [isroomName, setIsRoomName] = useState<boolean>(false)
+// const [isroomKey, setIsRoomKey] = useState<boolean>(false)
+// const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false)
+// const router = useRouter()
+
+// const onChangeName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+//   setName(e.target.value)
+//   if (e.target.value.length < 2 || e.target.value.length > 5) {
+//     setNameMessage('2글자 이상 5글자 미만으로 입력해주세요.')
+//     setIsName(false)
+//   } else {
+//     setNameMessage('올바른 이름 형식입니다 :)')
+//     setIsName(true)
+//   }
+// }, [])
+
+
+
+
+
+
+
+
   const handleSubmit = async  () => {
+    
     //axios로 서버에 보낸다
     try{
         await axios.post('http://192.168.2.65:5000/createRoom',{
@@ -26,6 +61,7 @@ const HomeLest = ({show , onHide}) => {
     }
     
   }
+
 
 
   return (

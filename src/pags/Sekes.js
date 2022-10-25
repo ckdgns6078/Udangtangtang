@@ -53,14 +53,8 @@ const Sekes = () => {
     <Box width="100%" display="flex" flexDirection="column" m="20px">
       <CreateMeetModal show={starthome} onHide={() => setModal(false)} />
       <Box display="flex" flexDirection="column" m="20px" >
-        {/* <div>
-          <tr>
-            <td>{roomName}</td> {/* 그룹 이름 
-            <td><button onClick={goClient}>1번방 입장하기</button></td>
-            <Button variant="outline-secondary" size="lg" onClick={() => setModal(true)}>회의 생성하기</Button>
-          </tr>
-
-        </div> */}
+   
+        
         <Table striped>
           <thead>
             <tr flexDirection="column">
@@ -68,8 +62,11 @@ const Sekes = () => {
                 <h2>N번방</h2>
               </td>
               <td bg="right">
+                
               </td>
               <td bg="right">
+                
+            
               </td>
               <td bg="right"> <Button variant="outline-secondary" onClick={() => setModal(true)}>회의 생성</Button></td>
             </tr>
@@ -78,15 +75,18 @@ const Sekes = () => {
               <th>번호</th>
               <th>회의명</th>
               <th>시간</th>
+              <th>호스트</th>
+
             </tr>
           </thead>
 
           <tbody>
             {
               data && data.map((e, idx) =>
-                <tr onClick={() => testonclick(e.roomNum)}>
+                <tr  id="test" class="blinking" onClick={() => testonclick(e.roomNum)}>
+                  {/* id="test" class="blinking" 위에 깜박 거리는 css*/ }
                   <th> {idx + 1}</th>
-                  <th>{e.meetTitle}</th> {/* 회의 이름 */}
+                  <th >{e.meetTitle}</th> {/* 회의 이름 */}
                   <th>{e.meetDate}</th> {/* 회의 종료 날짜 */}
                   <th>{e.meethost}</th> {/* 회의 만든 사람 */}
                 </tr>
