@@ -76,7 +76,7 @@ export const SidebarData = () => {
           src.innerHTML = 
           "<div>" + 
             "<Nav.Link>"
-               + sessionStorage.getItem("frontid") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+ 
+               + sessionStorage.getItem("nickname") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+ 
             "</Nav.Link>" + 
             
             "<button class='profilebutton'> <div class='box'> <img class='profile' src='" 
