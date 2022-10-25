@@ -17,7 +17,8 @@ const goClient = () => {
 
 
 const Sekes = () => {
-  const [data, setData] = useState();
+  const [data, setData] = useState(); //회의 목록
+  const [meetData, setMeetData] = useState();
   const [starthome, setModal] = useState(false);
   const [roomName, setRoomName] = useState();
 
@@ -26,25 +27,47 @@ const Sekes = () => {
     window.location.href = '/Sekes/' + idx;
 
   }
-
+  const ingmeetclick = idx =>{
+    console.log(idx);
+    window.location.href = '/Client/'+idx;
+  }
 
   useEffect(() => {
     const location = window.location.href;
     var room = parseInt(location.split("/")[4]);
-
+    
+    //창훈이형 그룹 내 회의 목록
     (async () => {
       try {
-        const res = await axios.post('http://192.168.2.65:5000/readMeeting', { //창훈이형 그룹 내 회의 목록
+        const res = await axios.post('http://192.168.2.65:5000/readMeeting', {
           roomNum: room
         });
-        console.log(res.data);
+        // console.log(res.data);
         setData(res.data);
-        setRoomName(res.data.roomName);
+        // console.log(res.data[0].roomName);
+        setRoomName(res.data[0].roomName);
 
       } catch (error) {
         console.log(error)
       }
     })();
+
+
+    
+    //현재 진행중인 회의 리스트
+    (async () => {
+      try {
+        const ing = await axios.post('http://192.168.2.65:5000/readMeetingRoom', {
+          roomNum: room
+        });
+        console.log(ing.data);
+        setMeetData(ing.data);
+
+      } catch (error) {
+        console.log(error)
+      }
+    })();
+
   }, [])
 
 
@@ -53,21 +76,15 @@ const Sekes = () => {
     <Box width="100%" display="flex" flexDirection="column" m="20px">
       <CreateMeetModal show={starthome} onHide={() => setModal(false)} />
       <Box display="flex" flexDirection="column" m="20px" >
-   
-        
+
         <Table striped>
           <thead>
             <tr flexDirection="column">
               <td>
-                <h2>N번방</h2>
+
               </td>
-              <td bg="right">
-                
-              </td>
-              <td bg="right">
-                
-            
-              </td>
+              <td bg="right"></td>
+              <td bg="right"></td>
               <td bg="right"> <Button variant="outline-secondary" onClick={() => setModal(true)}>회의 생성</Button></td>
             </tr>
 
@@ -81,6 +98,11 @@ const Sekes = () => {
           </thead>
 
           <tbody>
+            {
+
+              
+            }
+            
             {
               data && data.map((e, idx) =>
                 <tr  id="test" class="blinking" onClick={() => testonclick(e.roomNum)}>

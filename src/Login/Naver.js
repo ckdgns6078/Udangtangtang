@@ -26,15 +26,17 @@ function Naver() {
             if (status) {
                 // 아래처럼 선택하여 추출이 가능하고, 
                 const user_id = naverLogin.user.email;
-                const user_name = naverLogin.user.getName();
+                const user_name = naverLogin.user.name;
                 const profile = naverLogin.user.profile_image;
                 // console.log(user_id);
                 console.log(naverLogin.user.email);
-                console.log(user_id);
+                console.log(naverLogin.user);
                 // console.log(profile);
                 sessionStorage.setItem("id",user_id);
-                sessionStorage.setItem("frontid",user_name);
+                sessionStorage.setItem("nickname",user_name);
                 sessionStorage.setItem("profile",profile);
+                // console.log(sessionStorage.getItem("frontid"))
+                console.log(sessionStorage.getItem("nickname"));
                 console.log(user_name);
                 // 정보 전체를 아래처럼 state 에 저장하여 추출하여 사용가능하다. 
                 // setUserInfo(naverLogin.user)

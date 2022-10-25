@@ -23,7 +23,7 @@ export default class Facebook extends Component {
                 check:true
             });
         }
-        sessionStorage.setItem("frontid", response.name);
+        sessionStorage.setItem("nickname", response.name);
         sessionStorage.setItem("profile", response.picture.data.url);
         sessionStorage.setItem("id", response.userID);
 
