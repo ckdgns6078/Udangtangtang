@@ -63,11 +63,14 @@ export const SidebarData = () => {
 
 
   const id = sessionStorage.getItem("id");
+  const nickname = sessionStorage.getItem("nickname");
+  const profile = sessionStorage.getItem("profile")
   console.log(id);
-
+  console.log(nickname);
+  console.log(profile)
   useEffect(() => {
       var src = document.getElementById("box");
-      
+      console.log(sessionStorage.getItem("nickname"))
       if (id != null) {
           
           src.innerHTML = "<div>" + "<Nav.Link>" + sessionStorage.getItem("frontid") + "</Nav.Link>" + "<button class='profilebutton'> <div class='box'><img class='profile' src='" + sessionStorage.getItem("profile")
