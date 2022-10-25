@@ -22,6 +22,10 @@ const Sidebar = () => {
                     <Button variant="outline-secondary" size="lg" onClick={() => setHomeLest(true)}>+ 방 만들기</Button>
                     <Button variant="outline-secondary" size="lg" onClick={() => setModal(true)}>+ 방 입장하기</Button>
                 </div>
+                <div >
+                    
+                </div>
+         
                 <li>
                     <SidHome></SidHome>
                 </li>

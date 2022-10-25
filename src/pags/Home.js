@@ -7,7 +7,7 @@ import { styled, alpha } from "@mui/material/styles";
 import { Box } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import axios from 'axios';
-import noData from '../img/NoData.png';
+import NoData from '../img/NoData.png';
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -83,12 +83,19 @@ const Home = () => {
 
   return (
     //responsive 테이블은 반응 형으로 만들어 줌
+
     <Box width="100%" display="flex" flexDirection="column" m="20px">
+    <Box width="100%" display="flex" flexDirection="column" >
       <Table responsive="lg">
         <thead>
           <tr>
             <td>
               <h2>HOME</h2>
+            </td>
+            <td bg="right">
+              <Search>
+           
+              </Search>
             </td>
             <td bg="right">
               <Search>
@@ -102,7 +109,12 @@ const Home = () => {
               </Search>
 
             </td>
-            <td> <Button variant="outline-secondary">Search</Button></td>
+            
+
+            <td> 
+           
+              <Button variant="outline-secondary">Search</Button>
+              </td>
           </tr>
           <tr>
             <th>번호</th>
@@ -136,13 +148,13 @@ const Home = () => {
         {
           sessionStorage.getItem("id") === null ?
             <div>
-              <img src={noData} />
+              <img src={NoData} />
             </div>
             :
-            <div>asd</div>
+            <div> </div>
         }
       </div>
-
+      </Box>
     </Box>
 
 

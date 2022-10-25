@@ -24,7 +24,7 @@ class KakaoLogin extends Component {
                             console.log("Kakao 사용자 정보", res);
                             sessionStorage.setItem("id",res.id);
                             sessionStorage.setItem("profile", res.properties.profile_image);
-                            sessionStorage.setItem("frontid", res.properties.nickname);
+                            sessionStorage.setItem("nickname", res.properties.nickname);
                             //console.log(window.Kakao.Auth.getAccessToken());//토큰
 
                             //서버에 데이터 보낼값
