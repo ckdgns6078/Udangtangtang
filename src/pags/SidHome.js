@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table';
 import axios from 'axios';
+import NoData from '../img/NoData.png';
 
 
 const SidHome = () => {
@@ -30,9 +31,13 @@ const SidHome = () => {
   }
 
   return (
+    <div>
     <Table responsive >
 
       <thead >
+        <tr> </tr>
+        <tr> </tr>
+        <tr> </tr>
         <tr>
           <th>Home</th>
         </tr>
@@ -50,6 +55,23 @@ const SidHome = () => {
 
         </tbody>
     </Table>
+
+    <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh',
+      }} >
+        {
+          sessionStorage.getItem("id") === null ?
+            <div>
+              <img src={NoData} />
+            </div>
+            :
+            <div> </div>
+        }
+      </div>
+    </div>
 
 
 

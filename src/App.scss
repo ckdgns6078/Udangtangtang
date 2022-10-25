@@ -190,3 +190,33 @@ $gray: #c4ccde;
 .navercheck{
   display:none;
 }
+@keyframes blink-effect {
+  50% {
+    opacity: 0;
+  }
+}
+.Blinking{
+  animation: blink-effect 1s step-end infinite;
+
+}
+
+.blinking{
+  -webkit-animation: blink 0.5s ease-in-out infinite alternate;
+  -moz-animation: blink 0.5s ease-in-out infinite alternate;
+  animation: blink 0.5s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes blink{
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+@-moz-keyframes blink{
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+@keyframes blink{
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}

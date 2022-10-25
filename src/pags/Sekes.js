@@ -81,7 +81,7 @@ const Sekes = () => {
           <thead>
             <tr flexDirection="column">
               <td>
-                <h2>{roomName}</h2>
+
               </td>
               <td bg="right"></td>
               <td bg="right"></td>
@@ -92,6 +92,8 @@ const Sekes = () => {
               <th>번호</th>
               <th>회의명</th>
               <th>시간</th>
+              <th>호스트</th>
+
             </tr>
           </thead>
 
@@ -103,9 +105,10 @@ const Sekes = () => {
             
             {
               data && data.map((e, idx) =>
-                <tr onClick={() => testonclick(e.roomNum)}>
+                <tr  id="test" class="blinking" onClick={() => testonclick(e.roomNum)}>
+                  {/* id="test" class="blinking" 위에 깜박 거리는 css*/ }
                   <th> {idx + 1}</th>
-                  <th>{e.meetTitle}</th> {/* 회의 이름 */}
+                  <th >{e.meetTitle}</th> {/* 회의 이름 */}
                   <th>{e.meetDate}</th> {/* 회의 종료 날짜 */}
                   <th>{e.meethost}</th> {/* 회의 만든 사람 */}
                 </tr>
