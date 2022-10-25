@@ -36,7 +36,7 @@ const LogOutModal = ({ show, onHide }) => {
             });
             window.Kakao.Auth.setAccessToken(undefined);
         }
-
+        sessionStorage.clear();
     }
     function handleClose() {
         onHide(false);
