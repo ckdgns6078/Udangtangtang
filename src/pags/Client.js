@@ -60,7 +60,7 @@ const Client = () => {
   const voicetoggle = () =>{
     setVoiceState(!voiceState);
   }
-
+  
   useEffect(() => {
     const location = window.location.href;
     var room = parseInt(location.split("/")[4]); //roomnum
@@ -228,8 +228,9 @@ const Client = () => {
                   </Fab>
               }
             </div>
+
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <div onClick={voicetoggle} variant="light">
+
               {
                 voiceState ?
                   <Fab size="small" color="inherit" aria-label="add">
@@ -253,7 +254,7 @@ const Client = () => {
                 <Grid item xs={16} >
                   <Item>
 
-
+                
 
 
 

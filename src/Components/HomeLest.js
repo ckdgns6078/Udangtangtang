@@ -14,44 +14,107 @@ const HomeLest = ({show , onHide}) => {
 
 
 
-  const onroomName = (event) => {
-    setRoomName(event.currentTarget.value)
+  const InputNameEx = /^[가-힣a-zA-Z0-9]{2,15}$/;
+  const InputKeyEx = /^[가-힣a-zA-Z0-9]{2,15}$/;
+  const InputPwEx = /^[가-힣a-zA-Z0-9]{2,15}$/;
+
+
+
+
+  const RoomNameCheck = (roomName)=>{
+    if(roomName.match(InputNameEx)==null){
+      alert("제목 형식에 맞게 입력 해주세요")
+      return;
+    }else{
+      alert("잘입력 함 ㅎㅎ")
+    }
   }
 
-  const onroomPw = (event) => {
-    setRoomPw(event.currentTarget.value)
+  
+  const RoomKeyCheck = (setRoomKey)=>{
+    if(roomKey.match(InputKeyEx)==null){
+      alert("제목 형식에 맞게 입력 해주세요")
+      return;
+    }else{
+      alert("잘입력 함 ㅎㅎ")
+    }
   }
 
-  const onroomKey = (event) => {
-    setRoomKey(event.currentTarget.value)
+  
+  const RoomPwCheck = (roomPw)=>{
+    if(roomPw.match(InputPwEx)==null){
+      alert("제목 형식에 맞게 입력 해주세요")
+      return;
+    }else{
+      alert("잘입력 함 ㅎㅎ")
+    }
   }
 
 
 
-// //오류 메시지 상태 저장
-// const [roomPwMsg, setRoomPwMsg] = useState('')
-// const [roomNameMsg, setRoomNameMsg] = useState('')
-// const [roomKeyMsg, setRoomKeyMsg] = useState('')
 
 
-// // 유효성 검사
-// const [isroomPwMsg, setIsRoomPw] = useState<boolean>(false)
-// const [isroomName, setIsRoomName] = useState<boolean>(false)
-// const [isroomKey, setIsRoomKey] = useState<boolean>(false)
-// const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false)
-// const router = useRouter()
 
-// const onChangeName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-//   setName(e.target.value)
-//   if (e.target.value.length < 2 || e.target.value.length > 5) {
-//     setNameMessage('2글자 이상 5글자 미만으로 입력해주세요.')
-//     setIsName(false)
-//   } else {
-//     setNameMessage('올바른 이름 형식입니다 :)')
-//     setIsName(true)
-//   }
-// }, [])
+  // //정규식
+  // var InputName = /^[가-힣a-zA-Z]{2,15}$/;
+  // var InputKey =/^[가-힣a-zA-Z]{2,15}$/;
+  // var InputPw =/^[가-힣a-zA-Z]{2,15}$/;
 
+
+
+ 
+
+  //적규식
+  //제목
+    // const handleInpRoomName = (e) => {
+    //     // 8자~16자 영문, 숫자 조합
+    //     var regExp = /^(?=.*\d)(?=.*[a-z0-9가-힣])[0-9a-zA-Z]{1,10}$/
+    //     setRoomName(regExp.test(e.target.value));
+    // };
+
+    // //키
+    // const   handInputKey = (e) => {
+    //     var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{1,10}$/
+    //     setRoomKey(regExp.test(encodeURIComponent.target.value));
+    // };
+
+    // //비번
+    // const handleInputPw = (e) => {
+    //     // 2자~10자 영문, 숫자 조합
+    //     var regExp = /^(?=.*[a-z0-9가-힣])[a-zA-Z0-9가-힣]{1,10}$/
+    //     setRoomPw(regExp.test(e.target.value));
+    // };
+
+    // //정규식 조건
+    // const onFinish = (values) => {
+    //   if (handleInpRoomName == false) {
+    //     alert("제목 입력 해주세요")
+    //     roomName.focus();
+    //     return;
+    //   }
+    //   if (handInputKey == false) {
+    //     alert("key 값 입력 해주세요")
+    //     roomKey.focus();
+    //     return;
+    //   }
+    //   if (handleInputPw != false) {
+    //     alert("비밀번호를 입력해주세요.")
+    //     roomPw.focus();
+    //     return;
+  
+  
+  
+    //     handleSubmit(values)
+    //   };
+  
+    // }
+    
+    // //미입력 이벤트
+    // const onFinishFailed = (errorInfo) => {
+    //   console.log('Failed:', errorInfo);
+    // };
+
+  
 
 
 
@@ -60,7 +123,11 @@ const HomeLest = ({show , onHide}) => {
 
 
   const handleSubmit = async  () => {
-    
+    var rn = document.getElementById("roomName");
+    console.log(rn.value);
+    alert("제목 형식에 맞게 입력 해주세요")
+
+
     //axios로 서버에 보낸다
     try{
         await axios.post('http://192.168.2.65:5000/createRoom',{
@@ -94,27 +161,24 @@ const HomeLest = ({show , onHide}) => {
     <Modal.Body>
 
 
-    <Form>
+    <Form >
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>방제목 </Form.Label>
-        <Form.Control type="text" placeholder="방제목 입력하세요" onChange = {(e)=>setRoomKey(e.target.value)}/>
+        <Form.Control id="roomName" type="text" placeholder="방제목 입력하세요" 
+        onChange={(e)=>{setRoomPw(e.target.value); 
+                              RoomNameCheck(e.target.value)}} />
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formBasicPassword">
         <Form.Label>방이름(key)</Form.Label>
-        <Form.Control  type="text" placeholder="방이름 입력하세요" onChange = {(e)=>setRoomName(e.target.value)}/>
+        <Form.Control id="roomKey"  type="text" placeholder="방이름 입력하세요" />
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>
-        <Form.Control type="password" placeholder="비밀번호를 입력 하세요"  onChange = {(e)=>setRoomPw(e.target.value)}/>
+        <Form.Control id="roomPw" type="password" placeholder="비밀번호를 입력 하세요"  />
       </Form.Group>
-{/*       
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>호스트</Form.Label>
-        <Form.Control type="password" placeholder="호스트를 입력 하세요"  onChange = {(e)=>setRoomHost(e.target.value)}/>
-      </Form.Group>
-       */}
+
       
     </Form>
     </Modal.Body>

@@ -1,168 +1,355 @@
-import React from 'react'
+//회의 한방
+import { Container, Navbar } from 'react-bootstrap'
+import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
 
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import StopIcon from '@mui/icons-material/Stop';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import AudioFileIcon from '@mui/icons-material/AudioFile';
+import PauseIcon from '@mui/icons-material/Pause';
+import Table from 'react-bootstrap/Table';
+import React, { useEffect, useState, useCallback } from 'react'
+import { useParams } from "react-router-dom";
+import axios from 'axios';
+import MicIcon from '@mui/icons-material/Mic';
+import MicOffIcon from '@mui/icons-material/MicOff';
+import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
+import { Link } from '@mui/material';
+import Button from 'react-bootstrap/Button';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import VideocamOffIcon from '@mui/icons-material/VideocamOff';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import TextField from '@mui/material/TextField';
+import ButtonGroup from '@mui/material/ButtonGroup';
+
+
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+}));
 
 
 
 const Client_2 = () => {
-  //이름, 이메일, 비밀번호, 비밀번호 확인
-  const [name, setName] = useState<string>('')
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  const [passwordConfirm, setPasswordConfirm] = useState<string>('')
+  const [condata, setConData] = useState();
+  const [redata, setReData] = useState();
 
-  //오류메시지 상태저장
-  const [nameMessage, setNameMessage] = useState<string>('')
-  const [emailMessage, setEmailMessage] = useState<string>('')
-  const [passwordMessage, setPasswordMessage] = useState<string>('')
-  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState<string>('')
 
-  // 유효성 검사
-  const [isName, setIsName] = useState<boolean>(false)
-  const [isEmail, setIsEmail] = useState<boolean>(false)
-  const [isPassword, setIsPassword] = useState<boolean>(false)
-  const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false)
-  const router = useRouter()
+  const [stream, setStream] = useState();
+  const [media, setMedia] = useState();
+  const [onRec, setOnRec] = useState(true);
+  const [source, setSource] = useState();
+  const [analyser, setAnalyser] = useState();
+  const [audioUrl, setAudioUrl] = useState();
+  const [bloburl, setbloburl] = useState();
+  const [file, setFile] = useState();
 
-  const onSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
+  const [state, setState] = useState(false);
+
+  const toggle = () => {
+    setState(!state);
+  }
+  const toggle2 = () => {
+    setState(!state);
+  }
+
+
+  useEffect(() => {
+    const location = window.location.href;
+    var room = parseInt(location.split("/")[4]); //roomnum
+    console.log(room);
+    var meet = parseInt(location.split("/")[5]); //meetnum
+    console.log(meet);
+
+    (async () => {
       try {
-        await axios
-          .post(REGISTER_USERS_URL, {
-            username: name,
-            password: password,
-            email: email,
-          })
-          .then((res) => {
-            console.log('response:', res)
-            if (res.status === 200) {
-              router.push('/sign_up/profile_start')
-            }
-          })
-      } catch (err) {
-        console.error(err)
+        const res = await axios.post("http://192.168.2.65:5000/readContents", {
+          roomNum: room,
+          meetNum: meet
+        });
+        const res2 = await axios.post("http://192.168.2.65:5000/readReply", {
+          roomNum: room,
+          meetNum: meet
+        });
+        //readContents
+        console.log(res.data);
+        console.log(res.data);
+        setConData(res.data);
+        //readReply
+        console.log(res2.data);
+        setReData(res2.data);
+        console.log(res2.data);
+      } catch (error) {
+        console.log(error)
       }
-    },
-    [email, name, password, router]
-  )
-
-  // 이름
-  const onChangeName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value)
-    if (e.target.value.length < 2 || e.target.value.length > 5) {
-      setNameMessage('2글자 이상 5글자 미만으로 입력해주세요.')
-      setIsName(false)
-    } else {
-      setNameMessage('올바른 이름 형식입니다 :)')
-      setIsName(true)
-    }
+    })();
   }, [])
 
-  // 이메일
-  const onChangeEmail = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const emailRegex =
-      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
-    const emailCurrent = e.target.value
-    setEmail(emailCurrent)
 
-    if (!emailRegex.test(emailCurrent)) {
-      setEmailMessage('이메일 형식이 틀렸어요! 다시 확인해주세요 ㅜ ㅜ')
-      setIsEmail(false)
-    } else {
-      setEmailMessage('올바른 이메일 형식이에요 : )')
-      setIsEmail(true)
+  //텍스트 필드
+  const [value, setValue] = React.useState('Controlled');
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
+
+
+  const onRecAudio = () => {
+    console.log("녹음 시작")
+    // 음원정보를 담은 노드를 생성하거나 음원을 실행또는 디코딩 시키는 일을 한다
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // 자바스크립트를 통해 음원의 진행상태에 직접접근에 사용된다.
+    const analyser = audioCtx.createScriptProcessor(0, 1, 1);
+    //const analyser = audioCtx.AudioWorkletNode(0, 1, 1);
+    setAnalyser(analyser);
+
+    function makeSound(stream) {
+      // 내 컴퓨터의 마이크나 다른 소스를 통해 발생한 오디오 스트림의 정보를 보여준다.
+      const source = audioCtx.createMediaStreamSource(stream);
+      setSource(source);
+      source.connect(analyser);
+      analyser.connect(audioCtx.destination);
     }
-  }, [])
+    // 마이크 사용 권한 획득
+    navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+      console.log("마이크 사용 가능");
+      const options = {
+        audioBitsPerSecond: 128000,
+        mimeType: 'audio/webm;codecs=opus'
+      };
+      const mediaRecorder = new MediaRecorder(stream, options);
+      mediaRecorder.start();
+      setStream(stream);
+      setMedia(mediaRecorder);
+      makeSound(stream);
 
-  // 비밀번호
-  const onChangePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/
-    const passwordCurrent = e.target.value
-    setPassword(passwordCurrent)
+      analyser.onaudioprocess = function (e) {
+        // 1분(60초) 지나면 자동으로 음성 저장 및 녹음 중지
+        if (e.playbackTime > 59) {
+          stream.getAudioTracks().forEach(function (track) {
+            track.stop();
+          });
+          mediaRecorder.stop();
+          // 메서드가 호출 된 노드 연결 해제
+          analyser.disconnect();
+          audioCtx.createMediaStreamSource(stream).disconnect();
 
-    if (!passwordRegex.test(passwordCurrent)) {
-      setPasswordMessage('숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!')
-      setIsPassword(false)
-    } else {
-      setPasswordMessage('안전한 비밀번호에요 : )')
-      setIsPassword(true)
+          mediaRecorder.ondataavailable = function (e) {
+
+            setAudioUrl(e.data);
+            setOnRec(true);
+          };
+          console.log("dddddd");
+        } else {
+          setOnRec(false);
+        }
+      };
+    });
+  };
+
+  // 사용자가 음성 녹음을 중지했을 때
+  const offRecAudio = () => {
+    console.log("녹음 중지")
+    // dataavailable 이벤트로 Blob 데이터에 대한 응답을 받을 수 있음
+    media.ondataavailable = function (e) {
+      console.log(e);
+      setAudioUrl(e.data);
+      setOnRec(true);
+    };
+
+    // 모든 트랙에서 stop()을 호출해 오디오 스트림을 정지
+    stream.getAudioTracks().forEach(function (track) {
+      track.stop();
+    });
+
+
+    // 미디어 캡처 중지
+    media.stop();
+    // 메서드가 호출 된 노드 연결 해제
+    analyser.disconnect();
+    source.disconnect();
+
+
+
+  };
+
+
+  const onSubmitAudioFile = useCallback(() => {
+    console.log(audioUrl);
+    if (audioUrl) {
+      const url = URL.createObjectURL(audioUrl);
+      setbloburl(url);
+      console.log(url); // 출력된 링크에서 녹음된 오디오 확인 가능 (blob:https://~~)
+
+
+      let formdata = new FormData();
+      formdata.append("fname", "audio.wav");
+      formdata.append("data", URL.createObjectURL(audioUrl));
+
+
     }
-  }, [])
 
-  // 비밀번호 확인
-  const onChangePasswordConfirm = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const passwordConfirmCurrent = e.target.value
-      setPasswordConfirm(passwordConfirmCurrent)
+    const sound = new File([audioUrl], "recorder", { lastModified: new Date().getTime(), type: "audio/wav" });
+    console.log("파일정보", sound);
+    setFile(sound);
 
-      if (password === passwordConfirmCurrent) {
-        setPasswordConfirmMessage('비밀번호를 똑같이 입력했어요 : )')
-        setIsPasswordConfirm(true)
-      } else {
-        setPasswordConfirmMessage('비밀번호가 틀려요. 다시 확인해주세요 ㅜ ㅜ')
-        setIsPasswordConfirm(false)
+
+
+    let formData = new FormData();
+    formData.append("file", sound);
+
+    axios.post('http://192.168.2.82:5000/yTest', formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
       }
-    },
-    [password]
-  )
+    })
+      .then(function (check) { //서버에서 주는 리턴값???
+        console.log(check); //data: '나 값이 들어온 것 같음', status: 200, statusText: '', headers: AxiosHeaders, config: {…}, …}
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+
+
+  }, [audioUrl]);
+
+
+
 
   return (
-    <>
-      <Back />
+    <Container maxWidth="sm" >
+      <Grid container>
+        <Box width="100%" display="flex" flexDirection="column" m="20px" sx={{ flexGrow: 1, }}>
+          <Navbar expand="lg" variant="light" bg="light">
+            <Container>
+              <Navbar.Brand href="#">회의방</Navbar.Brand>
+            </Container>
 
-      <Title title="회원가입" className="loginMt" />
+            <ButtonGroup>
+              
+              <Button variant="contained" color="success">
+                  Modify
+              </Button>
+              <Button variant="contained" color="success">
+              Delete
+              </Button>
+            
+                        
+            </ButtonGroup>
+                  
 
-      <form css={selfWrap} onSubmit={onSubmit}>
-        <div className="formbox">
-          <TextField text="이름" type="text" typeName="name" onChange={onChangeName} />
-          {name.length > 0 && <span className={`message ${isName ? 'success' : 'error'}`}>{nameMessage}</span>}
-        </div>
 
-        <div className="formbox">
-          <TextField text="이메일" type="email" typeName="email" onChange={onChangeEmail} />
-          {email.length > 0 && <span className={`message ${isEmail ? 'success' : 'error'}`}>{emailMessage}</span>}
-        </div>
+          </Navbar>
 
-        <div className="formbox">
-          <PasswordField
-            onChange={onChangePassword}
-            passwordText="비밀번호 (숫자+영문자+특수문자 조합으로 8자리 이상)"
-            title="비밀번호"
-            typeTitle="password"
-          />
-          {password.length > 0 && (
-            <span className={`message ${isPassword ? 'success' : 'error'}`}>{passwordMessage}</span>
-          )}
-        </div>
+          <Grid container spacing={2} columns={16}>
 
-        <div className="formbox">
-          <PasswordField
-            onChange={onChangePasswordConfirm}
-            passwordText=" "
-            title="비밀번호 확인"
-            typeTitle="passwordConfirm"
-          />
-          {passwordConfirm.length > 0 && (
-            <span className={`message ${isPasswordConfirm ? 'success' : 'error'}`}>{passwordConfirmMessage}</span>
-          )}
-        </div>
+            {/* 오른쪽 페이지 */}
+            <Grid item xs={10} >
+              <Item>
+                
+              
+              <hr></hr>
+                <div>회의 내용</div>
+                <hr></hr>
+                <Grid item xs={16} >
+                  {
+                    condata && condata.map((e, idx) =>
+                      <div>
+                        <Item>
+                          <h6>{e.contentsTime}</h6>
+                          <Stack direction="row" spacing={1}>
+                            <Chip label={e.contentsWriter} color="primary" />
+                          </Stack>
+                          <h6>{e.contentsText}</h6>
+                        </Item>
+                        <br></br>
+                      </div>
+                    )
+                  }
+                </Grid>
+              </Item>
+            </Grid>
 
-        {/* 이름, 이메일, 패스워드, 패스워드 확인이 다 맞다면 주황버튼으로 */}
-        <div css={footButtonWrapper}>
-          <section>
-            <FootButton
-              type="submit"
-              footButtonType={FootButtonType.ACTIVATION}
-              disabled={!(isName && isEmail && isPassword && isPasswordConfirm)}
-            >
-              다음
-            </FootButton>
-          </section>
-        </div>
-      </form>
-    </>
+
+            {/* 왼쪽 페이지 */}
+            <Grid item xs={6}>
+              <Item>
+
+
+                <Box>
+                  <hr></hr>
+                  <h4>메모</h4>
+                  <hr></hr>
+
+
+                  <div>
+                  {
+                    redata && redata.map((e, idx) =>
+                      <div>
+                        <Item>
+                          <h6>{e.replyDate}</h6>
+                          <Stack direction="row" spacing={1}>
+                            <Chip label={e.replyWriter} color="primary" />
+                          </Stack>
+                          <h6>{e.replyText}</h6>
+                        </Item>
+                        <br></br>
+                      </div>
+                    )
+                  }
+                  </div>
+
+                  <Box>
+                 
+                  <Form.Control type="text" placeholder="매모 내용" />
+                  <Form.Control type="text" placeholder="매모 내용" />
+                  <Form.Control type="text" placeholder="매모 내용" />
+
+                  <Form.Control type="text" placeholder="매모 내용" />
+                  <Form.Control type="text" placeholder="매모 내용" />
+                    {/* <TextField
+                        id="outlined-textarea"
+                        label="HOSTNAME"
+                        placeholder="매모내용"
+                        multiline
+                      /> */}
+                  </Box>
+                  <br></br>
+                  <br></br>
+
+                  <div>
+                  <InputGroup className="mb-3">
+                    <Form.Control
+                      placeholder="메모내용 입력"
+                      aria-label="Recipient's username"
+                      aria-describedby="basic-addon2"
+                    />
+                    <Button variant="outline-secondary" id="button-addon2">
+                      입력
+                    </Button>
+                  </InputGroup>
+                  </div>
+                  
+                </Box>
+              </Item>
+            </Grid>
+          </Grid>
+        </Box>
+      </Grid>
+    </Container>
   )
 }
 
-export default Client_2
-
+export default Client_2;
