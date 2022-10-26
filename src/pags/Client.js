@@ -39,8 +39,8 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 const Client = () => {
-  const [condata, setConData] = useState();
-  const [redata, setReData] = useState();
+  const [meetName, setMeetName] = useState();
+  const [host, setHost] = useState();
 
 
   const [stream, setStream] = useState();
@@ -52,16 +52,15 @@ const Client = () => {
   const [bloburl, setbloburl] = useState();
   const [file, setFile] = useState();
 
-  const [state, setState] = useState(false);
-
-  const toggle = () => {
-    setState(!state);
+  const [camState, setCamState] = useState(false);
+  const [voiceState, setVoiceState] = useState(false);
+  const camtoggle = () => {
+    setCamState(!camState);
   }
-  const toggle2 = () => {
-    setState(!state);
+  const voicetoggle = () =>{
+    setVoiceState(!voiceState);
   }
-
-
+  
   useEffect(() => {
     const location = window.location.href;
     var room = parseInt(location.split("/")[4]); //roomnum
@@ -71,22 +70,15 @@ const Client = () => {
 
     (async () => {
       try {
-        const res = await axios.post("http://192.168.2.65:5000/readContents", {
-          roomNum: room,
-          meetNum: meet
+        const res = await axios.post("http://192.168.2.65:5000/readMeetingRoomIn", {
+          roomNum : room,  
+          meetingRoomNum: meet
         });
-        const res2 = await axios.post("http://192.168.2.65:5000/readReply", {
-          roomNum: room,
-          meetNum: meet
-        });
-        //readContents
         console.log(res.data);
-        console.log(res.data);
-        setConData(res.data);
-        //readReply
-        console.log(res2.data);
-        setReData(res2.data);
-        console.log(res2.data);
+        setMeetName(res.data[0].meetingroomTitle);
+        setHost(res.data[0].meetingRoomHost);
+
+
       } catch (error) {
         console.log(error)
       }
@@ -223,13 +215,11 @@ const Client = () => {
         <Box width="100%" display="flex" flexDirection="column" m="20px" sx={{ flexGrow: 1, }}>
           <Navbar expand="lg" variant="light" bg="light">
             <Container>
-              <Navbar.Brand href="#">회의방</Navbar.Brand>
+              <Navbar.Brand ><h2>{meetName}</h2><h6>{host}</h6></Navbar.Brand>
             </Container>
-
-
-            <div onClick={toggle} variant="light">
+            <div onClick={camtoggle} variant="light">
               {
-                state ?
+                camState ?
                   <Fab size="small" color="inherit" aria-label="add">
                     <VideocamIcon />
                   </Fab> :
@@ -240,9 +230,9 @@ const Client = () => {
             </div>
 
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <div onClick={toggle2} variant="light">
+
               {
-                state ?
+                voiceState ?
                   <Fab size="small" color="inherit" aria-label="add">
                     <MicIcon />
                   </Fab> :
@@ -251,7 +241,6 @@ const Client = () => {
                   </Fab>
               }
             </div>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
           </Navbar>
@@ -275,20 +264,7 @@ const Client = () => {
 
                 <div>회의 </div>
                 <Grid item xs={16} >
-                  {
-                    condata && condata.map((e, idx) =>
-                      <div>
-                        <Item>
-                          <h6>{e.contentsTime}</h6>
-                          <Stack direction="row" spacing={1}>
-                            <Chip label={e.contentsWriter} color="primary" />
-                          </Stack>
-                          <h6>{e.contentsText}</h6>
-                        </Item>
-                        <br></br>
-                      </div>
-                    )
-                  }
+                  
                 </Grid>
               </Item>
             </Grid>
@@ -312,27 +288,7 @@ const Client = () => {
                   <StopIcon onClick={onSubmitAudioFile} />
                 </Fab>
                 <Box>
-                  <hr></hr>
-                  <h4>메모</h4>
-                  <hr></hr>
-
-
-                  <div>
-                  {
-                    redata && redata.map((e, idx) =>
-                      <div>
-                        <Item>
-                          <h6>{e.replyDate}</h6>
-                          <Stack direction="row" spacing={1}>
-                            <Chip label={e.replyWriter} color="primary" />
-                          </Stack>
-                          <h6>{e.replyText}</h6>
-                        </Item>
-                        <br></br>
-                      </div>
-                    )
-                  }
-                  </div>
+                  
                   
                 </Box>
               </Item>
