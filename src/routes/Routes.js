@@ -5,6 +5,7 @@ import { SidebarData } from "../Components/SidebarData";
 import Client from "../pags/Client";
 import Home from "../pags/Home";
 import Sekes from "../pags/Sekes";
+import Client_2 from "../pags/Client_2";
 
 const Routes = () => useRoutes([{path: "/", element: <div> <SidebarData /> 
 <div class="main" >
@@ -18,6 +19,10 @@ const Routes = () => useRoutes([{path: "/", element: <div> <SidebarData />
     <Route path="/Client" element={<Client />}></Route>
   </Routes> */}  
 </div>
-</div>, children: [{index: true, element: <Home/>},{path:"/Sekes/:id", element: <Sekes/>},{path:"Client", element: <Client />}]}]);
+</div>, children: [{index: true, element: <Home/>},
+{path:"/Sekes/:id", element: <Sekes/>},
+{path:"Client/:id/:id", element: <Client />},
+{path:"Client_2/:id/:id", element: <Client_2 />}
+]}]);
 
 export default Routes;

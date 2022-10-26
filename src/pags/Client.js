@@ -57,6 +57,9 @@ const Client = () => {
   const toggle = () => {
     setState(!state);
   }
+  const toggle2 = () => {
+    setState(!state);
+  }
 
 
   useEffect(() => {
@@ -235,8 +238,9 @@ const Client = () => {
                   </Fab>
               }
             </div>
+
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <div onClick={toggle} variant="light">
+            <div onClick={toggle2} variant="light">
               {
                 state ?
                   <Fab size="small" color="inherit" aria-label="add">
@@ -261,7 +265,7 @@ const Client = () => {
                 <Grid item xs={16} >
                   <Item>
 
-
+                
 
 
 
