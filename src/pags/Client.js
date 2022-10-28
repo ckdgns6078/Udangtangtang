@@ -40,7 +40,6 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 const Client = () => {
-  const [redata, setReData] = useState();
   const [meetName, setMeetName] = useState();
   const [host, setHost] = useState();
 
@@ -244,7 +243,7 @@ const Client = () => {
             </div>
 
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
+            <div onClick={voicetoggle} variant="light">
               {
                 voiceState ?
                   <Fab size="small" color="inherit" aria-label="add">
