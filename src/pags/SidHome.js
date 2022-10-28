@@ -11,7 +11,7 @@ const SidHome = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.post("http://192.168.2.65:5000/readRoom",
+        const res = await axios.post("http://192.168.2.82:5000/readRoom",
           {
             id: sessionStorage.getItem("id")
           });
@@ -35,9 +35,7 @@ const SidHome = () => {
     <Table responsive >
 
       <thead >
-        <tr> </tr>
-        <tr> </tr>
-        <tr> </tr>
+    
         <tr>
           <th>Home</th>
         </tr>
@@ -45,7 +43,7 @@ const SidHome = () => {
       
 
       <tbody>
-          {
+      {
             data && data.map((e, idx) =>
               <tr onClick={() => testonclick(e.roomNum)}>
                 <th> {e.roomName}</th>

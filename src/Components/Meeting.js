@@ -27,7 +27,7 @@ const Meeting = ({show , onHide}) => {
 
   const handleSubmit = () => {
    try {
-    axios.post("http://192.168.2.65:5000/readRoom/joinRoom", {roomKey: roomKey, roomPw: roompw })
+    axios.post("http://192.168.2.82:5000/readRoom/joinRoom", {roomKey: roomKey, roomPw: roompw })
    } catch (error) {
     console.error(error)
    } 

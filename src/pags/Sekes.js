@@ -32,8 +32,8 @@ const Sekes = () => {
   const [meetData, setMeetData] = useState();
   const [starthome, setModal] = useState(false);
   const [roomName, setRoomName] = useState();
-
   const [ishave, setIsHave] = useState(true);
+  
   const ingmeetclick = idx => {
     console.log(idx);
     const location = window.location.href;
@@ -53,13 +53,13 @@ const Sekes = () => {
   useEffect(() => {
     const location = window.location.href;
     var room = parseInt(location.split("/")[4]);
-    
+
     (async () => {
       try {
-        const res = await axios.post('http://192.168.2.65:5000/readMeeting', { //창훈이형 그룹 내 회의 목록
+        const res = await axios.post('http://192.168.2.82:5000/readMeeting', { //창훈이형 그룹 내 회의 목록
           roomNum: room
         });
-
+        
 
         if (res.data[0].meetmNum!=0){
           console.log("데이터가 있음");
@@ -80,7 +80,7 @@ const Sekes = () => {
     //현재 진행중인 회의 리스트
     (async () => {
       try {
-        const ing = await axios.post('http://192.168.2.65:5000/readMeetingRoom', {
+        const ing = await axios.post('http://192.168.2.82:5000/readMeetingRoom', {
           roomNum: room
         });
         console.log(ing.data);
@@ -120,7 +120,7 @@ const Sekes = () => {
 
             <tr>
               <th>번호</th>
-              <th>회의명</th>
+              <th>회의명</th>  
               <th>호스트</th>
 
             </tr>
@@ -129,7 +129,7 @@ const Sekes = () => {
           <tbody>
             {
               meetData && meetData.map((e, idx) =>
-                <tr id="test" class="blinking" onClick={() => ingmeetclick(e.meetingRoomNum)}>
+                <tr id="test" className="blinking" onClick={() => ingmeetclick(e.meetingRoomNum)}>
                   <th> ing...</th>
                   <th>{e.meetingRoomTitle}</th> {/* 회의 이름 */}
                   
@@ -187,18 +187,18 @@ const Sekes = () => {
             </tr>
           </thead>
 
-          <tbody>
-               {
-              data && data.map((e, idx) =>
-                <tr   onClick={() => ingmeetclick2(e.roomNum)}>
-                  {/* id="test" class="blinking" 위에 깜박 거리는 css*/ }
-                  <th> {idx + 1}</th>
-                  <th >{e.meetTitle}</th> {/* 회의 이름 */}
-                  <th>{e.meetDate}</th> {/* 회의 종료 날짜 */}
-                  {/* <th>{e.meetingRoomHost}</th> 회의 만든 사람 */}
-                </tr>
-              )
-            }
+              <tbody>
+                {
+                  data && data.map((e, idx) =>
+                    <tr onClick={() => ingmeetclick2(e.meetNum)}>
+                      {/* id="test" class="blinking" 위에 깜박 거리는 css*/}
+                      <th> {idx + 1}</th>
+                      <th >{e.meetTitle}</th> {/* 회의 이름 */}
+                      <th>{e.meetDate}</th> {/* 회의 종료 날짜 */}
+                      {/* <th>{e.meetingRoomHost}</th> 회의 만든 사람 */}
+                    </tr>
+                  )
+                }
                 
         
         

@@ -1,9 +1,10 @@
-
+//회의중인방
 import { Container, Navbar } from 'react-bootstrap'
 import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import { styled } from '@mui/material/styles';
+
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import StopIcon from '@mui/icons-material/Stop';
@@ -70,10 +71,22 @@ const Client = () => {
 
     (async () => {
       try {
-        const res = await axios.post("http://192.168.2.65:5000/readMeetingRoomIn", {
+
+        const res = await axios.post("http://192.168.2.82:5000/readContents", {
+          roomNum: room,
+          meetNum: meet
+        });
+        const res2 = await axios.post("http://192.168.2.82:5000/readReply", {
+          roomNum: room,
+          meetNum: meet
+        });
+        //readContents
+
+        const res3 = await axios.post("http://192.168.2.82:5000/readMeetingRoomIn", {
           roomNum : room,  
           meetingRoomNum: meet
         });
+
         console.log(res.data);
         setMeetName(res.data[0].meetingroomTitle);
         setHost(res.data[0].meetingRoomHost);

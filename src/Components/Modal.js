@@ -20,7 +20,7 @@ const Modal1 = ({ show, onHide }) => {
   const handleSubmit = () => {
     try {
       console.log(sessionStorage.getItem("id"))
-      axios.post("http://192.168.2.65:5000/joinRoom", { id:sessionStorage.getItem("id"), roomKey: roomKey, roomPw: roompw })
+      axios.post("http://192.168.2.82:5000/joinRoom", { id:sessionStorage.getItem("id"), roomKey: roomKey, roomPw: roompw })
     } catch (error) {
       console.error(error)
     }

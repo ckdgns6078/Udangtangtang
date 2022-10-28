@@ -16,7 +16,7 @@ const CreateMeetModal = ({ show, onHide }) => {
     var room = parseInt(location.split("/")[4]);
     // axios로 서버에 보낸다
     try {
-      const res = await axios.post('http://192.168.2.65:5000/createMeetingRoom', {
+      const res = await axios.post('http://192.168.2.82:5000/createMeetingRoom', {
         roomNum : room,
         meetingRoomTitle: meetingRoomTitle,
         meetingRoomHost: sessionStorage.getItem("id")
