@@ -190,6 +190,18 @@ $gray: #c4ccde;
 .navercheck{
   display:none;
 }
+
+/* 음성녹음 뭐시기 */
+.square{
+  width:100px;
+  height:100px;
+  background-color:red;
+  display:"inline-block";
+}
+
+
+
+
 @keyframes blink-effect {
   50% {
     opacity: 0;

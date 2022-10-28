@@ -63,6 +63,7 @@ const Client = () => {
   const [time, setTime] = useState(0);
   const [running, setRunning] = useState(false);
   
+  const [dataApi, setDataApi] = useState();
 
   //로드 창
   useEffect(() => {
@@ -277,7 +278,8 @@ axios.post('http://192.168.2.82:5000/yTest', formData, {
   }
 })
   .then(function (check) { //서버에서 주는 리턴값???
-    console.log(check); //data: '나 값이 들어온 것 같음', status: 200, statusText: '', headers: AxiosHeaders, config: {…}, …}
+    console.log(check.data); //data: '나 값이 들어온 것 같음', status: 200, statusText: '', headers: AxiosHeaders, config: {…}, …}
+    setDataApi(check.data); // set data
     setLoading(false) //데이터를 변환 완료하면 로딩 없애기
   })
   .catch(function (error) {
