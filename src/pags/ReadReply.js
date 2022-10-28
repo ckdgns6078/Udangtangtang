@@ -2,6 +2,9 @@
 import axios from 'axios';
 import { React, useState, useEffect } from "react";
 
+import Card from 'react-bootstrap/Card';
+import Box from '@mui/material/Box';
+
 const ReadReply = () => {
   const [roonum, setRoomNum] = useState();
   const [meetnum, setMeetNum] = useState();
@@ -26,7 +29,7 @@ const ReadReply = () => {
         const res = await axios.post("http://192.168.2.82:5000/readReply",
           {
             roomNum: room,
-            meetNum: meet
+            meetNum: meet    
           });
         console.log("asd")
         console.log(res.data)
@@ -40,33 +43,34 @@ const ReadReply = () => {
 
 
   return (
-    <div>
-      <tr>
-        <td>이름</td>
-        <td>시간</td>
-        <td>내용</td>
+    <Box width="100%" display="flex" flexDirection="column" m="20px">
+      
+ 
 
-      </tr>
-      <tr>
+
+
+  
 
         {
           data && data.map((e, idx) =>
-            <tr >
-              <th> {e.replyWriter}</th>
-              <th>{e.replyDate}</th>
-              <th>{e.replyText}</th>
-            </tr>
+          <Card border="light" style={{ width: '18rem' }}>
+          <Card.Header>닉네임:{e.replyWriter} 시간: {e.replyDate} </Card.Header>
+          <Card.Body>
+            {/* <Card.Title>Light Card Title</Card.Title> */}
+            <Card.Text>
+             {e.replyText}
+            </Card.Text>
+          </Card.Body>
+        </Card>
           )
         }
 
 
-      </tr>
 
 
 
 
-
-    </div>
+    </Box>
   );
 };
 
