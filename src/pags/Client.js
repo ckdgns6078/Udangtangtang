@@ -49,11 +49,11 @@ const Client = () => {
   const [source, setSource] = useState();
   const [analyser, setAnalyser] = useState();
   const [audioUrl, setAudioUrl] = useState();
-  const [bloburl, setbloburl] = useState();
-  const [file, setFile] = useState();
+  const [loading, setLoading] = useState(false);
 
   const [camState, setCamState] = useState(false);
   const [voiceState, setVoiceState] = useState(false);
+  
   const camtoggle = () => {
     setCamState(!camState);
   }
@@ -167,6 +167,7 @@ const Client = () => {
   };
 
   const onSubmitAudioFile = useCallback(() => {
+    setLoading(true); //파일 변환 시작하면 로딩을 보여줌
     console.log(audioUrl);
     if (audioUrl) {
       const url = URL.createObjectURL(audioUrl);
@@ -197,9 +198,11 @@ const Client = () => {
     })
       .then(function (check) { //서버에서 주는 리턴값???
         console.log(check); //data: '나 값이 들어온 것 같음', status: 200, statusText: '', headers: AxiosHeaders, config: {…}, …}
+        setLoading(false) //데이터를 변환 완료하면 로딩 없애기
       })
       .catch(function (error) {
         console.log(error);
+        setLoading(false) // 오류났을 때 로딩 없애기
       });
 
 
@@ -228,9 +231,9 @@ const Client = () => {
                   </Fab>
               }
             </div>
-
+              
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
+            <div onClick={voicetoggle} variant="light">
               {
                 voiceState ?
                   <Fab size="small" color="inherit" aria-label="add">
@@ -264,7 +267,14 @@ const Client = () => {
 
                 <div>회의 </div>
                 <Grid item xs={16} >
-                  
+                  {/* 서버에 보내서 변환중인것을 보여줌 */}
+                  <Item>
+                    {
+                      loading ? <div className='spinner'>
+                      <ThreeDots justify = "center" width="30" height="30" color="black" ariaLable="loading"/>
+                      </div>:<div></div>
+                    }
+                  </Item>
                 </Grid>
               </Item>
             </Grid>
