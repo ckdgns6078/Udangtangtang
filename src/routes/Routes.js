@@ -26,7 +26,7 @@ const Routes = () => useRoutes([{path: "/", element: <div> <SidebarData />
 {path:"Client_2/:id/:id", element: <Client_2 />}
 ]}]);
 
-</div>, children: [{index: true, element: <Home/>},{path:"/Sekes/:id", element: <Sekes/>},{path:"Client/:id/:id", element: <Client />}]}]);
+
 
 
 export default Routes;

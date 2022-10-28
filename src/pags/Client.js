@@ -82,7 +82,7 @@ const Client = () => {
         });
         //readContents
 
-        const res = await axios.post("http://192.168.2.82:5000/readMeetingRoomIn", {
+        const res3 = await axios.post("http://192.168.2.82:5000/readMeetingRoomIn", {
           roomNum : room,  
           meetingRoomNum: meet
         });
