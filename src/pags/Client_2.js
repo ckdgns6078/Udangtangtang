@@ -74,11 +74,11 @@ const Client_2 = () => {
 
     (async () => {
       try {
-        const res = await axios.post("http://192.168.2.65:5000/readContents", {
+        const res = await axios.post("http://192.168.2.82:5000/readContents", {
           roomNum: room,
           meetNum: meet
         });
-        const res2 = await axios.post("http://192.168.2.65:5000/readReply", {
+        const res2 = await axios.post("http://192.168.2.82:5000/readReply", {
           roomNum: room,
           meetNum: meet
         });

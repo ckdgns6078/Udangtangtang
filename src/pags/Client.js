@@ -23,7 +23,7 @@ import VideocamIcon from '@mui/icons-material/Videocam';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-
+import {ThreeDots} from 'react-loader-spinner'
 
 
 
@@ -70,7 +70,7 @@ const Client = () => {
 
     (async () => {
       try {
-        const res = await axios.post("http://192.168.2.65:5000/readMeetingRoomIn", {
+        const res = await axios.post("http://192.168.2.82:5000/readMeetingRoomIn", {
           roomNum : room,  
           meetingRoomNum: meet
         });
@@ -171,7 +171,7 @@ const Client = () => {
     console.log(audioUrl);
     if (audioUrl) {
       const url = URL.createObjectURL(audioUrl);
-      setbloburl(url);
+     
       console.log(url); // 출력된 링크에서 녹음된 오디오 확인 가능 (blob:https://~~)
 
 
@@ -184,7 +184,6 @@ const Client = () => {
 
     const sound = new File([audioUrl], "recorder", { lastModified: new Date().getTime(), type: "audio/wav" });
     console.log("파일정보", sound);
-    setFile(sound);
 
 
 

@@ -30,7 +30,7 @@ class KakaoLogin extends Component {
                             //서버에 데이터 보낼값
                             //서버링크 / 로그인
                             //아이디, 이름
-                            axios.post("http://192.168.2.65:5000/login", {
+                            axios.post("http://192.168.2.82:5000/login", {
                                 id:res.id,
                                 name:res.properties.nickname
                             })

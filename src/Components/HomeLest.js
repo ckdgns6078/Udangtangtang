@@ -130,7 +130,7 @@ const HomeLest = ({show , onHide}) => {
 
     //axios로 서버에 보낸다
     try{
-        await axios.post('http://192.168.2.65:5000/createRoom',{
+        await axios.post('http://192.168.2.82:5000/createRoom',{
         roomName: roomName, 
         roomKey:roomKey,
         roomPw: roomPw,
