@@ -182,14 +182,51 @@ const Client = () => {
 
     }
 
+
+    // 회의방 정보(data)
+    const location = window.location.href;
+    var room = parseInt(location.split("/")[4]); //roomnum
+    console.log(room);
+    var meet = parseInt(location.split("/")[5]); //meetnum
+    console.log(meet);
+
+    // (날짜 변환)
+    var today = new Date();   
+
+    var hours = ('0' + today.getHours()).slice(-2); 
+    var minutes = ('0' + today.getMinutes()).slice(-2);
+    var seconds = ('0' + today.getSeconds()).slice(-2); 
+    
+    var nowTime = hours + ':' + minutes  + ':' + seconds;
+    console.log("현재시간: ", nowTime);
+
+    var nickName = sessionStorage.getItem("nickname");
+    console.log("nickName : ", nickName);
+
+
+    // 회의방 정보 세팅
+    var data = {
+      roomNum : room,
+      meetNum : meet,
+      contentsTime : nowTime,
+      contentsWriter : nickName,
+      contentsText : " "
+		};
+
     const sound = new File([audioUrl], "recorder", { lastModified: new Date().getTime(), type: "audio/wav" });
     console.log("파일정보", sound);
 
+    const formData = new FormData()
+
+    // formData 형식으로 오디오파일, 필요한 data파일 세팅
+    formData.append("file", sound)
+    formData.append(
+      "key",
+      new Blob([JSON.stringify(data)], {type: "application/json"})
+    )
 
 
-    let formData = new FormData();
-    formData.append("file", sound);
-
+    // 서버에 POST형식으로 파일과 같이 보낼 데이터 전송
     axios.post('http://192.168.2.82:5000/yTest', formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -203,9 +240,6 @@ const Client = () => {
         console.log(error);
         setLoading(false) // 오류났을 때 로딩 없애기
       });
-
-
-
   }, [audioUrl]);
 
 
