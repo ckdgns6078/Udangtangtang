@@ -40,6 +40,9 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 const Client = () => {
+  const [room, setRoomNum] = useState();
+  const [meet, setMeetNum] = useState();
+
   const [meetName, setMeetName] = useState();
   const [host, setHost] = useState();
 
@@ -52,9 +55,31 @@ const Client = () => {
   const [audioUrl, setAudioUrl] = useState();
   const [loading, setLoading] = useState(false);
 
+  //카메라 음성녹음
   const [camState, setCamState] = useState(false);
   const [voiceState, setVoiceState] = useState(false);
+
+  //음성 녹음 시작하면 나오는 ui
+  const [time, setTime] = useState(0);
+  const [running, setRunning] = useState(false);
   
+
+  //로드 창
+  useEffect(() => {
+    let interval;
+    let prointerval;
+    if (running) {
+      interval = setInterval(() => {
+        setTime((prevTime) => prevTime + 10);
+      }, 10);
+
+    } else if (!running) {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [running]);
+
+
   const camtoggle = () => {
     setCamState(!camState);
   }
@@ -64,10 +89,12 @@ const Client = () => {
   
   useEffect(() => {
     const location = window.location.href;
-    var room = parseInt(location.split("/")[4]); //roomnum
-    console.log(room);
-    var meet = parseInt(location.split("/")[5]); //meetnum
-    console.log(meet);
+    var roomnum = parseInt(location.split("/")[4]); //roomnum
+    setRoomNum(roomnum);
+    console.log(roomnum);
+    var meetnum = parseInt(location.split("/")[5]); //meetnum
+    setMeetNum(meetnum);
+    console.log(meetnum);
 
     (async () => {
       try {
@@ -101,6 +128,8 @@ const Client = () => {
 
 
   const onRecAudio = () => {
+    setRunning(true);
+
     console.log("녹음 시작")
     // 음원정보를 담은 노드를 생성하거나 음원을 실행또는 디코딩 시키는 일을 한다
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -132,6 +161,7 @@ const Client = () => {
       analyser.onaudioprocess = function (e) {
         // 1분(60초) 지나면 자동으로 음성 저장 및 녹음 중지
         if (e.playbackTime > 59) {
+          setRunning(false);
           stream.getAudioTracks().forEach(function (track) {
             track.stop();
           });
@@ -155,6 +185,8 @@ const Client = () => {
 
   // 사용자가 음성 녹음을 중지했을 때
   const offRecAudio = () => {
+    setRunning(false);
+    
     console.log("녹음 중지")
     // dataavailable 이벤트로 Blob 데이터에 대한 응답을 받을 수 있음
     media.ondataavailable = function (e) {
@@ -180,6 +212,7 @@ const Client = () => {
   };
 
   const onSubmitAudioFile = useCallback(() => {
+    setTime(0);
     setLoading(true); //파일 변환 시작하면 로딩을 보여줌
     console.log(audioUrl);
     if (audioUrl) {
@@ -311,8 +344,12 @@ const Client = () => {
                   <StopIcon onClick={onSubmitAudioFile} />
                 </Fab>
                 <Box>
-                  
-                  
+                  {/* 몇 초인지 확인 하는 부분 */}
+                  <div className="numbers">
+                    <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
+                    <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}</span>
+                  </div>
+                
                 </Box>
               </Item>
             </Grid>
