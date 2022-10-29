@@ -62,7 +62,7 @@ const Client = () => {
   //음성 녹음 시작하면 나오는 ui
   const [time, setTime] = useState(0);
   const [running, setRunning] = useState(false);
-  
+
   const [dataApi, setDataApi] = useState();
 
   //로드 창
@@ -83,10 +83,10 @@ const Client = () => {
   const camtoggle = () => {
     setCamState(!camState);
   }
-  const voicetoggle = () =>{
+  const voicetoggle = () => {
     setVoiceState(!voiceState);
   }
-  
+
   useEffect(() => {
     const location = window.location.href;
     var roomnum = parseInt(location.split("/")[4]); //roomnum
@@ -98,20 +98,9 @@ const Client = () => {
 
     (async () => {
       try {
-
-        const res = await axios.post("http://192.168.2.82:5000/readContents", {
-          roomNum: room,
-          meetNum: meet
-        });
-        const res2 = await axios.post("http://192.168.2.82:5000/readReply", {
-          roomNum: room,
-          meetNum: meet
-        });
-        //readContents
-
-        const res3 = await axios.post("http://192.168.2.82:5000/readMeetingRoomIn", {
-          roomNum : room,  
-          meetingRoomNum: meet
+        const res = await axios.post("http://192.168.2.82:5000/readMeetingRoomIn", {
+          roomNum: roomnum,
+          meetingRoomNum: meetnum
         });
 
         console.log(res.data);
@@ -185,7 +174,7 @@ const Client = () => {
   // 사용자가 음성 녹음을 중지했을 때
   const offRecAudio = () => {
     setRunning(false);
-    
+
     console.log("녹음 중지")
     // dataavailable 이벤트로 Blob 데이터에 대한 응답을 받을 수 있음
     media.ondataavailable = function (e) {
@@ -225,72 +214,94 @@ const Client = () => {
 
 
     }
-// 회의방 정보(data)
-const location = window.location.href;
-var room = parseInt(location.split("/")[4]); //roomnum
-console.log(room);
-var meet = parseInt(location.split("/")[5]); //meetnum
-console.log(meet);
+    // 회의방 정보(data)
+    const location = window.location.href;
+    var room = parseInt(location.split("/")[4]); //roomnum
+    console.log(room);
+    var meet = parseInt(location.split("/")[5]); //meetnum
+    console.log(meet);
 
-// (날짜 변환)
-var today = new Date();   
+    // (날짜 변환)
+    var today = new Date();
 
-var hours = ('0' + today.getHours()).slice(-2); 
-var minutes = ('0' + today.getMinutes()).slice(-2);
-var seconds = ('0' + today.getSeconds()).slice(-2); 
+    var hours = ('0' + today.getHours()).slice(-2);
+    var minutes = ('0' + today.getMinutes()).slice(-2);
+    var seconds = ('0' + today.getSeconds()).slice(-2);
 
-var nowTime = hours + ':' + minutes  + ':' + seconds;
-console.log("현재시간: ", nowTime);
+    var nowTime = hours + ':' + minutes + ':' + seconds;
+    console.log("현재시간: ", nowTime);
 
-var nickName = sessionStorage.getItem("nickname");
-console.log("nickName : ", nickName);
-
-
-// 회의방 정보 세팅
-var data = {
-  roomNum : room,
-  meetNum : meet,
-  contentsTime : nowTime,
-  contentsWriter : nickName,
-  contentsText : " "
-  };
-
-const sound = new File([audioUrl], "recorder", { lastModified: new Date().getTime(), type: "audio/wav" });
-console.log("파일정보", sound);
-
-const formData = new FormData()
-
-// formData 형식으로 오디오파일, 필요한 data파일 세팅
-formData.append("file", sound)
-formData.append(
-  "key",
-  new Blob([JSON.stringify(data)], {type: "application/json"})
-)
+    var nickName = sessionStorage.getItem("nickname");
+    console.log("nickName : ", nickName);
 
 
-// 서버에 POST형식으로 파일과 같이 보낼 데이터 전송
-axios.post('http://192.168.2.82:5000/yTest', formData, {
-  headers: {
-    "Content-Type": "multipart/form-data",
+    // 회의방 정보 세팅
+    var data = {
+      roomNum: room,
+      meetNum: meet,
+      contentsTime: nowTime,
+      contentsWriter: nickName,
+      contentsText: " "
+    };
+
+    const sound = new File([audioUrl], "recorder", { lastModified: new Date().getTime(), type: "audio/wav" });
+    console.log("파일정보", sound);
+
+    const formData = new FormData()
+
+    // formData 형식으로 오디오파일, 필요한 data파일 세팅
+    formData.append("file", sound)
+    formData.append(
+      "key",
+      new Blob([JSON.stringify(data)], { type: "application/json" })
+    )
+
+
+     // 서버에 POST형식으로 파일과 같이 보낼 데이터 전송
+     axios.post('http://192.168.2.82:5000/yTest', formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }
+    })
+      .then(function (check) { //서버에서 주는 리턴값???
+        console.log(check.data); //data: '나 값이 들어온 것 같음', status: 200, statusText: '', headers: AxiosHeaders, config: {…}, …}
+        setLoading(false) //데이터를 변환 완료하면 로딩 없애기
+        // 들어온 data값에서 '/'를 기준으로 자른다.
+
+        var dataArr = check.data.split('/');
+        var resultData = "";
+        // 배열로 저장된 데이터에서 들어온 문단별로 "\n"을 삽입한다.
+        dataArr.forEach(function (data) {
+          resultData = resultData + data + "\n";
+          console.log(resultData);
+        });
+        setDataApi(resultData);
+      })
+      .catch(function (error) {
+        console.log(error);
+        setLoading(false) // 오류났을 때 로딩 없애기
+      });
+  }, [audioUrl]);
+
+
+  
+  //회의 끝내기 버튼
+  const endMeeting = () =>{
+    {/* 회의끝낼 때 회의 종료된 데이터 베이스에 넣기, 소켓 종료, 목록으로 돌아가기 */}    
   }
-})
-  .then(function (check) { //서버에서 주는 리턴값???
-    console.log(check.data); //data: '나 값이 들어온 것 같음', status: 200, statusText: '', headers: AxiosHeaders, config: {…}, …}
-    setDataApi(check.data); // set data
-    setLoading(false) //데이터를 변환 완료하면 로딩 없애기
-  })
-  .catch(function (error) {
-    console.log(error);
-    setLoading(false) // 오류났을 때 로딩 없애기
-  });
-}, [audioUrl]);
-
 
 
   return (
     <Container maxWidth="sm" >
       <Grid container>
         <Box width="100%" display="flex" flexDirection="column" m="20px" sx={{ flexGrow: 1, }}>
+          <Stack direction="horizontal" >
+            <div className="bg-light border ms-auto">
+              {/* 회의끝낼 때 회의 종료된 데이터 베이스에 넣기, 소켓 종료, 목록으로 돌아가기 */}
+              <Button variant="outline-danger" onClick={endMeeting} style={{ right: 0, marginRight: 0, alignContent: 'flex-end' }}>회의끝내기</Button>
+            </div>
+          </Stack>
+
           <Navbar expand="lg" variant="light" bg="light">
             <Container>
               <Navbar.Brand ><h2>{meetName}</h2><h6>{host}</h6></Navbar.Brand>
@@ -306,7 +317,7 @@ axios.post('http://192.168.2.82:5000/yTest', formData, {
                   </Fab>
               }
             </div>
-              
+
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <div onClick={voicetoggle} variant="light">
               {
@@ -332,7 +343,7 @@ axios.post('http://192.168.2.82:5000/yTest', formData, {
                 <Grid item xs={16} >
                   <Item>
 
-                
+
 
 
 
@@ -346,8 +357,8 @@ axios.post('http://192.168.2.82:5000/yTest', formData, {
                   <Item>
                     {
                       loading ? <div className='spinner'>
-                      <ThreeDots justify = "center" width="30" height="30" color="black" ariaLable="loading"/>
-                      </div>:<div></div>
+                        <ThreeDots justify="center" width="30" height="30" color="black" ariaLable="loading" />
+                      </div> : <div></div>
                     }
                   </Item>
                 </Grid>
@@ -378,7 +389,7 @@ axios.post('http://192.168.2.82:5000/yTest', formData, {
                     <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
                     <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}</span>
                   </div>
-                
+
                 </Box>
               </Item>
             </Grid>
