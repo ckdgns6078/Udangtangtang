@@ -16,8 +16,8 @@ const Reply = () => {
     const [data, setData] = useState();
     const [roonum, setRoomNum] = useState();
     const [meetnum, setMeetNum] = useState();
-
-
+    const[deleteReply, setdeleteReply] =useState();
+    const[updateReply, setupdateReply] =useState();
     
 
 
@@ -40,7 +40,7 @@ const Reply = () => {
         // setReplyDate(setDate);
         console.log(setDate);
         
-        console.log(sessionStorage.getItem("id"));
+        console.log(sessionStorage.getItem("nickname"));
         
     
         // const replyText = document.getElementById("inputText");
@@ -51,7 +51,7 @@ const Reply = () => {
         //axios로 서버에 보낸다
         try{
             await axios.post('http://192.168.2.82:5000/createReply',{
-                replyWriter: sessionStorage.getItem("id"),
+                replyWriter: sessionStorage.getItem("nickname"),
                 replyText: replyText,
                 roomNum: room,
                 meetNum: meet,    
@@ -67,7 +67,9 @@ const Reply = () => {
         }
         
       }
-    
+
+
+  
 
 
 
