@@ -24,7 +24,7 @@ import VideocamIcon from '@mui/icons-material/Videocam';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-
+import { ThreeDots } from 'react-loader-spinner';
 
 
 
@@ -68,7 +68,6 @@ const Client = () => {
   //로드 창
   useEffect(() => {
     let interval;
-    let prointerval;
     if (running) {
       interval = setInterval(() => {
         setTime((prevTime) => prevTime + 10);
@@ -172,7 +171,6 @@ const Client = () => {
           audioCtx.createMediaStreamSource(stream).disconnect();
 
           mediaRecorder.ondataavailable = function (e) {
-
             setAudioUrl(e.data);
             setOnRec(true);
           };
@@ -218,7 +216,6 @@ const Client = () => {
     console.log(audioUrl);
     if (audioUrl) {
       const url = URL.createObjectURL(audioUrl);
-      setbloburl(url);
       console.log(url); // 출력된 링크에서 녹음된 오디오 확인 가능 (blob:https://~~)
 
 
