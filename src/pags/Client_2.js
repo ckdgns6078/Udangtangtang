@@ -211,14 +211,10 @@ const Client_2 = () => {
                         <Item>
                           <h6>{e.contentsTime}</h6>
                           <Stack direction="row" spacing={1}>
-                            <Chip label={e.contentsWriter} color="primary" />
+                            <Chip label={e.contentsWriter}  />
                           </Stack>
                           <h6>{e.contentsText}</h6>
 
-
-
-                      
-  
                         </Item>
                         <br></br>
                       </div>
