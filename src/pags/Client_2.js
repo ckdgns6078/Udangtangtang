@@ -36,9 +36,6 @@ const Client_2 = () => {
   const [condata, setConData] = useState();
   const [redata, setReData] = useState();
   const [signUpModalOn, setSignUpModalOn] = useState(false);
-
-
-
   const [stream, setStream] = useState();
   const [media, setMedia] = useState();
   const [onRec, setOnRec] = useState(true);
@@ -47,10 +44,10 @@ const Client_2 = () => {
   const [audioUrl, setAudioUrl] = useState();
   const [bloburl, setbloburl] = useState();
   const [file, setFile] = useState();
-
+  const [meetName, setMeetName] = useState();
   const [state, setState] = useState(false);
 
-
+  const [room, setRoomNum] = useState();
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -102,6 +99,7 @@ const Client_2 = () => {
         console.log(res.data);
         console.log(res.data);
         setConData(res.data);
+      
         //readReply
         console.log(res2.data);
         setReData(res2.data);
@@ -112,7 +110,13 @@ const Client_2 = () => {
     })();
   }, [])
 
+  const location = window.location.href;
+  var room1 = parseInt(location.split("/")[4]); //roomnum
 
+  
+  const back =() =>{
+    window.location.href="/Sekes/"+room1;
+  }
 
 
 
@@ -120,19 +124,35 @@ const Client_2 = () => {
     <Container maxWidth="sm" >
       <Grid container>
         <Box width="100%" display="flex" flexDirection="column" m="20px" sx={{ flexGrow: 1, }}>
-          <Navbar expand="lg" variant="light" bg="light">
-            <Container>
-              <Navbar.Brand href="#">회의방</Navbar.Brand>
-            </Container>
+          
+        <Navbar bg="light" expand="lg">
+              <Container fluid>
+                <Navbar.Brand href="#">
+                <h3>회의 내용</h3>
 
-
-          </Navbar>
+                </Navbar.Brand>
+                <Navbar.Toggle aria-controls="navbarScroll" />
+                <Navbar.Collapse id="navbarScroll">
+                  <Nav
+                    className="me-auto my-2 my-lg-0"
+                    style={{ maxHeight: '100px' }}
+                    navbarScroll
+                  >
+                  
+                  </Nav>
+                    {/* 회의끝낼 때 회의 종료된 데이터 베이스에 넣기, 소켓 종료, 목록으로 돌아가기 */}
+                    <Button  variant="outline-secondary" onClick={back} style={{ right: 0, marginRight: 0, alignContent: 'flex-end' }}>뒤로 가기</Button>
+                   
+                   
+                </Navbar.Collapse>
+              </Container>
+            </Navbar>
           <br />
 
           <Grid container spacing={2} columns={16}>
 
             {/* 오른쪽 페이지 */}
-            <Grid item xs={10} >
+            <Grid item xs={10} style={{ height: 350 }} >
               <Item>
 
 
@@ -170,6 +190,10 @@ const Client_2 = () => {
                       </div>
                     )
                   }
+                
+
+
+
                 </Grid>
               </Item>
             </Grid>

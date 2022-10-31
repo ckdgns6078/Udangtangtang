@@ -10,6 +10,9 @@ import noData from '../img/NoData.png';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
+import Navbar from 'react-bootstrap/Navbar';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
 
 const goClient = () => {
   const l = window.location.href;
@@ -96,20 +99,61 @@ const Sekes = () => {
 
   }, [])
 
+  const back =() => {
+    window.location.href="/"
+  }
+
 
 
   return (
     <Box width="100%" display="flex" flexDirection="column" m="20px">
       <CreateMeetModal show={starthome} onHide={() => setModal(false)} />
       <Box display="flex" flexDirection="column" m="20px" >
+
+      {/* <Navbar bg="light">
+        <Container>
+          <Navbar.Brand href="#home">
+          
+            
+              <tr >
+                <th> 접속 방 이름 : {roomName}</th>
+              </tr>
+            
+          
+          </Navbar.Brand>
+        </Container>
+      </Navbar> */}
+
+        <Navbar bg="light" expand="lg">
+          <Container fluid>
+            <Navbar.Brand href="#">
+              <tr >
+                <th> 접속 방 이름 : {roomName}</th>
+              </tr>
+
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="navbarScroll" />
+            <Navbar.Collapse id="navbarScroll">
+              <Nav
+                className="me-auto my-2 my-lg-0"
+                style={{ maxHeight: '100px' }}
+                navbarScroll
+              >
+
+              </Nav>
+             
+              <Button variant="outline-secondary" onClick={back} style={{ right: 0, marginRight: 0, alignContent: 'flex-end' }}>뒤로 가기</Button>
+
+
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+
+      <br></br>
+        <br></br>
+
         <Grid item xs={16} >
           <Item>
-
-
-
-
-
-
             <Table striped>
               <thead>
                 <tr flexDirection="column">

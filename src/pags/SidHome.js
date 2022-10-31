@@ -30,6 +30,10 @@ const SidHome = () => {
 
   }
 
+  const main =() => {
+    window.location.href="/"
+  }
+
   return (
     <div>
     <Table responsive >
@@ -37,7 +41,7 @@ const SidHome = () => {
       <thead >
     
         <tr>
-          <th>Home</th>
+          <th onClick={main}>Home</th>
         </tr>
       </thead>
       

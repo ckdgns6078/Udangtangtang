@@ -1,12 +1,9 @@
 //회의중인방
-import { Container, Navbar } from 'react-bootstrap'
+import Nav from 'react-bootstrap/Nav';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
 import StopIcon from '@mui/icons-material/Stop';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import AudioFileIcon from '@mui/icons-material/AudioFile';
@@ -17,14 +14,19 @@ import { useParams } from "react-router-dom";
 import axios from 'axios';
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
-import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
-import { Link } from '@mui/material';
 import Button from 'react-bootstrap/Button';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { ThreeDots } from 'react-loader-spinner';
+import Carousel from 'react-bootstrap/Carousel';
+
+import Fab from '@mui/material/Fab';
+import { Container, Navbar } from 'react-bootstrap'
+
+
+
 
 
 
@@ -224,10 +226,12 @@ const Client = () => {
     // (날짜 변환)
     var today = new Date();
 
+ 
     var hours = ('0' + today.getHours()).slice(-2);
     var minutes = ('0' + today.getMinutes()).slice(-2);
     var seconds = ('0' + today.getSeconds()).slice(-2);
 
+  
     var nowTime = hours + ':' + minutes + ':' + seconds;
     console.log("현재시간: ", nowTime);
 
@@ -257,8 +261,8 @@ const Client = () => {
     )
 
 
-     // 서버에 POST형식으로 파일과 같이 보낼 데이터 전송
-     axios.post('http://192.168.2.82:5000/yTest', formData, {
+    // 서버에 POST형식으로 파일과 같이 보낼 데이터 전송
+    axios.post('http://192.168.2.82:5000/yTest', formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       }
@@ -284,11 +288,62 @@ const Client = () => {
   }, [audioUrl]);
 
 
-  
+
   //회의 끝내기 버튼
-  const endMeeting = () =>{
-    {/* 회의끝낼 때 회의 종료된 데이터 베이스에 넣기, 소켓 종료, 목록으로 돌아가기 */}    
+  const endMeeting = () => {
+    {/* 회의끝낼 때 회의 종료된 데이터 베이스에 넣기, 소켓 종료, 목록으로 돌아가기 */ }
+    const location = window.location.href;
+    var room = parseInt(location.split("/")[4]); //roomnum
+    setRoomNum(room); //roomnum  set
+    console.log(room);
+
+    var meet = parseInt(location.split("/")[5]); //meetnum
+    setMeetNum(meet); // meetnum  setx
+    console.log(meet);
+
+
+    var today = new Date();
+    let  year = today.getFullYear();
+    let todayMonth = today.getMonth()+1;
+    let todayDate = today.getDate();
+    let nowDay = year+"-"+todayMonth+"-"+todayDate;
+    console.log(nowDay);
+    axios.post('http://192.168.2.82:5000/createMeeting', {
+      roomNum: room,
+      meetTitle: meetName,
+      meetDate: nowDay,
+      meetingRoomNum: meet
+
+     
+    
+    })
+      .then(function (response) {
+        // response  
+        console.log(response.data)
+        const location = window.location.href;
+        var room = parseInt(location.split("/")[4]); //roomnum
+        setRoomNum(room); //roomnum  set
+        console.log(room);
+
+        window.location.href="/Sekes/"+room;
+
+
+
+
+      }).catch(function (error) {
+        // 오류발생시 실행
+      }).then(function () {
+        // 항상 실행
+      });
+
   }
+
+  
+  const back =() =>{
+    window.location.href="/Sekes/"+room;
+  }
+
+  
 
 
   return (
@@ -296,52 +351,232 @@ const Client = () => {
       <Grid container>
         <Box width="100%" display="flex" flexDirection="column" m="20px" sx={{ flexGrow: 1, }}>
           <Stack direction="horizontal" >
-            <div className="bg-light border ms-auto">
-              {/* 회의끝낼 때 회의 종료된 데이터 베이스에 넣기, 소켓 종료, 목록으로 돌아가기 */}
-              <Button variant="outline-danger" onClick={endMeeting} style={{ right: 0, marginRight: 0, alignContent: 'flex-end' }}>회의끝내기</Button>
-            </div>
+
           </Stack>
 
-          <Navbar expand="lg" variant="light" bg="light">
-            <Container>
-              <Navbar.Brand ><h2>{meetName}</h2><h6>{host}</h6></Navbar.Brand>
-            </Container>
-            <div onClick={camtoggle} variant="light">
-              {
-                camState ?
-                  <Fab size="small" color="inherit" aria-label="add">
-                    <VideocamIcon />
-                  </Fab> :
-                  <Fab size="small" color="inherit" aria-label="add">
-                    <VideocamOffIcon />
-                  </Fab>
-              }
-            </div>
 
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <div onClick={voicetoggle} variant="light">
-              {
-                voiceState ?
-                  <Fab size="small" color="inherit" aria-label="add">
-                    <MicIcon />
-                  </Fab> :
-                  <Fab size="small" color="inherit" aria-label="add">
-                    <MicOffIcon />
-                  </Fab>
-              }
-            </div>
+          <Navbar bg="light" expand="lg">
+              <Container fluid>
+                <Navbar.Brand href="#">
+                <tr>
+                  <td> <h2>{meetName}</h2></td>
+                  <td> <h6>{host}</h6></td>
+                </tr>
 
+                </Navbar.Brand>
+                <Navbar.Toggle aria-controls="navbarScroll" />
+                <Navbar.Collapse id="navbarScroll">
+                  <Nav
+                    className="me-auto my-2 my-lg-0"
+                    style={{ maxHeight: '100px' }}
+                    navbarScroll
+                  >
+                  
+                  </Nav>
+                    {/* 회의끝낼 때 회의 종료된 데이터 베이스에 넣기, 소켓 종료, 목록으로 돌아가기 */}
+                    <Button  variant="outline-secondary" onClick={back} style={{ right: 0, marginRight: 0, alignContent: 'flex-end' }}>뒤로 가기</Button>
+                    &ensp;
+                    <Button  variant="outline-secondary" onClick={endMeeting} style={{ right: 0, marginRight: 0, alignContent: 'flex-end' }}>회의끝내기</Button>
+                  
+                   
+                </Navbar.Collapse>
+              </Container>
+            </Navbar>
 
-          </Navbar>
 
           <Grid container spacing={2} columns={16}>
 
-            {/* 오른쪽 페이지 */}
-            <Grid item xs={10} >
+     
+            <Grid item xs={16} >
               <Item>
-                <div>화면</div>
+                <Navbar>
+                  <Container>
+                    <Navbar.Brand href="#home">비디오 화면</Navbar.Brand>
+                    <Navbar.Toggle />
+                    <Navbar.Collapse className="justify-content-end">
+                      <Navbar.Text>
+                        <tr>
+                          <td> <div onClick={camtoggle} variant="light">
+                            {
+                              camState ?
+                                <Fab size="small" color="inherit" aria-label="add">
+                                  <VideocamIcon />
+                                </Fab> :
+                                <Fab size="small" color="inherit" aria-label="add">
+                                  <VideocamOffIcon />
+                                </Fab>
+                            }
+                          </div>
+
+                          </td>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <td><div onClick={voicetoggle} variant="light">
+                            {
+                              voiceState ?
+                                <Fab size="small" color="inherit" aria-label="add">
+                                  <MicIcon />
+                                </Fab> :
+                                <Fab size="small" color="inherit" aria-label="add">
+                                  <MicOffIcon />
+                                </Fab>
+                            }
+                          </div></td>
+                        </tr>
+
+
+
+
+
+                      </Navbar.Text>
+                    </Navbar.Collapse>
+                  </Container>
+                </Navbar>
                 <Grid item xs={16} >
                   <Item>
+                    <Carousel   >
+                      <Carousel.Item interval={10000000000}>
+
+
+                        <tr>
+                          <td>
+                            <Box
+                              sx={{
+                                width: 300,
+                                height: 200,
+                                backgroundColor: 'red',
+                                '&:hover': {
+                                  backgroundColor: 'red',
+                                  opacity: [0.9, 0.8, 0.7],
+
+                                },
+                              }}
+                            />
+                          </td>
+
+                          <td>
+                            <Box
+
+                              sx={{
+                                width: 300,
+                                height: 200,
+                                backgroundColor: 'primary.dark',
+                                '&:hover': {
+                                  backgroundColor: 'primary.main',
+                                  opacity: [0.9, 0.8, 0.7],
+                                },
+                              }}
+                            />
+                          </td>
+
+                          <td>
+                            <Box
+                              sx={{
+                                width: 300,
+                                height: 200,
+                                backgroundColor: 'red',
+                                '&:hover': {
+                                  backgroundColor: 'red',
+                                  opacity: [0.9, 0.8, 0.7],
+                                },
+                              }}
+                            />
+                          </td>
+
+
+                          <td>
+                            <Box
+                              sx={{
+                                width: 300,
+                                height: 200,
+                                backgroundColor: 'primary.dark',
+                                '&:hover': {
+                                  backgroundColor: 'primary.main',
+                                  opacity: [0.9, 0.8, 0.7],
+                                },
+                              }}
+                            />
+                          </td>
+
+
+                        </tr>
+                        <Carousel.Caption>
+                          <h5>1번 페이지</h5>
+
+                        </Carousel.Caption>
+                      </Carousel.Item>
+
+
+
+                      <Carousel.Item>
+
+                        <tr>
+                          <td>
+                            <Box
+                              sx={{
+                                width: 300,
+                                height: 200,
+                                backgroundColor: 'red',
+                                '&:hover': {
+                                  backgroundColor: 'red',
+                                  opacity: [0.9, 0.8, 0.7],
+
+                                },
+                              }}
+                            />
+                          </td>
+
+                          <td>
+                            <Box
+
+                              sx={{
+                                width: 300,
+                                height: 200,
+                                backgroundColor: 'primary.dark',
+                                '&:hover': {
+                                  backgroundColor: 'primary.main',
+                                  opacity: [0.9, 0.8, 0.7],
+                                },
+                              }}
+                            />
+                          </td>
+
+                          <td>
+                            <Box
+                              sx={{
+                                width: 300,
+                                height: 200,
+                                backgroundColor: 'red',
+                                '&:hover': {
+                                  backgroundColor: 'red',
+                                  opacity: [0.9, 0.8, 0.7],
+                                },
+                              }}
+                            />
+                          </td>
+
+
+                          <td>
+                            <Box
+                              sx={{
+                                width: 300,
+                                height: 200,
+                                backgroundColor: 'primary.dark',
+                                '&:hover': {
+                                  backgroundColor: 'primary.main',
+                                  opacity: [0.9, 0.8, 0.7],
+                                },
+                              }}
+                            />
+                          </td>
+
+
+                        </tr>
+                        <Carousel.Caption>
+                          <h5>2번 페이지</h5>
+
+                        </Carousel.Caption>
+                      </Carousel.Item>
+                    </Carousel>
 
 
 
@@ -351,7 +586,29 @@ const Client = () => {
                 </Grid>
                 &nbsp;&nbsp;
 
-                <div>회의 </div>
+                <Navbar>
+                  <Container>
+                    <Navbar.Brand href="#home">회의내용</Navbar.Brand>
+                    <Navbar.Toggle />
+                    <Navbar.Collapse className="justify-content-end">
+                      <Navbar.Text>
+
+                        &nbsp;&nbsp;
+                        <Fab size="small" color="inherit" aria-label="add">
+                          <PlayArrowIcon onClick={onRecAudio} />
+                        </Fab>
+                        &nbsp;&nbsp;
+                        <Fab size="small" color="inherit" aria-label="add">
+                          <PauseIcon onClick={offRecAudio} />
+                        </Fab>
+                        &nbsp;&nbsp;
+                        <Fab size="small" color="inherit" aria-label="add">
+                          <StopIcon onClick={onSubmitAudioFile} />
+                        </Fab>
+                      </Navbar.Text>
+                    </Navbar.Collapse>
+                  </Container>
+                </Navbar>
                 <Grid item xs={16} >
                   {/* 서버에 보내서 변환중인것을 보여줌 */}
                   <Item>
@@ -360,37 +617,17 @@ const Client = () => {
                         <ThreeDots justify="center" width="30" height="30" color="black" ariaLable="loading" />
                       </div> : <div></div>
                     }
+                    dataApi가 변화되면 컴포넌트 만들기 Item태그 추가하기
+                    <Item>
+                      <h6>ddd</h6>
+                      <Stack direction="row" spacing={1}>
+                        <Chip label="누구냐" color="primary" />
+                      </Stack>
+                      <h6>{dataApi}</h6>
+                    </Item>
+
                   </Item>
                 </Grid>
-              </Item>
-            </Grid>
-
-
-            {/* 왼쪽 페이지 */}
-            <Grid item xs={6}>
-              <Item>
-
-
-                &nbsp;&nbsp;
-                <Fab size="small" color="inherit" aria-label="add">
-                  <PlayArrowIcon onClick={onRecAudio} />
-                </Fab>
-                &nbsp;&nbsp;
-                <Fab size="small" color="inherit" aria-label="add">
-                  <PauseIcon onClick={offRecAudio} />
-                </Fab>
-                &nbsp;&nbsp;
-                <Fab size="small" color="inherit" aria-label="add">
-                  <StopIcon onClick={onSubmitAudioFile} />
-                </Fab>
-                <Box>
-                  {/* 몇 초인지 확인 하는 부분 */}
-                  <div className="numbers">
-                    <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
-                    <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}</span>
-                  </div>
-
-                </Box>
               </Item>
             </Grid>
           </Grid>
