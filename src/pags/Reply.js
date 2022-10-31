@@ -47,7 +47,7 @@ const Reply = () => {
         const replyText = document.getElementById("inputmemo").value;
         console.log(replyText);
 
-       console.log("asdas")
+ 
         //axios로 서버에 보낸다
         try{
             await axios.post('http://192.168.2.82:5000/createReply',{

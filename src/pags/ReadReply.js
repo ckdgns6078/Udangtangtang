@@ -3,7 +3,7 @@ import axios from 'axios';
 import { React, useState, useEffect } from "react";
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
-import Card from '@mui/material/Card';
+import Button from 'react-bootstrap/Button';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Chip from '@mui/material/Chip';
@@ -11,6 +11,9 @@ import Stack from '@mui/material/Stack';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import UpdateReplyModal from '../Components/UpdateReplyModal';
+import { TextField } from '@mui/material';
+import { FormControl } from 'react-bootstrap';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -23,6 +26,9 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 const ReadReply = () => {
+  const [signUpModalOn, setSignUpModalOn] = useState(false);
+
+
   const [roonum, setRoomNum] = useState();
   const [meetnum, setMeetNum] = useState();
 
@@ -32,38 +38,39 @@ const ReadReply = () => {
   const [replyNum, setReplyNum] = useState(); //메모 넘버
   const [data, setData] = useState();
 
-   // 메모 삭제
-  const DeleteReply = () => {
-
-    (async (renum) => {
-      const location = window.location.href;
-      var room = parseInt(location.split("/")[4]); //roomnum
-      setRoomNum(room); //roomnum  set
-      console.log(room);
-      var meet = parseInt(location.split("/")[5]); //meetnum
-      setMeetNum(meet); // meetnum  set
-      console.log(meet);
-
-      
-      setReplyNum(renum);
-      try {
-        await axios.post('http://192.168.2.82:5000/deleteReply', {
-          roomNum: room,
-          meetNum: meet,
-          replyWriter: sessionStorage.getItem("id"),
-          replyNum: renum
-        })
-      }
-      catch (e) {
-        console.error(e);
-      }
-
-    })();
-  }
+  // 메모 삭제
+  // const DeleteReply = () => {
+  //   (async (renum) => {
+  //     const location = window.location.href;
+  //     var room = parseInt(location.split("/")[4]); //roomnum
+  //     setRoomNum(room); //roomnum  set
+  //     console.log(room);
+  //     var meet = parseInt(location.split("/")[5]); //meetnum
+  //     setMeetNum(meet); // meetnum  set
+  //     console.log(meet);
 
 
+  //     setReplyNum(renum);
+  //     try {
+  //       await axios.post('http://192.168.2.82:5000/deleteReply', {
+  //         roomNum: room,
+  //         meetNum: meet,
+  //         replyWriter: sessionStorage.getItem("nickname"),
+  //         replyNum: renum
+  //       })
+  //       console.log(renum);
+  //     }
 
-  const delet = renum => {
+  //     catch (e) {
+  //       console.error(e);
+  //     }
+
+  //   })();
+  // }
+
+
+
+  const DeleteReply = renum => {
     const location = window.location.href;
     var room = parseInt(location.split("/")[4]); //roomnum
     setRoomNum(room); //roomnum  set
@@ -76,18 +83,18 @@ const ReadReply = () => {
     axios.post('http://192.168.2.82:5000/deleteReply', {
       roomNum: room,
       meetNum: meet,
-      replyWriter: sessionStorage.getItem("id"),
+      replyWriter: sessionStorage.getItem("nickname"),
       replyNum: renum
     })
-    .then(function (response) {
+      .then(function (response) {
         // response  
         console.log(response.data)
-        
-    }).catch(function (error) {
+
+      }).catch(function (error) {
         // 오류발생시 실행
-    }).then(function() {
+      }).then(function () {
         // 항상 실행
-    });
+      });
   }
 
 
@@ -100,18 +107,52 @@ const ReadReply = () => {
 
 
 
-//메모수정
-const  UpdateReply = async () =>{
-  try{
-      await axios.post('http://192.168.2.82:5000/updateReply',{
-  
-  })
-  }
-  catch (e){
-    console.error(e);
-  }
+  //메모수정
+  const UpdateReply = (renum) => {
+    const location = window.location.href;
+    var room = parseInt(location.split("/")[4]); //roomnum
+    setRoomNum(room); //roomnum  set
+    console.log(room);
 
-}
+    var meet = parseInt(location.split("/")[5]); //meetnum
+    setMeetNum(meet); // meetnum  setx
+    console.log(meet);
+
+    const udreplyText = document.getElementById(renum).value; //수정하려는 값을 가져옴
+
+    axios.post('http://192.168.2.82:5000/updateReply', {
+      roomNum: room,
+      meetNum: meet,
+      replyNum: parseInt(renum),
+      replyText: udreplyText,
+      replyWriter: sessionStorage.getItem("nickname")
+    })
+      .then(function (response) {
+        // response  
+        console.log(response.data)
+
+      }).catch(function (error) {
+        // 오류발생시 실행
+      }).then(function () {
+        // 항상 실행
+      });
+
+
+    // try{
+    //     await axios.post('http://192.168.2.82:5000/updateReply',{
+    //       replyText:udreplyText,
+    //       roomNum: room,
+    //       meetNum: meet,
+    //       replyWriter: sessionStorage.getItem("nickname"),
+    //       replyNum: 
+
+
+    // })
+    // }
+    // catch (e){
+    //   console.error(e);
+    // }
+  }
 
 
 
@@ -129,9 +170,9 @@ const  UpdateReply = async () =>{
         const res = await axios.post("http://192.168.2.82:5000/readReply",
           {
             roomNum: room,
-            meetNum: meet    
+            meetNum: meet
           });
-        console.log("asd")
+        // console.log("asd")
         console.log(res.data)
         setData(res.data);
         // setReplyNum(res.data);
@@ -156,6 +197,9 @@ const  UpdateReply = async () =>{
 
   return (
     <Box width="100%" display="flex" flexDirection="column" m="20px">
+
+      <UpdateReplyModal show={signUpModalOn} onHide={() => setSignUpModalOn(false)} />
+
       <Grid item xs={15} >
         {
           data && data.map((e, idx) =>
@@ -164,24 +208,21 @@ const  UpdateReply = async () =>{
                 <Navbar>
                   <Container>
                     <Navbar.Brand href="#home"><Chip label={e.replyWriter} /></Navbar.Brand>
-
                     <Navbar.Toggle />
                     <Navbar.Collapse className="justify-content-end">
                       <Navbar.Text>
                         <tr>
                           <td>   {e.replyDate}   </td>
                           &nbsp;&nbsp;
-                          <td>  
+                          <td>
+
                             <NavDropdown title="" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">수정</NavDropdown.Item>
-                            <NavDropdown.Item onClick={() => delet(e.replyNum)} >삭제</NavDropdown.Item>
+                              <NavDropdown.Item type="submit" onClick={() => UpdateReply(e.replyNum)} >수정</NavDropdown.Item>
+                              <NavDropdown.Item onClick={() => DeleteReply(e.replyNum)} >삭제</NavDropdown.Item>
+
                             </NavDropdown>
                           </td>
                         </tr>
-
-
-               
-
                       </Navbar.Text>
                     </Navbar.Collapse>
                   </Container>
@@ -191,15 +232,17 @@ const  UpdateReply = async () =>{
                 <Stack direction="row" spacing={1}>
 
                 </Stack>
-                <h6>{e.replyText}</h6>
-
+                <form>
+                  <TextField fullWidth label="메모 내용" id={e.replyNum} defaultValue={e.replyText}></TextField>
+                </form>
               </Item>
               <br></br>
             </div>
           )
         }
-      
-      </Grid> 
+
+      </Grid>
+
     </Box>
 
   );
