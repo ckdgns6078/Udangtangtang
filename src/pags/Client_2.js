@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 
-import React, { useEffect,useRef, useState, useCallback } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Chip from '@mui/material/Chip';
@@ -20,7 +20,7 @@ import TextField from '@mui/material/TextField';
 
 import Reply from './Reply';
 import ReadReply from './ReadReply';
-
+import UpdateReply from '../Components/UpdateReplyModal';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -30,11 +30,13 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const options = [ '수정', '삭제' ];
+const options = ['수정', '삭제'];
 
 const Client_2 = () => {
   const [condata, setConData] = useState();
   const [redata, setReData] = useState();
+  const [signUpModalOn, setSignUpModalOn] = useState(false);
+
 
 
   const [stream, setStream] = useState();
@@ -48,7 +50,7 @@ const Client_2 = () => {
 
   const [state, setState] = useState(false);
 
- 
+
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -73,58 +75,6 @@ const Client_2 = () => {
     }
 
     setOpen(false);
-  };
-
-  const [inputs, setInputs] = useState({
-    username: '',
-    email: ''
-  });
-  const { username, email } = inputs;
-  const onChange = e => {
-    const { name, value } = e.target;
-    setInputs({
-      ...inputs,
-      [name]: value
-    });
-  };
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      username: 'velopert',
-      email: 'public.velopert@gmail.com'
-    },
-    {
-      id: 2,
-      username: 'tester',
-      email: 'tester@example.com'
-    },
-    {
-      id: 3,
-      username: 'liz',
-      email: 'liz@example.com'
-    }
-  ]);
-
-  const nextId = useRef(4);
-  const onCreate = () => {
-    const user = {
-      id: nextId.current,
-      username,
-      email
-    };
-    setUsers(users.concat(user));
-
-    setInputs({
-      username: '',
-      email: ''
-    });
-    nextId.current += 1;
-  };
-
-  const onRemove = id => {
-    // user.id 가 파라미터로 일치하지 않는 원소만 추출해서 새로운 배열을 만듬
-    // = user.id 가 id 인 것을 제거함
-    setUsers(users.filter(user => user.id !== id));
   };
 
 
@@ -175,32 +125,32 @@ const Client_2 = () => {
               <Navbar.Brand href="#">회의방</Navbar.Brand>
             </Container>
 
-       
+
           </Navbar>
-          <br/>
+          <br />
 
           <Grid container spacing={2} columns={16}>
 
             {/* 오른쪽 페이지 */}
             <Grid item xs={10} >
               <Item>
-                
-              
-              <hr></hr>
+
+
+                <hr></hr>
                 <div>
-                <Navbar bg="light" expand="lg">
-                  <Container>
-                    <Navbar.Brand >회의 내용</Navbar.Brand>
-           
-                 
-                    <Navbar.Collapse className="justify-content-end">
-                    <NavDropdown title="" id="basic-nav-dropdown">
+                  <Navbar bg="light" expand="lg">
+                    <Container>
+                      <Navbar.Brand >회의 내용</Navbar.Brand>
+
+
+                      <Navbar.Collapse className="justify-content-end">
+                        <NavDropdown title="" id="basic-nav-dropdown">
                           <NavDropdown.Item href="#action/3.1">수정</NavDropdown.Item>
                           <NavDropdown.Item href="#action/3.2">삭제</NavDropdown.Item>
                         </NavDropdown>
-                  </Navbar.Collapse>
-                  </Container>
-                </Navbar>
+                      </Navbar.Collapse>
+                    </Container>
+                  </Navbar>
 
                 </div>
                 <hr></hr>
@@ -211,7 +161,7 @@ const Client_2 = () => {
                         <Item>
                           <h6>{e.contentsTime}</h6>
                           <Stack direction="row" spacing={1}>
-                            <Chip label={e.contentsWriter}  />
+                            <Chip label={e.contentsWriter} />
                           </Stack>
                           <h6>{e.contentsText}</h6>
 
@@ -226,52 +176,32 @@ const Client_2 = () => {
 
 
             {/* 왼쪽 페이지 */}
+            
             <Grid item xs={6}>
               <Item>
-
-             
                 <Box>
                   {/* 네브바 */}
-                <hr></hr>
-                <div>
-                <Navbar bg="light" expand="lg">
-                  <Container>
-                    <Navbar.Brand >메모</Navbar.Brand>
-           
-                 
-                    <Navbar.Collapse className="justify-content-end">
-                    <NavDropdown title="" id="basic-nav-dropdown">
-                          <NavDropdown.Item href="#action/3.1">수정</NavDropdown.Item>
-                          <NavDropdown.Item href="#action/3.2">삭제</NavDropdown.Item>
-                        </NavDropdown>
-                  </Navbar.Collapse>
-                  </Container>
-                </Navbar>
-
-                </div>
-                <hr></hr>
-
-                {/* 메모장 기능 */}
-
+                  <hr></hr>
+                  <div>
+                    <Navbar bg="light" expand="lg">
+                      <Container>
+                        <Navbar.Brand >메모</Navbar.Brand>
+                      </Container>
+                    </Navbar>
+                  </div>
+                  <hr></hr>
+                  {/* 메모장 기능 */}
                   <Box>
-
-
-                  <ReadReply/>
-
-                  <Reply/>
-
-         
-              
-                  {/* <Form.Control type="text" placeholder="매모 내용" ></Form.Control> */}
-           
+                    <ReadReply />
+                    <Reply />
                   </Box>
                   <br></br>
                   <br></br>
 
                   <div>
-              
+
                   </div>
-                  
+
                 </Box>
               </Item>
             </Grid>
