@@ -19,9 +19,9 @@ import VideocamIcon from '@mui/icons-material/Videocam';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+
 import { ThreeDots } from 'react-loader-spinner';
 import Carousel from 'react-bootstrap/Carousel';
-
 import Fab from '@mui/material/Fab';
 import { Container, Navbar } from 'react-bootstrap'
 
@@ -326,10 +326,6 @@ const Client = () => {
         console.log(room);
 
         window.location.href="/Sekes/"+room;
-
-
-
-
       }).catch(function (error) {
         // 오류발생시 실행
       }).then(function () {

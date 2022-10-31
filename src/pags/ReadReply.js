@@ -198,8 +198,7 @@ const ReadReply = () => {
   return (
     <Box width="100%" display="flex" flexDirection="column" m="20px">
 
-      <UpdateReplyModal show={signUpModalOn} onHide={() => setSignUpModalOn(false)} />
-
+     
       <Grid item xs={15} >
         {
           data && data.map((e, idx) =>

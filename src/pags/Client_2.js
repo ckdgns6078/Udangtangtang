@@ -17,7 +17,6 @@ import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import TextField from '@mui/material/TextField';
-
 import Reply from './Reply';
 import ReadReply from './ReadReply';
 import UpdateReply from '../Components/UpdateReplyModal';
@@ -36,6 +35,11 @@ const Client_2 = () => {
   const [condata, setConData] = useState();
   const [redata, setReData] = useState();
   const [signUpModalOn, setSignUpModalOn] = useState(false);
+
+  const [roonum, setRoomNum] = useState();
+  const [meetnum, setMeetNum] = useState();
+
+
   const [stream, setStream] = useState();
   const [media, setMedia] = useState();
   const [onRec, setOnRec] = useState(true);
@@ -47,7 +51,7 @@ const Client_2 = () => {
   const [meetName, setMeetName] = useState();
   const [state, setState] = useState(false);
 
-  const [room, setRoomNum] = useState();
+
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -73,6 +77,74 @@ const Client_2 = () => {
 
     setOpen(false);
   };
+
+
+  //음성 텍스트 수정
+  const UpdateContents = (renum) =>{
+    const location = window.location.href;
+    var room = parseInt(location.split("/")[4]); //roomnum
+    setRoomNum(room); //roomnum  set
+    console.log(room);
+
+    var meet = parseInt(location.split("/")[5]); //meetnum
+    setMeetNum(meet); // meetnum  setx
+    console.log(meet);
+
+    const udreplyText = document.getElementById(renum).value; //수정하려는 값을 가져옴
+
+    axios.post('http://192.168.2.82:5000/updateContents', {
+      contentsText: udreplyText,
+      roomNum: room,
+      meetNum: meet,
+      contentsNum :parseInt(renum),
+     
+   
+    })
+      .then(function (response) {
+        // response  
+        console.log(response.data)
+
+      }).catch(function (error) {
+        // 오류발생시 실행
+      }).then(function () {
+        // 항상 실행
+      });
+  }
+
+
+
+  // 음성 텍스트 삭제
+  const DeleteContents = (renum) => {
+    const location = window.location.href;
+    var room = parseInt(location.split("/")[4]); //roomnum
+    setRoomNum(room); //roomnum  set
+    console.log(room);
+    var meet = parseInt(location.split("/")[5]); //meetnum
+    setMeetNum(meet); // meetnum  set
+    console.log(meet);
+
+
+    console.log(renum);
+    axios.post('http://192.168.2.82:5000/deleteContents', {
+      roomNum: room,
+      meetNum: meet,
+      contentsNum :parseInt(renum)
+
+    })
+      .then(function (response) {
+        // response  
+        console.log(response.data)
+
+      }).catch(function (error) {
+        // 오류발생시 실행
+      }).then(function () {
+        // 항상 실행
+      });
+  }
+
+
+
+
 
 
 
@@ -174,16 +246,43 @@ const Client_2 = () => {
 
                 </div>
                 <hr></hr>
+
                 <Grid item xs={16} >
+
                   {
                     condata && condata.map((e, idx) =>
                       <div>
                         <Item>
-                          <h6>{e.contentsTime}</h6>
-                          <Stack direction="row" spacing={1}>
-                            <Chip label={e.contentsWriter} />
-                          </Stack>
-                          <h6>{e.contentsText}</h6>
+                        <Navbar>
+                            <Container>
+                              <Navbar.Brand href="#home"><Chip label={e.contentsWriter} /></Navbar.Brand>
+                              <Navbar.Toggle />
+                              <Navbar.Collapse className="justify-content-end">
+                                <Navbar.Text>
+                                  <tr>
+                                    <td>    {e.contentsTime}  </td>
+                                    &nbsp;&nbsp;
+                                    <td>
+
+                                      <NavDropdown title="" id="basic-nav-dropdown">
+                                        <NavDropdown.Item  onClick={() => UpdateContents(e.contentsNum)} >수정</NavDropdown.Item>
+                                        <NavDropdown.Item   onClick={() => DeleteContents(e.contentsNum)}  >삭제</NavDropdown.Item>
+                                    
+                                      </NavDropdown>
+                                    </td>
+                                  </tr>
+                                </Navbar.Text>
+                              </Navbar.Collapse>
+                            </Container>
+                          </Navbar>
+
+
+                           <Stack direction="row" spacing={1}>
+
+                            </Stack>
+                            <form>
+                              <TextField fullWidth label="음성 텍스트 내용" id={e.contentsNum} defaultValue={e.contentsText}></TextField>
+                            </form>
 
                         </Item>
                         <br></br>
@@ -199,7 +298,10 @@ const Client_2 = () => {
             </Grid>
 
 
-            {/* 왼쪽 페이지 */}
+
+
+
+            {/* 오른쪽 페이지 */}
             
             <Grid item xs={6}>
               <Item>
