@@ -38,7 +38,7 @@ const Sekes = () => {
     
     (async () => {
       try {
-        const res = await axios.post('http://192.168.2.65:5000/readMeeting', { //창훈이형 그룹 내 회의 목록
+        const res = await axios.post('http://192.168.2.82:5000/readMeeting', { //창훈이형 그룹 내 회의 목록
           roomNum: room
         });
 
@@ -62,7 +62,7 @@ const Sekes = () => {
     //현재 진행중인 회의 리스트
     (async () => {
       try {
-        const ing = await axios.post('http://192.168.2.65:5000/readMeetingRoom', {
+        const ing = await axios.post('http://192.168.2.82:5000/readMeetingRoom', {
           roomNum: room
         });
         console.log(ing.data);
