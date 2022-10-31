@@ -17,7 +17,6 @@ import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import TextField from '@mui/material/TextField';
-
 import Reply from './Reply';
 import ReadReply from './ReadReply';
 import UpdateReply from '../Components/UpdateReplyModal';
@@ -37,6 +36,8 @@ const Client_2 = () => {
   const [redata, setReData] = useState();
   const [signUpModalOn, setSignUpModalOn] = useState(false);
 
+  const [roonum, setRoomNum] = useState();
+  const [meetnum, setMeetNum] = useState();
 
 
   const [stream, setStream] = useState();
@@ -47,7 +48,7 @@ const Client_2 = () => {
   const [audioUrl, setAudioUrl] = useState();
   const [bloburl, setbloburl] = useState();
   const [file, setFile] = useState();
-
+  const [meetName, setMeetName] = useState();
   const [state, setState] = useState(false);
 
 
@@ -78,6 +79,74 @@ const Client_2 = () => {
   };
 
 
+  //음성 텍스트 수정
+  const UpdateContents = (renum) =>{
+    const location = window.location.href;
+    var room = parseInt(location.split("/")[4]); //roomnum
+    setRoomNum(room); //roomnum  set
+    console.log(room);
+
+    var meet = parseInt(location.split("/")[5]); //meetnum
+    setMeetNum(meet); // meetnum  setx
+    console.log(meet);
+
+    const udreplyText = document.getElementById(renum).value; //수정하려는 값을 가져옴
+
+    axios.post('http://192.168.2.82:5000/updateContents', {
+      contentsText: udreplyText,
+      roomNum: room,
+      meetNum: meet,
+      contentsNum :parseInt(renum),
+     
+   
+    })
+      .then(function (response) {
+        // response  
+        console.log(response.data)
+
+      }).catch(function (error) {
+        // 오류발생시 실행
+      }).then(function () {
+        // 항상 실행
+      });
+  }
+
+
+
+  // 음성 텍스트 삭제
+  const DeleteContents = (renum) => {
+    const location = window.location.href;
+    var room = parseInt(location.split("/")[4]); //roomnum
+    setRoomNum(room); //roomnum  set
+    console.log(room);
+    var meet = parseInt(location.split("/")[5]); //meetnum
+    setMeetNum(meet); // meetnum  set
+    console.log(meet);
+
+
+    console.log(renum);
+    axios.post('http://192.168.2.82:5000/deleteContents', {
+      roomNum: room,
+      meetNum: meet,
+      contentsNum :parseInt(renum)
+
+    })
+      .then(function (response) {
+        // response  
+        console.log(response.data)
+
+      }).catch(function (error) {
+        // 오류발생시 실행
+      }).then(function () {
+        // 항상 실행
+      });
+  }
+
+
+
+
+
+
 
 
 
@@ -102,6 +171,7 @@ const Client_2 = () => {
         console.log(res.data);
         console.log(res.data);
         setConData(res.data);
+      
         //readReply
         console.log(res2.data);
         setReData(res2.data);
@@ -112,7 +182,13 @@ const Client_2 = () => {
     })();
   }, [])
 
+  const location = window.location.href;
+  var room1 = parseInt(location.split("/")[4]); //roomnum
 
+  
+  const back =() =>{
+    window.location.href="/Sekes/"+room1;
+  }
 
 
 
@@ -120,19 +196,35 @@ const Client_2 = () => {
     <Container maxWidth="sm" >
       <Grid container>
         <Box width="100%" display="flex" flexDirection="column" m="20px" sx={{ flexGrow: 1, }}>
-          <Navbar expand="lg" variant="light" bg="light">
-            <Container>
-              <Navbar.Brand href="#">회의방</Navbar.Brand>
-            </Container>
+          
+        <Navbar bg="light" expand="lg">
+              <Container fluid>
+                <Navbar.Brand href="#">
+                <h3>회의 내용</h3>
 
-
-          </Navbar>
+                </Navbar.Brand>
+                <Navbar.Toggle aria-controls="navbarScroll" />
+                <Navbar.Collapse id="navbarScroll">
+                  <Nav
+                    className="me-auto my-2 my-lg-0"
+                    style={{ maxHeight: '100px' }}
+                    navbarScroll
+                  >
+                  
+                  </Nav>
+                    {/* 회의끝낼 때 회의 종료된 데이터 베이스에 넣기, 소켓 종료, 목록으로 돌아가기 */}
+                    <Button  variant="outline-secondary" onClick={back} style={{ right: 0, marginRight: 0, alignContent: 'flex-end' }}>뒤로 가기</Button>
+                   
+                   
+                </Navbar.Collapse>
+              </Container>
+            </Navbar>
           <br />
 
           <Grid container spacing={2} columns={16}>
 
             {/* 오른쪽 페이지 */}
-            <Grid item xs={10} >
+            <Grid item xs={10} style={{ height: 350 }} >
               <Item>
 
 
@@ -154,28 +246,62 @@ const Client_2 = () => {
 
                 </div>
                 <hr></hr>
+
                 <Grid item xs={16} >
+
                   {
                     condata && condata.map((e, idx) =>
                       <div>
                         <Item>
-                          <h6>{e.contentsTime}</h6>
-                          <Stack direction="row" spacing={1}>
-                            <Chip label={e.contentsWriter} />
-                          </Stack>
-                          <h6>{e.contentsText}</h6>
+                        <Navbar>
+                            <Container>
+                              <Navbar.Brand href="#home"><Chip label={e.contentsWriter} /></Navbar.Brand>
+                              <Navbar.Toggle />
+                              <Navbar.Collapse className="justify-content-end">
+                                <Navbar.Text>
+                                  <tr>
+                                    <td>    {e.contentsTime}  </td>
+                                    &nbsp;&nbsp;
+                                    <td>
+
+                                      <NavDropdown title="" id="basic-nav-dropdown">
+                                        <NavDropdown.Item  onClick={() => UpdateContents(e.contentsNum)} >수정</NavDropdown.Item>
+                                        <NavDropdown.Item   onClick={() => DeleteContents(e.contentsNum)}  >삭제</NavDropdown.Item>
+                                    
+                                      </NavDropdown>
+                                    </td>
+                                  </tr>
+                                </Navbar.Text>
+                              </Navbar.Collapse>
+                            </Container>
+                          </Navbar>
+
+
+                           <Stack direction="row" spacing={1}>
+
+                            </Stack>
+                            <form>
+                              <TextField fullWidth label="음성 텍스트 내용" id={e.contentsNum} defaultValue={e.contentsText}></TextField>
+                            </form>
 
                         </Item>
                         <br></br>
                       </div>
                     )
                   }
+                
+
+
+
                 </Grid>
               </Item>
             </Grid>
 
 
-            {/* 왼쪽 페이지 */}
+
+
+
+            {/* 오른쪽 페이지 */}
             
             <Grid item xs={6}>
               <Item>
