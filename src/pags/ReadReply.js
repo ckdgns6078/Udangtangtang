@@ -123,10 +123,11 @@ const ReadReply = () => {
           console.log(response.data)
           if (response.data){
             alert("수정되었습니다.")
+            window.location.reload();
           }else{
-            alert("수정에 실패하였습니다.")
+            alert("메모 작성자만 수정할 수 있습니다")
+            window.location.reload();
           }
-
         }).catch(function (error) {
           // 오류발생시 실행
         }).then(function () {
