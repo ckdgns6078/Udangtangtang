@@ -112,7 +112,17 @@ const SettingMeet = () => {
 
                     {
                         change === 0 ? ( //change===0이면 그냥 모든 목록 보여주기
-                            data == null ? null : <tbody>{data && data.map((e, idx) =>
+                            data == null ? <tbody><tr>
+                            <th colSpan={4} style={{ backgroundColor: 'white' }}>
+                              <div style={{
+                                width: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: 'white'
+                              }} ><div><img src={noData} /></div> </div>
+                            </th>
+                          </tr></tbody> : <tbody>{data && data.map((e, idx) =>
                                 <tr >
                                     <th>{idx + 1}</th>
                                     <th> {e.meetTitle}</th>
