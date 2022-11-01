@@ -119,39 +119,30 @@ const ReadReply = () => {
     console.log(meet);
 
     const udreplyText = document.getElementById(renum).value; //수정하려는 값을 가져옴
+    const result = window.confirm("정말 수정하시겠습니까?");
+    if (result) {
+      axios.post('http://192.168.2.82:5000/updateReply', {
+        roomNum: room,
+        meetNum: meet,
+        replyNum: parseInt(renum),
+        replyText: udreplyText,
+        replyWriter: sessionStorage.getItem("nickname")
+      })
+        .then(function (response) {
+          // response  
+          console.log(response.data)
+          if (response.data){
+            alert("수정되었습니다.")
+          }else{
+            alert("수정에 실패하였습니다.")
+          }
 
-    axios.post('http://192.168.2.82:5000/updateReply', {
-      roomNum: room,
-      meetNum: meet,
-      replyNum: parseInt(renum),
-      replyText: udreplyText,
-      replyWriter: sessionStorage.getItem("nickname")
-    })
-      .then(function (response) {
-        // response  
-        console.log(response.data)
-
-      }).catch(function (error) {
-        // 오류발생시 실행
-      }).then(function () {
-        // 항상 실행
-      });
-
-
-    // try{
-    //     await axios.post('http://192.168.2.82:5000/updateReply',{
-    //       replyText:udreplyText,
-    //       roomNum: room,
-    //       meetNum: meet,
-    //       replyWriter: sessionStorage.getItem("nickname"),
-    //       replyNum: 
-
-
-    // })
-    // }
-    // catch (e){
-    //   console.error(e);
-    // }
+        }).catch(function (error) {
+          // 오류발생시 실행
+        }).then(function () {
+          // 항상 실행
+        });
+    }
   }
 
 
@@ -198,7 +189,7 @@ const ReadReply = () => {
   return (
     <Box width="100%" display="flex" flexDirection="column" m="20px">
 
-     
+
       <Grid item xs={15} >
         {
           data && data.map((e, idx) =>

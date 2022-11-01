@@ -40,17 +40,22 @@ const Modal1 = ({ show, onHide }) => {
   }
 
 
-
   const handleSubmit = () => {
 
     if (testKey && testPw) {
       try {
         console.log(sessionStorage.getItem("id"))
-        axios.post("http://192.168.2.82:5000/joinRoom", {
+        const res = axios.post("http://192.168.2.82:5000/joinRoom", {
           id: sessionStorage.getItem("id"),
           roomKey: roomKey,
           roomPw: roompw
         })
+        if(res.data){
+          alert("방 입장하기에 성공하였습니다.")
+          window.location.reload();
+        }else{
+          alert("방 입장에 실패하였습니다.")
+        }
       } catch (error) {
         console.error(error)
       }

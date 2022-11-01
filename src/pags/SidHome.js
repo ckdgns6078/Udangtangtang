@@ -30,24 +30,24 @@ const SidHome = () => {
 
   }
 
-  const main =() => {
-    window.location.href="/"
+  const main = () => {
+    window.location.href = "/"
   }
 
   return (
     <div>
-    <Table responsive >
+      <Table responsive >
 
-      <thead >
-    
-        <tr>
-          <th onClick={main}>Home</th>
-        </tr>
-      </thead>
-      
+        <thead >
 
-      <tbody>
-      {
+          <tr>
+            <th onClick={() => { window.location.href = "http://localhost:3000" }}>Home</th>
+          </tr>
+        </thead>
+
+
+        <tbody>
+          {
             data && data.map((e, idx) =>
               <tr onClick={() => testonclick(e.roomNum)}>
                 <th> {e.roomName}</th>
@@ -56,9 +56,9 @@ const SidHome = () => {
           }
 
         </tbody>
-    </Table>
+      </Table>
 
-    <div style={{
+      <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

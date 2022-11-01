@@ -226,12 +226,12 @@ const Client = () => {
     // (날짜 변환)
     var today = new Date();
 
- 
+
     var hours = ('0' + today.getHours()).slice(-2);
     var minutes = ('0' + today.getMinutes()).slice(-2);
     var seconds = ('0' + today.getSeconds()).slice(-2);
 
-  
+
     var nowTime = hours + ':' + minutes + ':' + seconds;
     console.log("현재시간: ", nowTime);
 
@@ -289,9 +289,11 @@ const Client = () => {
 
 
 
+
   //회의 끝내기 버튼
   const endMeeting = () => {
     {/* 회의끝낼 때 회의 종료된 데이터 베이스에 넣기, 소켓 종료, 목록으로 돌아가기 */ }
+
     const location = window.location.href;
     var room = parseInt(location.split("/")[4]); //roomnum
     setRoomNum(room); //roomnum  set
@@ -303,43 +305,53 @@ const Client = () => {
 
 
     var today = new Date();
-    let  year = today.getFullYear();
-    let todayMonth = today.getMonth()+1;
+    let year = today.getFullYear();
+    let todayMonth = today.getMonth() + 1;
     let todayDate = today.getDate();
-    let nowDay = year+"-"+todayMonth+"-"+todayDate;
+    let nowDay = year + "-" + todayMonth + "-" + todayDate;
     console.log(nowDay);
-    axios.post('http://192.168.2.82:5000/createMeeting', {
-      roomNum: room,
-      meetTitle: meetName,
-      meetDate: nowDay,
-      meetingRoomNum: meet
 
-     
-    
-    })
-      .then(function (response) {
-        // response  
-        console.log(response.data)
-        const location = window.location.href;
-        var room = parseInt(location.split("/")[4]); //roomnum
-        setRoomNum(room); //roomnum  set
-        console.log(room);
 
-        window.location.href="/Sekes/"+room;
-      }).catch(function (error) {
-        // 오류발생시 실행
-      }).then(function () {
-        // 항상 실행
-      });
+    const result = window.confirm("회의를 끝내겠습니까");
+    if (result) {
+      axios.post('http://192.168.2.82:5000/createMeeting', {
+        roomNum: room,
+        meetTitle: meetName,
+        meetDate: nowDay,
+        meetingRoomNum: meet
+      })
+        .then(function (response) {
+          // response  
+          //데이터가 들어옴
+          if (response.data) {
+            const location = window.location.href;
+            var room = parseInt(location.split("/")[4]); //roomnum
+            setRoomNum(room); //roomnum  set
+            console.log(room);
 
+            window.location.href = "/Sekes/" + room;
+          }
+          else{
+            alert("오류가 발생했습니다. 다시 시도해주세요")
+          }
+        })
+
+        .catch(function (error) {
+          // 오류발생시 실행
+          alert("오류가 발생했습니다. 다시 시도해주세요")
+        }).then(function () {
+          // 항상 실행
+        });
+    }
   }
 
-  
-  const back =() =>{
-    window.location.href="/Sekes/"+room;
+
+
+  const back = () => {
+    window.location.href = "/Sekes/" + room;
   }
 
-  
+
 
 
   return (
@@ -352,37 +364,37 @@ const Client = () => {
 
 
           <Navbar bg="light" expand="lg">
-              <Container fluid>
-                <Navbar.Brand href="#">
+            <Container fluid>
+              <Navbar.Brand href="#">
                 <tr>
                   <td> <h2>{meetName}</h2></td>
                   <td> <h6>{host}</h6></td>
                 </tr>
 
-                </Navbar.Brand>
-                <Navbar.Toggle aria-controls="navbarScroll" />
-                <Navbar.Collapse id="navbarScroll">
-                  <Nav
-                    className="me-auto my-2 my-lg-0"
-                    style={{ maxHeight: '100px' }}
-                    navbarScroll
-                  >
-                  
-                  </Nav>
-                    {/* 회의끝낼 때 회의 종료된 데이터 베이스에 넣기, 소켓 종료, 목록으로 돌아가기 */}
-                    <Button  variant="outline-secondary" onClick={back} style={{ right: 0, marginRight: 0, alignContent: 'flex-end' }}>뒤로 가기</Button>
-                    &ensp;
-                    <Button  variant="outline-secondary" onClick={endMeeting} style={{ right: 0, marginRight: 0, alignContent: 'flex-end' }}>회의끝내기</Button>
-                  
-                   
-                </Navbar.Collapse>
-              </Container>
-            </Navbar>
+              </Navbar.Brand>
+              <Navbar.Toggle aria-controls="navbarScroll" />
+              <Navbar.Collapse id="navbarScroll">
+                <Nav
+                  className="me-auto my-2 my-lg-0"
+                  style={{ maxHeight: '100px' }}
+                  navbarScroll
+                >
+
+                </Nav>
+                {/* 회의끝낼 때 회의 종료된 데이터 베이스에 넣기, 소켓 종료, 목록으로 돌아가기 */}
+                <Button variant="outline-secondary" onClick={back} style={{ right: 0, marginRight: 0, alignContent: 'flex-end' }}>뒤로 가기</Button>
+                &ensp;
+                <Button variant="outline-secondary" onClick={endMeeting} style={{ right: 0, marginRight: 0, alignContent: 'flex-end' }}>회의끝내기</Button>
+
+
+              </Navbar.Collapse>
+            </Container>
+          </Navbar>
 
 
           <Grid container spacing={2} columns={16}>
 
-     
+
             <Grid item xs={16} >
               <Item>
                 <Navbar>

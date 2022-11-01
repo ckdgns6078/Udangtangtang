@@ -27,27 +27,36 @@ const CreateMeetModal = ({ show, onHide }) => {
   }
 
 
+
   const handleSubmit = async () => {
     const location = window.location.href;
     var room = parseInt(location.split("/")[4]);
     if (testMeetRoom) { //true 이면
-      // axios로 서버에 보낸다
-      try {
-        const res = await axios.post('http://192.168.2.82:5000/createMeetingRoom', {
-          roomNum: room,
-          meetingRoomTitle: meetingRoomTitle,
-          meetingRoomHost: sessionStorage.getItem("id")
-        })
-        console.log(res.data.meetingRoomNum);
-        window.location.href = "http://localhost:3000/Client/" + room + "/" + res.data[0].meetingRoomNum;
-      }
-      catch (e) {
-        console.error(e);
+      const result = window.confirm("회의를 생성하시겠습니까?");
+      if (result) {
+        // axios로 서버에 보낸다
+        try {
+          const res = await axios.post('http://192.168.2.82:5000/createMeetingRoom', {
+            roomNum: room,
+            meetingRoomTitle: meetingRoomTitle,
+            meetingRoomHost: sessionStorage.getItem("id")
+          })
+          if (res.data){
+            console.log(res.data.meetingRoomNum);
+            window.location.href = "http://localhost:3000/Client/" + room + "/" + res.data[0].meetingRoomNum;
+          }
+        }
+        catch (e) {
+          console.error(e);
+          alert("회의 생성에 실패하였습니다.")
+          window.location.reload(); //새로고침
+        }
       }
       setTestMeetRoom(true);
+    }else{
+      alert("회의 생성 취소됩니다.")
     }
   }
-
 
 
   return (
