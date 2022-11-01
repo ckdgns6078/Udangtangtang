@@ -154,8 +154,6 @@ const Home = () => {
           {
             sessionStorage.getItem("id") === null ? <div><img src={noData} /></div> : <div></div>
           }
-     
-
         </div>
       </div>
       </Box>

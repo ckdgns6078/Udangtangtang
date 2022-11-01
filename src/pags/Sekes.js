@@ -13,6 +13,12 @@ import Paper from '@mui/material/Paper';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
+import { Container, Navbar } from 'react-bootstrap';
+import Gear from '../img/gear.png';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+
+
+
 
 const goClient = () => {
   const l = window.location.href;
@@ -41,7 +47,7 @@ const Sekes = () => {
   const ingmeetclick = idx => {
     console.log(idx);
     const location = window.location.href;
-    var room = parseInt(location.split("/")[4]); //그룹 이름
+    var room = parseInt(location.split("/")[4]); //그룹 번호
     //클라이언트 그 콘텐츠 
     window.location.href = '/Client/' + room + '/' + idx; //Client/그룹num/회의번호
   }
@@ -49,9 +55,15 @@ const Sekes = () => {
   const ingmeetclick2 = idx => {
     console.log(idx);
     const location = window.location.href;
-    var room = parseInt(location.split("/")[4]); //그룹 이름
+    var room = parseInt(location.split("/")[4]); //그룹 번호
     //클라이언트 그 콘텐츠 
     window.location.href = '/Client_2/' + room + '/' + idx; //Client/그룹num/회의번호
+  }
+
+  const settingMeet = () =>{
+    const location = window.location.href;
+    var room = parseInt(location.split("/")[4]); //그룹 번호
+    window.location.href="/SettingMeet/" + room;
   }
 
   useEffect(() => {
@@ -185,10 +197,7 @@ const Sekes = () => {
                   )
 
                 }
-                {
-                  ishavemeet ? <div></div> : <div><img src={noData} /></div>
-                }
-
+                
 
               </tbody>
             </Table>
@@ -202,7 +211,25 @@ const Sekes = () => {
 
         <Grid item xs={16} >
           <Item>
-
+          <Navbar>
+              <Container>
+                <Navbar.Brand>회의내용</Navbar.Brand>
+                <Navbar.Toggle />
+                <Navbar.Collapse className="justify-content-end">
+                  <Navbar.Text>
+                    {/* 회의를 만든 호스트면 보여주기 */}
+                    <Button variant="text" onClick={settingMeet}> 
+                    <div class="gearbox">
+                      {/* <Link to="/SettingMing/">
+                        <MoreVertIcon class="gear" src={Gear}></MoreVertIcon>
+                      </Link> */}
+                        <MoreVertIcon class="gear" src={Gear}></MoreVertIcon>
+                    </div>
+                    </Button> 
+                  </Navbar.Text>
+                </Navbar.Collapse>
+              </Container>
+            </Navbar>
 
 
 
@@ -241,9 +268,7 @@ const Sekes = () => {
                     </tr>
                   )
                 }
-                {
-                  ishave ? <div></div> : <div><img src={noData} /></div>
-                }
+                
 
 
               </tbody>

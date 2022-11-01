@@ -59,18 +59,26 @@ const HomeLest = ({ show, onHide }) => {
 
 
 
+  //방만들기 서버 post
   const handleSubmit = async () => {
     var rn = document.getElementById("roomName");
     console.log(rn.value);
     if (testName && testKey && testPw){
       //axios로 서버에 보낸다
       try {
-        await axios.post('http://192.168.2.82:5000/createRoom', {
+        const res = await axios.post('http://192.168.2.82:5000/createRoom', {
           roomName: roomName,
           roomKey: roomKey,
           roomPw: roomPw,
           roomHost: sessionStorage.getItem("id")
         })
+        if (res.data){
+          alert("방이 만들어졌습니다.")
+          window.location.reload();
+        }else{
+          alert("방 만들기에 실패하였습니다.")
+        }
+        
       }
       catch (e) {
         console.error(e);
@@ -81,7 +89,6 @@ const HomeLest = ({ show, onHide }) => {
       setTestPw(true);
     }
   }
-
 
 
   return (

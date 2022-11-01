@@ -103,7 +103,11 @@ const Client_2 = () => {
       .then(function (response) {
         // response  
         console.log(response.data)
-
+        if (response.data){
+          alert("수정되었습니다.")
+        }else{
+          alert("수정에 실패하였습니다.")
+        }
       }).catch(function (error) {
         // 오류발생시 실행
       }).then(function () {
@@ -134,6 +138,11 @@ const Client_2 = () => {
       .then(function (response) {
         // response  
         console.log(response.data)
+        if (response.data){
+          alert("삭제되었습니다.")
+        }else{
+          alert("삭제에 실패하였습니다")
+        }
 
       }).catch(function (error) {
         // 오류발생시 실행
