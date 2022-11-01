@@ -10,8 +10,6 @@ import noData from '../img/NoData.png';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
-import Navbar from 'react-bootstrap/Navbar';
-import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import { Container, Navbar } from 'react-bootstrap';
 import Gear from '../img/gear.png';
@@ -225,7 +223,6 @@ const Sekes = () => {
                       </Link> */}
                         <MoreVertIcon class="gear" src={Gear}></MoreVertIcon>
                     </div>
-                    
                     </Button> 
                   </Navbar.Text>    
                 </Navbar.Collapse>
