@@ -62,15 +62,11 @@ const SidHome = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '100vh',
       }} >
         {
-          sessionStorage.getItem("id") === null ?
-            <div>
-              <img src={NoData} />
-            </div>
-            :
-            <div> </div>
+          sessionStorage.getItem("id") === null ? <div id="nodatabox"> <div id="image"><img src={NoData} /></div> </div> : (data == 0 ?
+            <div className="nodatabox"><img className="image" src={NoData} /></div> : null
+          )
         }
       </div>
     </div>

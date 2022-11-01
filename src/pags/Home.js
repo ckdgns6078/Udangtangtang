@@ -84,7 +84,16 @@ const Home = () => {
     window.location.href = '/Sekes/' + idx;
 
   }
+  
+  const search = () =>{
+    const searchinput = document.getElementById("search").value;
+    console.log(searchinput);
+    if (sessionStorage.getItem("id")==null){
+      alert("로그인 해주세요");
+      window.location.reload();
+    }
 
+  }
 
   return (
     //responsive 테이블은 반응 형으로 만들어 줌
@@ -110,6 +119,7 @@ const Home = () => {
                 <StyledInputBase
                   placeholder="Search…"
                   inputProps={{ "aria-label": "search" }}
+                  id="search"
                 />
               </Search>
 
@@ -118,7 +128,7 @@ const Home = () => {
 
             <td> 
            
-              <Button variant="outline-secondary">Search</Button>
+            <Button variant="outline-secondary" onClick={search}>Search</Button>
               </td>
           </tr>
           <tr>
@@ -148,11 +158,12 @@ const Home = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '100vh',
       }} >
          <div id="ishave">
           {
-            sessionStorage.getItem("id") === null ? <div><img src={noData} /></div> : <div></div>
+            sessionStorage.getItem("id") === null ? <img src={noData} /> : ( data==0? 
+                <img src={noData} />:null
+              )
           }
         </div>
       </div>
