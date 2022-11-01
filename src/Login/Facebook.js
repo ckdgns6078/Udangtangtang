@@ -55,6 +55,7 @@ export default class Facebook extends Component {
                     callback={this.responseFacebook}
                     icon="fa-facebook"
                 />
+
             );
         } else {
             fbContent = (

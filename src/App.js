@@ -22,16 +22,9 @@ import Routes from './routes/Routes';
 function App() {
   return (
     <BrowserRouter>
-      {/* <SidebarData /> 
-      <div class="main" >
-        <Sidebar />
-        <Routes>
-          <Route path="/" element={< Home />}></Route>
-          <Route path="/Sekes" element={<Sekes />}></Route>
-          <Route path="/Client" element={<Client />}></Route>
-        </Routes>
-      </div> */}
+
       <Routes />
+    
     </BrowserRouter>
   );
 }

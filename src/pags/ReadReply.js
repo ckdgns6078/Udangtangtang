@@ -38,38 +38,9 @@ const ReadReply = () => {
   const [replyNum, setReplyNum] = useState(); //메모 넘버
   const [data, setData] = useState();
 
-  // 메모 삭제
-  // const DeleteReply = () => {
-  //   (async (renum) => {
-  //     const location = window.location.href;
-  //     var room = parseInt(location.split("/")[4]); //roomnum
-  //     setRoomNum(room); //roomnum  set
-  //     console.log(room);
-  //     var meet = parseInt(location.split("/")[5]); //meetnum
-  //     setMeetNum(meet); // meetnum  set
-  //     console.log(meet);
+  
 
-
-  //     setReplyNum(renum);
-  //     try {
-  //       await axios.post('http://192.168.2.82:5000/deleteReply', {
-  //         roomNum: room,
-  //         meetNum: meet,
-  //         replyWriter: sessionStorage.getItem("nickname"),
-  //         replyNum: renum
-  //       })
-  //       console.log(renum);
-  //     }
-
-  //     catch (e) {
-  //       console.error(e);
-  //     }
-
-  //   })();
-  // }
-
-
-
+  //메모 삭제
   const DeleteReply = renum => {
     const location = window.location.href;
     var room = parseInt(location.split("/")[4]); //roomnum
@@ -88,6 +59,7 @@ const ReadReply = () => {
     })
       .then(function (response) {
         // response  
+        window.location.href = location;
         console.log(response.data)
 
       }).catch(function (error) {
@@ -119,6 +91,24 @@ const ReadReply = () => {
     console.log(meet);
 
     const udreplyText = document.getElementById(renum).value; //수정하려는 값을 가져옴
+
+    axios.post('http://192.168.2.82:5000/updateReply', {
+      roomNum: room,
+      meetNum: meet,
+      replyNum: parseInt(renum),
+      replyText: udreplyText,
+      replyWriter: sessionStorage.getItem("nickname")
+    })
+      .then(function (response) {
+        // response  
+        console.log(response.data)
+
+      }).catch(function (error) {
+        // 오류발생시 실행
+      }).then(function () {
+        // 항상 실행
+      });
+
     const result = window.confirm("정말 수정하시겠습니까?");
     if (result) {
       axios.post('http://192.168.2.82:5000/updateReply', {
@@ -144,6 +134,7 @@ const ReadReply = () => {
           // 항상 실행
         });
     }
+
   }
 
 

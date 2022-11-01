@@ -66,7 +66,9 @@ class KakaoLogin extends Component {
     render() {
         return (
             <div>
-                <div type="button" id="kakao-login-btn"></div>
+                <div  style={{
+                        width: "100%",
+                }}type="button" id="kakao-login-btn"></div>
             </div>
         )
     }

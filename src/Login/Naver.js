@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import axios from "axios";
 
 
+
 function Naver() {
     const naverRef = useRef();
 	const { naver } = window
@@ -18,7 +19,7 @@ function Naver() {
             // 팝업창으로 로그인을 진행할 것인지?           
             isPopup: false,
             // 버튼 타입 ( 색상, 타입, 크기 변경 가능 )
-            loginButton: { color: 'green', type: 3, height: 48 },
+            loginButton: { color: 'green', type: 2, height: 48, width:100  },
             callbackHandle: true,
         })
         naverLogin.init()
@@ -65,11 +66,19 @@ function Naver() {
     const handleClick = () => {
         naverRef.current.children[0].click();    
     }
+
+  
+
+
+
     return (
         <>
             <div ref={naverRef} id="naverIdLogin"></div>
             <button onClick={handleClick} className="naverButton">
-                <img src={Naverimg} className="img"/>
+                <img   style={{
+                        width: "150px ",
+                       
+                    }} src={Naverimg} className="img"/>
             </button>
         </>
     )
