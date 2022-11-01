@@ -2,194 +2,146 @@
 
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Form from 'react-bootstrap/Form';
 import axios from "axios";
 
-const HomeLest = ({show , onHide}) => {
-  const [roomPw,setRoomPw] = useState("");
-  const [roomName,setRoomName] = useState("");
-  const [roomKey,setRoomKey] = useState("");
-  const id = sessionStorage.getItem("id");
+const HomeLest = ({ show, onHide }) => {
+  const [roomPw, setRoomPw] = useState("");
+  const [roomName, setRoomName] = useState("");
+  const [roomKey, setRoomKey] = useState("");
 
+  const [testName, setTestName] = useState(true);
+  const [testPw, setTestPw] = useState(true);
+  const [testKey, setTestKey] = useState(true);
 
+  const checkInput = /^[가-힣a-zA-Z0-9]{2,15}$/; //유효성 검사
 
-  const InputNameEx = /^[가-힣a-zA-Z0-9]{2,15}$/;
-  const InputKeyEx = /^[가-힣a-zA-Z0-9]{2,15}$/;
-  const InputPwEx = /^[가-힣a-zA-Z0-9]{2,15}$/;
-
-
-
-
-  const RoomNameCheck = (roomName)=>{
-    if(roomName.match(InputNameEx)==null){
-      alert("제목 형식에 맞게 입력 해주세요")
-      return;
-    }else{
-      alert("잘입력 함 ㅎㅎ")
+  const RoomNameCheck = (e) => {
+    // setRoomName(e.target.value); //이벤트가 발생되면 저장 -- 유효성 검사 후 저장으로 변환해야함
+    const check = e.target.value;
+    console.log(check);
+    console.log("유효성 검사 : ", checkInput.test(e.target.value));
+    if (checkInput.test(e.target.value)) { //true이면, 즉 유효성검사를 통과하면
+      setRoomName(e.target.value);
+      setTestName(true); //true이면 유효성 경고창 안보이게
+    } else {
+      setTestName(false);
     }
   }
 
-  
-  const RoomKeyCheck = (setRoomKey)=>{
-    if(roomKey.match(InputKeyEx)==null){
-      alert("제목 형식에 맞게 입력 해주세요")
-      return;
-    }else{
-      alert("잘입력 함 ㅎㅎ")
+  const RoomKeyCheck = (e) => {
+    // setRoomName(e.target.value); //이벤트가 발생되면 저장 -- 유효성 검사 후 저장으로 변환해야함
+    const check = e.target.value;
+    console.log(check);
+    console.log("유효성 검사 : ", checkInput.test(e.target.value));
+    if (checkInput.test(e.target.value)) { //true이면, 즉 유효성검사를 통과하면
+      setRoomKey(e.target.value);
+      setTestKey(true); //true이면 유효성 경고창 안보이게
+    } else {
+      setTestKey(false);
     }
   }
 
-  
-  const RoomPwCheck = (roomPw)=>{
-    if(roomPw.match(InputPwEx)==null){
-      alert("제목 형식에 맞게 입력 해주세요")
-      return;
-    }else{
-      alert("잘입력 함 ㅎㅎ")
+  const RoomPwCheck = (e) => {
+    // setRoomName(e.target.value); //이벤트가 발생되면 저장 -- 유효성 검사 후 저장으로 변환해야함
+    const check = e.target.value;
+    console.log(check);
+    console.log("유효성 검사 : ", checkInput.test(e.target.value));
+    if (checkInput.test(e.target.value)) { //true이면, 즉 유효성검사를 통과하면
+      setRoomPw(e.target.value);
+      setTestPw(true); //true이면 유효성 경고창 안보이게
+    } else {
+      setTestPw(false);
     }
   }
 
 
 
-
-
-
-  // //정규식
-  // var InputName = /^[가-힣a-zA-Z]{2,15}$/;
-  // var InputKey =/^[가-힣a-zA-Z]{2,15}$/;
-  // var InputPw =/^[가-힣a-zA-Z]{2,15}$/;
-
-
-
- 
-
-  //적규식
-  //제목
-    // const handleInpRoomName = (e) => {
-    //     // 8자~16자 영문, 숫자 조합
-    //     var regExp = /^(?=.*\d)(?=.*[a-z0-9가-힣])[0-9a-zA-Z]{1,10}$/
-    //     setRoomName(regExp.test(e.target.value));
-    // };
-
-    // //키
-    // const   handInputKey = (e) => {
-    //     var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{1,10}$/
-    //     setRoomKey(regExp.test(encodeURIComponent.target.value));
-    // };
-
-    // //비번
-    // const handleInputPw = (e) => {
-    //     // 2자~10자 영문, 숫자 조합
-    //     var regExp = /^(?=.*[a-z0-9가-힣])[a-zA-Z0-9가-힣]{1,10}$/
-    //     setRoomPw(regExp.test(e.target.value));
-    // };
-
-    // //정규식 조건
-    // const onFinish = (values) => {
-    //   if (handleInpRoomName == false) {
-    //     alert("제목 입력 해주세요")
-    //     roomName.focus();
-    //     return;
-    //   }
-    //   if (handInputKey == false) {
-    //     alert("key 값 입력 해주세요")
-    //     roomKey.focus();
-    //     return;
-    //   }
-    //   if (handleInputPw != false) {
-    //     alert("비밀번호를 입력해주세요.")
-    //     roomPw.focus();
-    //     return;
-  
-  
-  
-    //     handleSubmit(values)
-    //   };
-  
-    // }
-    
-    // //미입력 이벤트
-    // const onFinishFailed = (errorInfo) => {
-    //   console.log('Failed:', errorInfo);
-    // };
-
-  
-
-
-
-
-
-
-
-  const handleSubmit = async  () => {
+  const handleSubmit = async () => {
     var rn = document.getElementById("roomName");
     console.log(rn.value);
-    alert("제목 형식에 맞게 입력 해주세요")
-
-
-    //axios로 서버에 보낸다
-    try{
-        await axios.post('http://192.168.2.82:5000/createRoom',{
-        roomName: roomName, 
-        roomKey:roomKey,
-        roomPw: roomPw,
-        roomHost: id
-    })
+    if (testName && testKey && testPw){
+      //axios로 서버에 보낸다
+      try {
+        await axios.post('http://192.168.2.82:5000/createRoom', {
+          roomName: roomName,
+          roomKey: roomKey,
+          roomPw: roomPw,
+          roomHost: sessionStorage.getItem("id")
+        })
+      }
+      catch (e) {
+        console.error(e);
+      }
+      //유효성검사 초기화
+      setTestName(true);
+      setTestKey(true);
+      setTestPw(true);
     }
-    catch (e){
-      console.error(e);
-    }
-    
   }
 
 
 
   return (
     <Modal
-    show = {show}
-    onHide = {onHide}
-    size="lg"
-    aria-labelledby="contained-modal-title-vcenter"
-    centered
-  >
-    <Modal.Header closeButton>
-      <Modal.Title id="contained-modal-title-vcenter">
-        방 만들기
-      </Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
+      show={show}
+      onHide={onHide}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          방 만들기
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
 
 
-    <Form >
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>방제목 </Form.Label>
-        <Form.Control id="roomName" type="text" placeholder="방제목 입력하세요" 
-        onChange={(e)=>{setRoomPw(e.target.value); 
-                              RoomNameCheck(e.target.value)}} />
-      </Form.Group>
+        <Form >
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>방제목 </Form.Label>
+            <Form.Control type="text" placeholder="방제목 입력하세요" onChange={RoomNameCheck} />
+            {/* <Form.Control id="roomName" type="text" placeholder="방제목 입력하세요" onChange={(e)=>{setRoomPw(e.target.value); }} /> */}
+            {/* 유효성검사 true false 확인 경고창 */}
+            {
+              testName ? <div></div> : <div style={{ color: "red" }} > 한글, 영문, 숫자로 2~15자 이내로 작성해주세요 </div>
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>방이름(key)</Form.Label>
-        <Form.Control id="roomKey"  type="text" placeholder="방이름 입력하세요" />
-      </Form.Group>
+            }
+          </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control id="roomPw" type="password" placeholder="비밀번호를 입력 하세요"  />
-      </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>방이름(key)</Form.Label>
+            <Form.Control type="text" placeholder="방이름 입력하세요" onChange={RoomKeyCheck} />
+            {/* <Form.Control controlid="roomKey"  type="text" placeholder="방이름 입력하세요" /> */}
+            {/* 유효성검사 true false 확인 경고창 */}
+            {
+              testKey ? <div></div> : <div style={{ color: "red" }} > 한글, 영문, 숫자로 2~15자 이내로 작성해주세요 </div>
+            }
+          </Form.Group>
 
-      
-    </Form>
-    </Modal.Body>
-    <Modal.Footer>
-    <Button onClick={handleSubmit} variant="primary" type="submit">
-        Submit
-      </Button>
-      <Button onClick={onHide} >Close</Button>
-    </Modal.Footer>
-     
-  </Modal>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control type="password" placeholder="비밀번호를 입력 하세요" onChange={RoomPwCheck} />
+            {/* <Form.Control controlid="roomPw" type="password" placeholder="비밀번호를 입력 하세요"  /> */}
+            {/* 유효성검사 true false 확인 경고창 */}
+            {
+              testPw ? <div></div> : <div style={{ color: "red" }} > 한글, 영문, 숫자로 2~15자 이내로 작성해주세요 </div>
+            }
+          </Form.Group>
+
+
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={handleSubmit} variant="primary" type="submit">
+          Submit
+        </Button>
+        <Button onClick={onHide} >Close</Button>
+      </Modal.Footer>
+
+    </Modal>
 
   )
 }

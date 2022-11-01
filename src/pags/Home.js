@@ -60,8 +60,10 @@ const Home = () => {
 
     (async () => {
       try {
+
         console.log(sessionStorage.getItem("id"));
         const res = await axios.post("http://192.168.2.82:5000/readRoom",
+
           {
             id: sessionStorage.getItem("id")
           });
