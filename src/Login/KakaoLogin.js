@@ -42,7 +42,7 @@ class KakaoLogin extends Component {
                                 });
 
                             //로그인 후 들어갈 곳
-                            //window.location.href = "http://localhost:3000";
+                            window.location.reload();
                         },
                         fail: (err) => {
                             console.log(err);
