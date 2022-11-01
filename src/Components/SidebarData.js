@@ -69,21 +69,21 @@ export const SidebarData = () => {
   console.log(nickname);
   console.log(profile)
   useEffect(() => {
-      var src = document.getElementById("box");
-      console.log(sessionStorage.getItem("nickname"))
-      if (id != null) {
-          
-          src.innerHTML = 
-          "<div>" + 
-            "<Nav.Link>"
-               + sessionStorage.getItem("nickname") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+ 
-            "</Nav.Link>" + 
-            
-            "<button class='profilebutton'> <div class='box'> <img class='profile' src='" 
-              + sessionStorage.getItem("profile")+ "'/></div></Button>" +  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>";
-         
-          
-      }
+    var src = document.getElementById("box");
+    console.log(sessionStorage.getItem("nickname"))
+    if (id != null) {
+
+      src.innerHTML =
+        "<div>" +
+        "<Nav.Link>"
+        + sessionStorage.getItem("nickname") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+        "</Nav.Link>" +
+
+        "<button class='profilebutton'> <div class='box'> <img class='profile' src='"
+        + sessionStorage.getItem("profile") + "'/></div></Button>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>";
+
+
+    }
   })
 
 
@@ -94,11 +94,11 @@ export const SidebarData = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
 
-    <SignUpModal show={signUpModalOn} onHide={() => setSignUpModalOn(false)} />
-    <LogOutModal show={logOutModalOn} onHide={() => setLogOutModalOn(false)} />
+      <SignUpModal show={signUpModalOn} onHide={() => setSignUpModalOn(false)} />
+      <LogOutModal show={logOutModalOn} onHide={() => setLogOutModalOn(false)} />
 
-    
-    <AppBar position="static" color="inherit">
+
+      <AppBar position="static" color="inherit">
         <Toolbar>
           <IconButton
             size="large"
@@ -112,27 +112,40 @@ export const SidebarData = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 
 
-          <Link to="/">
-            <img src={udttang} className ='log'/>
-          </Link>
+            <Link to="/">
+              <img src={udttang} className='log' />
+            </Link>
 
-          
+
           </Typography>
 
           <Typography>
-    
+
           </Typography>
-         
+
           <div id="box"></div>
-                    <div>
-                        {
-                            id === null ? <Button color="inherit" variant='outlined' onClick={() => setSignUpModalOn(true)}>Login</Button> : 
-                            <Button color="inherit" variant='outlined' onClick={() => setLogOutModalOn(true)}>Logout</Button>
-                        }
-                    </div>
+          <div>
+            {
+              id === null ? <Button color="inherit" variant='outlined' onClick={() => setSignUpModalOn(true)}>Login</Button> :
+                <Button color="inherit" variant='outlined' onClick={() => setLogOutModalOn(true)}>Logout</Button>
+            }
+          </div>
+
+          &nbsp;&nbsp;&nbsp;&nbsp;
+
+          {
+
+            id === null ? null :
+
+              <div class="gearbox">
+                <Link to="/Setting">
+                  <MoreVertIcon class="gear" src={Gear}></MoreVertIcon>
+                </Link>
+              </div>
+          }
 
         </Toolbar>
-    </AppBar>
-  </Box>
+      </AppBar>
+    </Box>
   )
 }

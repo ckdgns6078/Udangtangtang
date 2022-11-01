@@ -225,8 +225,9 @@ const Sekes = () => {
                       </Link> */}
                         <MoreVertIcon class="gear" src={Gear}></MoreVertIcon>
                     </div>
+                    
                     </Button> 
-                  </Navbar.Text>
+                  </Navbar.Text>    
                 </Navbar.Collapse>
               </Container>
             </Navbar>
