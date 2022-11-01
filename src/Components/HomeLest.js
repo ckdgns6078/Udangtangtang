@@ -7,8 +7,8 @@ import Form from 'react-bootstrap/Form';
 import axios from "axios";
 
 const HomeLest = ({ show, onHide }) => {
-  const [roomPw, setRoomPw] = useState("");
   const [roomName, setRoomName] = useState("");
+  const [roomPw, setRoomPw] = useState("");
   const [roomKey, setRoomKey] = useState("");
 
   const [testName, setTestName] = useState(true);
@@ -16,6 +16,7 @@ const HomeLest = ({ show, onHide }) => {
   const [testKey, setTestKey] = useState(true);
 
   const checkInput = /^[가-힣a-zA-Z0-9]{2,15}$/; //유효성 검사
+
 
   const RoomNameCheck = (e) => {
     // setRoomName(e.target.value); //이벤트가 발생되면 저장 -- 유효성 검사 후 저장으로 변환해야함
@@ -102,12 +103,12 @@ const HomeLest = ({ show, onHide }) => {
         <Form >
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>방제목 </Form.Label>
-            <Form.Control type="text" placeholder="방제목 입력하세요" onChange={RoomNameCheck} />
+            <Form.Control  id="roomName" type="text" placeholder="방제목 입력하세요" onChange={RoomNameCheck} />
             {/* <Form.Control id="roomName" type="text" placeholder="방제목 입력하세요" onChange={(e)=>{setRoomPw(e.target.value); }} /> */}
             {/* 유효성검사 true false 확인 경고창 */}
             {
-              testName ? <div></div> : <div style={{ color: "red" }} > 한글, 영문, 숫자로 2~15자 이내로 작성해주세요 </div>
-
+              testName? <div></div> : <div style={{color:"red"}} > 한글, 영문, 숫자로 2~15자 이내로 작성해주세요 </div>
+              
             }
           </Form.Group>
 
@@ -117,7 +118,7 @@ const HomeLest = ({ show, onHide }) => {
             {/* <Form.Control controlid="roomKey"  type="text" placeholder="방이름 입력하세요" /> */}
             {/* 유효성검사 true false 확인 경고창 */}
             {
-              testKey ? <div></div> : <div style={{ color: "red" }} > 한글, 영문, 숫자로 2~15자 이내로 작성해주세요 </div>
+              testKey ? <div></div> : <div style={{color:"red"}} > 한글, 영문, 숫자로 2~15자 이내로 작성해주세요 </div>
             }
           </Form.Group>
 
@@ -127,11 +128,9 @@ const HomeLest = ({ show, onHide }) => {
             {/* <Form.Control controlid="roomPw" type="password" placeholder="비밀번호를 입력 하세요"  /> */}
             {/* 유효성검사 true false 확인 경고창 */}
             {
-              testPw ? <div></div> : <div style={{ color: "red" }} > 한글, 영문, 숫자로 2~15자 이내로 작성해주세요 </div>
+              testPw ? <div></div> : <div style={{color:"red"}} > 한글, 영문, 숫자로 2~15자 이내로 작성해주세요 </div>
             }
           </Form.Group>
-
-
         </Form>
       </Modal.Body>
       <Modal.Footer>
