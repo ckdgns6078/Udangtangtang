@@ -195,7 +195,19 @@ const Sekes = () => {
                   )
 
                 }
-                
+                {
+                  meetData == 0 ? <tr>
+                    <th colSpan={3} style={{ backgroundColor: 'white' }}>
+                      <div style={{
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: 'white'
+                      }} ><div><img src={noData} /></div> </div>
+                    </th>
+                  </tr> : null
+                }
 
               </tbody>
             </Table>
@@ -267,7 +279,19 @@ const Sekes = () => {
                   )
                 }
                 
-
+                {
+                  data ==null ? <tr>
+                    <th colSpan={3} style={{ backgroundColor: 'white' }}>
+                      <div style={{
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: 'white'
+                      }} ><div><img src={noData} /></div> </div>
+                    </th>
+                  </tr> : null
+                }
 
               </tbody>
             </Table>
