@@ -24,7 +24,7 @@ const OutRoom = () => {
                 const res = await axios.post("http://192.168.2.82:5000/updateReadMeeting", {
                     roomNum: l
                 });
-
+                
                 console.log(res.data)
                 setData(res.data);
             } catch (error) {
@@ -59,6 +59,7 @@ const OutRoom = () => {
                     console.log(response.data); //true 삭제 성공, false 삭제 실패
                     if (response.data) { //성공하면
                         alert("회의 명 수정을 성공하였습니다.")
+                        window.location.reload();
                     } else { //실패하면
                         alert("회의 명 수정에 실패하였습니다.")
                     }

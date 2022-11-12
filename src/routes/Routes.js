@@ -6,6 +6,8 @@ import Client from "../pags/Client";
 import Home from "../pags/Home";
 import Sekes from "../pags/Sekes";
 import Client_2 from "../pags/Client_2";
+import Setting from "../pags/Setting";
+import SettingMeet from '../pags/SettingMeet';
 
 const Routes = () => useRoutes([{
   path: "/", element: <div> <SidebarData />

@@ -13,7 +13,7 @@ import Paper from '@mui/material/Paper';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
-import { Container, Navbar } from 'react-bootstrap';
+
 import Gear from '../img/gear.png';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
@@ -238,15 +238,7 @@ const Sekes = () => {
 
             <Table striped>
               <thead>
-                <tr flexDirection="column">
-                  <td>
-                    회의 목록
-                  </td>
-                  <td bg="right"></td>
-                  <td bg="right"></td>
-
-
-                </tr>
+              
 
                 <tr>
                   <th >번호</th>

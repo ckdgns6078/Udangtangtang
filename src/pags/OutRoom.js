@@ -15,7 +15,7 @@ const OutRoom = () => {
             try {
                 console.log(sessionStorage.getItem("id"));
                 const res = await axios.post("http://192.168.2.82:5000/outReadRoom", {
-                    roomHost: sessionStorage.getItem("id")
+                    id: sessionStorage.getItem("id")
                 });
 
                 console.log(res.data)
@@ -36,10 +36,10 @@ const OutRoom = () => {
             //roomnum이랑 id값 post
             axios.post("http://192.168.2.82:5000/outRoom", {
                 roomNum: roomnum,
-                roomHost: sessionStorage.getItem("id")
+                id: sessionStorage.getItem("id")
             }).then((response) => {
                 console.log(response.data); //true 탈퇴 성공, false 탈퇴 실패
-                if (response.date){
+                if (response.data){
                     alert("탈퇴에 성공하였습니다.")
                 }else{
                     alert("탈퇴에 실패하였습니다.")

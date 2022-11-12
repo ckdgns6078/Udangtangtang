@@ -617,6 +617,7 @@ const Client = () => {
                     </Navbar.Collapse>
                   </Container>
                 </Navbar>
+                
                 <Grid item xs={16} >
                   {/* 서버에 보내서 변환중인것을 보여줌 */}
                   <Item>
@@ -625,17 +626,89 @@ const Client = () => {
                         <ThreeDots justify="center" width="30" height="30" color="black" ariaLable="loading" />
                       </div> : <div></div>
                     }
-                    dataApi가 변화되면 컴포넌트 만들기 Item태그 추가하기
-                    <Item>
-                      <h6>ddd</h6>
+                    
+                
+                      <h6>음성 변환 텍스트</h6>
                       <Stack direction="row" spacing={1}>
-                        <Chip label="누구냐" color="primary" />
+                        <Chip label="신종락" color="primary" />
                       </Stack>
                       <h6>{dataApi}</h6>
-                    </Item>
+                      
+               
 
                   </Item>
                 </Grid>
+                <br></br>
+                <br></br>
+                <br></br>
+                <Grid item xs={16} >
+                  {/* 서버에 보내서 변환중인것을 보여줌 */}
+                  <Item>
+                    {
+                      loading ? <div className='spinner'>
+                        <ThreeDots justify="center" width="30" height="30" color="black" ariaLable="loading" />
+                      </div> : <div></div>
+                    }
+                    
+                
+                      <h6>음성 변환 텍스트</h6>
+                      <Stack direction="row" spacing={1}>
+                        <Chip label="양연지" color="primary" />
+                      </Stack>
+                      <h6> 집에 가고 싶다 너무 힘들어</h6>
+                      
+               
+
+                  </Item>
+                </Grid>
+                <br></br>
+                <br></br>
+                <br></br>
+                <Grid item xs={16} >
+                  {/* 서버에 보내서 변환중인것을 보여줌 */}
+                  <Item>
+                    {
+                      loading ? <div className='spinner'>
+                        <ThreeDots justify="center" width="30" height="30" color="black" ariaLable="loading" />
+                      </div> : <div></div>
+                    }
+                    
+                
+                      <h6>음성 변환 텍스트</h6>
+                      <Stack direction="row" spacing={1}>
+                        <Chip label="조창훈" color="primary" />
+                      </Stack>
+                      <h6>마이크 테스트</h6>
+                      
+               
+
+                  </Item>
+                </Grid>
+                <br></br>
+                <br></br>
+                <br></br>
+                <Grid item xs={16} >
+                  {/* 서버에 보내서 변환중인것을 보여줌 */}
+                  <Item>
+                    {
+                      loading ? <div className='spinner'>
+                        <ThreeDots justify="center" width="30" height="30" color="black" ariaLable="loading" />
+                      </div> : <div></div>
+                    }
+                    
+                
+                      <h6>음성 변환 텍스트</h6>
+                      <Stack direction="row" spacing={1}>
+                        <Chip label="이재문" color="primary" />
+                      </Stack>
+                      <h6>으아아아아ㅏ앙아~~~~~~~~~~~~~~~</h6>
+                      
+               
+
+                  </Item>
+                </Grid>
+
+
               </Item>
             </Grid>
           </Grid>

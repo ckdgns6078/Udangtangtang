@@ -13,7 +13,8 @@ import udttang from "../img/udttang.png"
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from '@mui/icons-material/Search';
 import { LocalConvenienceStoreOutlined } from '@mui/icons-material';
-
+import Gear from '../img/gear.png';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 
 const Search = styled("div")(({ theme }) => ({
