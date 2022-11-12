@@ -146,6 +146,10 @@ const SettingMeet = () => {
                         {
                             sessionStorage.getItem("id") === null ? <div><img src={noData} /></div> : <div></div>
                         }
+                        {
+                            !isHave ? <div></div> : <div><img src={noData} /></div>
+                        }
+
                     </div>
                 </div>
             </Box>
