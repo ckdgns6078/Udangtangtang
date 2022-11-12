@@ -14,18 +14,21 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
 import Routes from './routes/Routes';
-
+import Footer from './Components/Footer';
 
 
 
 
 function App() {
   return (
+    <>
     <BrowserRouter>
 
       <Routes />
     
     </BrowserRouter>
+    <Footer/>
+    </>
   );
 }
 

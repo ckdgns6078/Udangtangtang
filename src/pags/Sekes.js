@@ -10,8 +10,6 @@ import noData from '../img/NoData.png';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
-import Navbar from 'react-bootstrap/Navbar';
-import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 
 import Gear from '../img/gear.png';
@@ -43,6 +41,10 @@ const Sekes = () => {
   const [roomName, setRoomName] = useState(); 
   const [ishave, setIsHave] = useState(true);
   const [ishavemeet, setIsHaveMeet] = useState(true);
+
+  const [check, setCheck] = useState(false);
+  const [searchData, setSearchData] = useState();
+
 
   const ingmeetclick = idx => {
     console.log(idx);
@@ -114,7 +116,40 @@ const Sekes = () => {
   const back =() => {
     window.location.href="/"
   }
+  const searchItem = () => {
+    const location = window.location.href;
+    var room = parseInt(location.split("/")[4]);
 
+    const searchinput = document.getElementById("search").value;
+    console.log(searchinput);
+    setCheck(true)
+    if (sessionStorage.getItem("id") == null) {
+      alert("로그인 해주세요");
+      window.location.reload();
+    }
+
+    //database에서 값가져오기
+    //axios로 아이디와 검색하려는 값을 보냄
+    //서버에서는 검색하려는 값을 데이터베이스에 저장되어 있는
+    //사용자가 들어가있는 회의방 테이블의 회의방 제목에 들어가있는 것만 데이터를 보내줌
+    axios.post('http://192.168.2.82:5000/searchMeeting', {
+      id: sessionStorage.getItem("id"),
+      roomNum: room,
+      meetTitle: searchinput
+    })
+      .then(function (response) {
+        // response  
+        console.log(response.data)
+        setSearchData(response.data);
+
+      }).catch(function (error) {
+        // 오류발생시 실행
+      }).then(function () {
+        // 항상 실행
+      });
+
+
+  }
 
 
   return (
@@ -122,7 +157,7 @@ const Sekes = () => {
       <CreateMeetModal show={starthome} onHide={() => setModal(false)} />
       <Box display="flex" flexDirection="column" m="20px" >
 
-      {/* <Navbar bg="light">
+        {/* <Navbar bg="light">
         <Container>
           <Navbar.Brand href="#home">
           
@@ -153,7 +188,7 @@ const Sekes = () => {
               >
 
               </Nav>
-             
+
               <Button variant="outline-secondary" onClick={back} style={{ right: 0, marginRight: 0, alignContent: 'flex-end' }}>뒤로 가기</Button>
 
 
@@ -161,7 +196,7 @@ const Sekes = () => {
           </Container>
         </Navbar>
 
-      <br></br>
+        <br></br>
         <br></br>
 
         <Grid item xs={16} >
@@ -197,8 +232,20 @@ const Sekes = () => {
                   )
 
                 }
-                
 
+                {
+                  meetData == 0 ? <tr>
+                    <th colSpan={3} style={{ backgroundColor: 'white' }}>
+                      <div style={{
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: 'white'
+                      }} ><div><img src={noData} /></div> </div>
+                    </th>
+                  </tr> : null
+                }
               </tbody>
             </Table>
           </Item>
@@ -211,23 +258,34 @@ const Sekes = () => {
 
         <Grid item xs={16} >
           <Item>
-          <Navbar>
+            <Navbar>
               <Container>
                 <Navbar.Brand>회의내용</Navbar.Brand>
                 <Navbar.Toggle />
+
                 <Navbar.Collapse className="justify-content-end">
+                  <Search>
+                    <SearchIconWrapper>
+                      <SearchIcon />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                      placeholder="Search…"
+                      inputProps={{ "aria-label": "search" }}
+                      id="search"
+                    />
+                  </Search>
+                  <Button variant="outline-secondary" onClick={searchItem}>Search</Button>
                   <Navbar.Text>
                     {/* 회의를 만든 호스트면 보여주기 */}
-                    <Button variant="text" onClick={settingMeet}> 
-                    <div class="gearbox">
-                      {/* <Link to="/SettingMing/">
+                    <Button variant="text" onClick={settingMeet}>
+                      <div class="gearbox">
+                        {/* <Link to="/SettingMing/">
                         <MoreVertIcon class="gear" src={Gear}></MoreVertIcon>
                       </Link> */}
                         <MoreVertIcon class="gear" src={Gear}></MoreVertIcon>
-                    </div>
-                    
-                    </Button> 
-                  </Navbar.Text>    
+                      </div>
+                    </Button>
+                  </Navbar.Text>
                 </Navbar.Collapse>
               </Container>
             </Navbar>
@@ -241,30 +299,57 @@ const Sekes = () => {
               
 
                 <tr>
-                  <th >번호</th>
+                  <th>번호</th>
                   <th>회의명</th>
                   <th>날짜</th>
                   {/* <th>호스트</th> */}
 
                 </tr>
               </thead>
+              {
+                !check ? <tbody>
+                  {
+                    data && data.map((e, idx) =>
+                      <tr onClick={() => ingmeetclick2(e.meetNum)}>
+                        {/* id="test" class="blinking" 위에 깜박 거리는 css*/}
+                        <th> {idx + 1}</th>
+                        <th >{e.meetTitle}</th> {/* 회의 이름 */}
+                        <th>{e.meetDate}</th> {/* 회의 종료 날짜 */}
+                        {/* <th>{e.meetingRoomHost}</th> 회의 만든 사람 */}
+                      </tr>
+                    )
+                  }
 
-              <tbody>
-                {
-                  data && data.map((e, idx) =>
-                    <tr onClick={() => ingmeetclick2(e.meetNum)}>
-                      {/* id="test" class="blinking" 위에 깜박 거리는 css*/}
-                      <th> {idx + 1}</th>
-                      <th >{e.meetTitle}</th> {/* 회의 이름 */}
-                      <th>{e.meetDate}</th> {/* 회의 종료 날짜 */}
-                      {/* <th>{e.meetingRoomHost}</th> 회의 만든 사람 */}
-                    </tr>
-                  )
-                }
-                
+                  {
+                    data == null ? <tr>
+                      <th colSpan={3} style={{ backgroundColor: 'white' }}>
+                        <div style={{
+                          width: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: 'white'
+                        }} ><div><img src={noData} /></div> </div>
+                      </th>
+                    </tr> : null
+
+                  }
+                </tbody> : <tbody>
+                  {
+                    searchData && searchData.map((e, idx) =>
+                      <tr onClick={() => ingmeetclick2(e.meetNum)}>
+                        {/* id="test" class="blinking" 위에 깜박 거리는 css*/}
+                        <th> {idx + 1}</th>
+                        <th >{e.meetTitle}</th> {/* 회의 이름 */}
+                        <th>{e.meetDate}</th> {/* 회의 종료 날짜 */}
+                        {/* <th>{e.meetingRoomHost}</th> 회의 만든 사람 */}
+                      </tr>
+                    )
+                  }
+                </tbody>
+              }
 
 
-              </tbody>
             </Table>
           </Item>
         </Grid>

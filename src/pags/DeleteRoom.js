@@ -2,7 +2,7 @@
 import Button from 'react-bootstrap/Button';
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-
+import noData from '../img/NoData.png';
 
 const OutRoom = () => {
     const [data, setData] = useState();
@@ -60,7 +60,17 @@ const OutRoom = () => {
         //삭제는 버튼만
         <tbody>
             {
-                data && data.map((e, idx) =>
+                data==null? <tr>
+                <th colSpan={4} style={{ backgroundColor: 'white' }}>
+                  <div style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: 'white'
+                  }} ><div><img src={noData} /></div> </div>
+                </th>
+              </tr> : data.map((e, idx) =>
                     <tr >
                         <th>{idx + 1}</th>
                         <th> {e.roomName}</th>

@@ -27,9 +27,7 @@ const Setting = () => {
     //2-> 수정
     //3-> 삭제
     const [changeT, setChangeT] = useState(0);
-    function modify(name) {
-        console.log(name);
-    }
+
 
     useEffect(() => {
         //제일 처음에는 모든 데이터를 불러옴 data
@@ -150,7 +148,17 @@ const Setting = () => {
 
                     {
                         changeT === 0 ? ( //changeT===0이면 그냥 모든 목록 보여주기
-                            data == null ? null : <tbody>{data && data.map((e, idx) =>
+                            data == null ? <tbody><tr>
+                            <th colSpan={4} style={{ backgroundColor: 'white' }}>
+                              <div style={{
+                                width: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: 'white'
+                              }} ><div><img src={noData} /></div> </div>
+                            </th>
+                          </tr></tbody> : <tbody>{data && data.map((e, idx) =>
                                 <tr >
                                     <th>{idx + 1}</th>
                                     <th> {e.roomName}</th>
@@ -173,11 +181,14 @@ const Setting = () => {
                     justifyContent: 'center',
                     height: '100vh',
                 }} >
-                    <div id="ishave">
+                     <div id="ishave">
                         {
                             sessionStorage.getItem("id") === null ? <div><img src={noData} /></div> : <div></div>
                         }
-                        
+                        {
+                            !isHave ? <div></div> : <div><img src={noData} /></div>
+                        }
+
                     </div>
                 </div>
             </Box>

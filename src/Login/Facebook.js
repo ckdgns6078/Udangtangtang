@@ -47,19 +47,15 @@ export default class Facebook extends Component {
 
         if (isLoggedIn) {
             fbContent = (
-                <div id="face"
-                    style={{
-                        width: "22px",
-                       
-                        background: "#f4f4f4",
-                        padding: "20px"
-                    }}
-                >
-                    <img    
-                       src={picture} alt={name} />
-                    <h2>Welcome {name}</h2>
-                    Email: {email}
-                </div>
+                <FacebookLogin
+                    appId="1480672229110640"
+                    autoLoad={true}
+                    fields="name,email,picture"
+                    onClick={this.componentClicked}
+                    callback={this.responseFacebook}
+                    icon="fa-facebook"
+                />
+
             );
         } else {
             fbContent = (
