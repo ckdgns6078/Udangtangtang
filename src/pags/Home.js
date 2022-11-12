@@ -54,6 +54,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const Home = () => {
   const [data, setData] = useState();
   const [isHave, setIsHave] = useState(true);
+  const [check, setCheck] = useState(false);
+  const [searchData, setSearchData] = useState();
 
   
   useEffect(() => {
@@ -85,19 +87,40 @@ const Home = () => {
 
   }
   
-  const search = () =>{
+  const searchItem = () =>{
     const searchinput = document.getElementById("search").value;
     console.log(searchinput);
+    setCheck(true);
+
     if (sessionStorage.getItem("id")==null){
       alert("로그인 해주세요");
       window.location.reload();
     }
 
+    //database에서 값가져오기
+    //axios로 아이디와 검색하려는 값을 보냄
+    //서버에서는 검색하려는 값을 데이터베이스에 저장되어 있는
+    //사용자가 들어가있는 회의방 테이블의 회의방 제목에 들어가있는 것만 데이터를 보내줌
+   
+    axios.post('http://192.168.2.82:5000/searchRoom', {
+      id: sessionStorage.getItem("id"),
+      roomName: searchinput
+    })
+      .then(function (response) {
+        // response  
+        console.log(response.data);
+        setSearchData(response.data);
+      }).catch(function (error) {
+        // 오류발생시 실행
+      }).then(function () {
+        // 항상 실행
+      });
+    
+
   }
 
   return (
     //responsive 테이블은 반응 형으로 만들어 줌
-
     <Box width="100%" display="flex" flexDirection="column" m="20px">
     <Box width="100%" display="flex" flexDirection="column" >
       <Table responsive="lg">
@@ -128,7 +151,7 @@ const Home = () => {
 
             <td> 
            
-            <Button variant="outline-secondary" onClick={search}>Search</Button>
+              <Button variant="outline-secondary" onClick={searchItem}>Search</Button>
               </td>
           </tr>
           <tr>
@@ -139,8 +162,8 @@ const Home = () => {
           </tr>
         </thead>
 
-
-        <tbody>
+        {
+          !check ? <tbody>
           {
             data && data.map((e, idx) =>
               <tr onClick={() => testonclick(e.roomNum)}>
@@ -151,8 +174,20 @@ const Home = () => {
               </tr>
             )
           }
-
+        </tbody> : <tbody>
+          {
+            searchData && searchData.map((e, idx) =>
+              <tr onClick={() => testonclick(e.roomNum)}>
+                <th>{idx + 1}</th>
+                <th> {e.roomName}</th>
+                <th>{e.roomHost}</th>
+                <th>{e.roomMember}</th>
+              </tr>
+            )
+          }
         </tbody>
+        }
+       
       </Table>
       <div style={{
         display: 'flex',
@@ -168,9 +203,8 @@ const Home = () => {
         </div>
       </div>
       </Box>
+      
     </Box>
-
-
   )
 }
 

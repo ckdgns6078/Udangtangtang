@@ -2,9 +2,10 @@
 import Button from 'react-bootstrap/Button';
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import noData from '../img/NoData.png';
 
 
-const OutRoom = () => {
+const DeleteMeet = () => {
     const [data, setData] = useState();
 
 
@@ -67,19 +68,30 @@ const OutRoom = () => {
         //data는 삭제할 때 쓸 데이터 테이블만 불러옴 
         //삭제는 버튼만
         <tbody>
-            {
-                data && data.map((e, idx) =>
-                    <tr >
-                        <th>{idx + 1}</th>
-                        <th> {e.meetTitle}</th>
-                        <th>{e.meetDate}</th>
-                        <th><Button variant="outline-secondary" onClick={() => deleteRoom(e.meetNum)}>삭제</Button></th>
-                    </tr>
-                )
-            }
-        </tbody>
+        {
+            data==null? <tr>
+            <th colSpan={4} style={{ backgroundColor: 'white' }}>
+              <div style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'white'
+              }} ><div><img src={noData} /></div> </div>
+            </th>
+          </tr> : data.map((e, idx) =>
+                <tr >
+                    <th>{idx + 1}</th>
+                    <th> {e.meetTitle}</th>
+                    <th>{e.meetDate}</th>
+                    <th><Button variant="outline-secondary" onClick={() => deleteRoom(e.meetNum)}>삭제</Button></th>
+                    
+                </tr>
+            )
+        }
+    </tbody>
 
     )
 }
 
-export default OutRoom
+export default DeleteMeet

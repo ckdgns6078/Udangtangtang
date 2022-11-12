@@ -4,13 +4,11 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { TextField } from '@mui/material';
 import { AltRouteTwoTone, ConstructionOutlined } from '@mui/icons-material';
+import noData from '../img/NoData.png';
 
 
-const OutRoom = () => {
+const ModifyMeet = () => {
     const [data, setData] = useState();
-
-
-
 
     useEffect(() => {
         const location = window.location.href;
@@ -68,8 +66,6 @@ const OutRoom = () => {
             } else {
                 alert("취소되었습니다.")
             }
-        }else{
-            alert("원래 회의 이름과 동일합니다. 다시 입력해주세요");
         }
     }
 
@@ -80,7 +76,17 @@ const OutRoom = () => {
         //수정는 textField, 버튼
         <tbody>
             {
-                data && data.map((e, idx) =>
+                data==null? <tr>
+                <th colSpan={4} style={{ backgroundColor: 'white' }}>
+                  <div style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: 'white'
+                  }} ><div><img src={noData} /></div> </div>
+                </th>
+              </tr> : data.map((e, idx) =>
                     <tr >
                         <th>{idx + 1}</th>
                         <th>
@@ -98,4 +104,4 @@ const OutRoom = () => {
     )
 }
 
-export default OutRoom
+export default ModifyMeet
