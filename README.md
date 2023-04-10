@@ -14,4 +14,3 @@
 | 신종락| 2020315010 | sjr0630 | whdfkr0630@gmail.com
 
 
-file:///C:/Users/82105/Desktop/%EC%9A%B0%EB%8B%B9%ED%83%95%ED%83%95%20%EA%B2%BD%EC%A7%84%EB%8C%80%ED%9A%8C/%EC%9A%B0%EB%8B%B9%ED%83%95%ED%83%95%20%EC%99%84%EC%84%B1%EB%B3%B8.pdf
